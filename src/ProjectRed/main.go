@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	icon_humain = "ressource/icon_elf.png"
+	icon_humain = "ressource/icon_humain.png"
 	icon_elf    = "ressource/icon_elf.png"
 	icon_nain   = "ressource/icon_nain.png"
 )
