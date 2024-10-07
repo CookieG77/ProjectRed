@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"encoding/base64"
+	"image"
 	"image/png"
 	"os"
 
@@ -11,35 +11,23 @@ import (
 )
 
 const (
-	icon_humain = "ressource/icon_humain.png"
+	icon_humain = "ressource/icon_elf.png"
+	icon_elf    = "ressource/icon_elf.png"
+	icon_nain   = "ressource/icon_nain.png"
 )
 
 func main() {
 	redColor := tcell.NewRGBColor(255, 0, 0)
 
-	IMGbyte, err := os.ReadFile(icon_humain)
-	if err != nil {
-		panic(err)
-	}
-
 	app := tview.NewApplication()
 	image := tview.NewImage()
-	//print(string(IMGbyte))
-	b, err2 := base64.StdEncoding.DecodeString(string(IMGbyte[:]))
-	if err2 != nil {
-		panic(err2)
-	}
-
-	graphics, err3 := png.Decode(bytes.NewReader(b))
-	if err3 != nil {
-		panic(err3)
-	}
-
-	image.SetImage(graphics)
-
 	box := tview.NewBox().SetBorder(true).SetTitle("[ RED_PROJECT_ULTIMATE ]")
 	box.SetBorderColor(redColor)
-
+	imgdata, err := TviewMakeImg(icon_humain)
+	if err {
+		return
+	}
+	image.SetImage(imgdata)
 	if err4 := app.SetRoot(image, true).Run(); err4 != nil {
 		panic(err4)
 	}
@@ -67,3 +55,12 @@ func getArgs() []string {
 // 		cmd.Run()
 // 	}
 // }
+
+func TViewMakeImg(addresse string) (image.Image, bool) {
+	IMGbyte, err := os.ReadFile(icon_humain)
+	graphics, err2 := png.Decode(bytes.NewReader(IMGbyte))
+	if err2 != nil || err != nil {
+		return nil, true
+	}
+	return graphics, false
+}
