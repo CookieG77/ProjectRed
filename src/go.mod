@@ -1,3 +1,3 @@
-module PPR/m/v2
+module PPR
 
 go 1.23.1
