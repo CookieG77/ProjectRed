@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PPR"
 	"os"
 	"os/exec"
 	"runtime"
@@ -9,8 +10,8 @@ import (
 
 func main() {
 	clearCmd()
-	print(MenuRender())
-	time.Sleep(1 / 24)
+	print(PPR.MenuRender())
+	time.Sleep(time.Second / 24)
 }
 
 func getArgs() []string {

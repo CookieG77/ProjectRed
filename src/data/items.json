@@ -42,8 +42,7 @@
         "name" : "Casque de l'aventurier",
         "description" : "Casque en cuir de sanglier affublé d'une plume de corbeau.",
         "type" : "maxhealth",
-        "value" : 10,
-        ""
+        "value" : 10
     },
     "EA_Adventurer" : {
         "name" : "Armure de l'aventurier",
