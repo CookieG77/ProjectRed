@@ -1,0 +1,9 @@
+CP_NOM -> Potion
+CJ_NOM -> Jetable
+EC_NOM -> Casque
+EA_NOM -> Armure
+EB_NOM -> Botte
+EW_NOM -> Arme (Weapon)
+O_NOM -> Objet
+
+

@@ -1,0 +1,60 @@
+{
+    "CP_Heal" : {
+        "name" : "Potion de soin",
+        "description" : "Restaure 50 points de vie.",
+        "type" : "heal",
+        "value" : 50,
+        "pvalue" : 3
+    },
+    "CJ_poison" : {
+        "name" : "Potion de jet de poison",
+        "description" : "Inflige 10 points de dégâts par seconde pendant 3 secondes.",
+        "type" : "dps",
+        "value" : 10,
+        "duration" : 3,
+        "pvalue" : 6
+    },
+    "O_plume" : {
+        "name" : "Plume de corbeau",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting",
+        "pvalue" : 1
+    },
+    "O_BoarLeather" : {
+        "name" : "Cuir de sanglier",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting",
+        "pvalue" : 3
+    },
+    "O_WolfPelte" : {
+        "name" : "Peau de loup",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting",
+        "pvalue" : 4
+    },
+    "O_TrollSkin": {
+        "name" : "Peau de troll",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting",
+        "pvalue" : 7
+    },
+    "EC_Adventurer" : {
+        "name" : "Casque de l'aventurier",
+        "description" : "Casque en cuir de sanglier affublé d'une plume de corbeau.",
+        "type" : "maxhealth",
+        "value" : 10,
+        ""
+    },
+    "EA_Adventurer" : {
+        "name" : "Armure de l'aventurier",
+        "description" : "Armure en peau de troll décoré d'une fourrure de loup.",
+        "type" : "maxhealth",
+        "value" : 25
+    },
+    "ES_Adventurer" : {
+        "name" : "Bottes de l'aventurier",
+        "description" : "Bottes en cuir de sanglier embélies de fourrure de loup.",
+        "type" : "maxhealth",
+        "value" : 15
+    }
+}
