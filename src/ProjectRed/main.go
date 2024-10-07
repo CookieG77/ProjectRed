@@ -1,9 +1,10 @@
 package main
 
-import "os"
+import (
+	"os"
+)
 
 func main() {
-
 }
 
 func getArgs() []string {
