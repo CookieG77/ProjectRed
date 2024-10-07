@@ -23,7 +23,7 @@ func main() {
 	image := tview.NewImage()
 	box := tview.NewBox().SetBorder(true).SetTitle("[ RED_PROJECT_ULTIMATE ]")
 	box.SetBorderColor(redColor)
-	imgdata, err := TviewMakeImg(icon_humain)
+	imgdata, err := TViewMakeImg(icon_humain)
 	if err {
 		return
 	}
