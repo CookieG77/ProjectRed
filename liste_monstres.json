@@ -1,0 +1,37 @@
+{
+    "EN_goblin" : {
+        "name" : "Goblin",
+        "description" : "Une petite créature verte malveillante et laide",
+        "max_hp" : 40,
+        "atk_points" : 5,
+        "special" : "inflige 200% de dégats tous les 3 tours"
+    },
+    "EN_troll" : {
+        "name" : "Troll",
+        "description" : "Une creature plus grande qu'un homme connue pour la vitesse à laquelle ses blessures guérissent",
+        "max_hp" : 60,
+        "atk_points" : 6,
+        "special" : "regagne 5 points de vie tous les 2 tours"
+    },
+    "EN_corbeau" : {
+        "name" : "Corbeau",
+        "description" : "Un oiseau au plumage noir qui aime voler les objets brillants",
+        "max_hp" : 30,
+        "atk_points" : 2,
+        "special" : "Vole 1 pièce d'or par tour et s'enfuit au tour 3"
+    },
+    "EN_sanglier" : {
+        "name" : "Sanglier",
+        "description" : "Porc sauvage à peau épaisse vivant dans les forets",
+        "max_hp" : 70,
+        "atk_points" : 5,
+        "special" : "les dégats qu'il reçoit sont réduits de 1"
+    },
+    "EN_loup" : {
+        "name" : "Loup",
+        "description" : "Un prédateur silencieux des forets qui ne lâche jamais sa proie",
+        "max_hp" : 50,
+        "atk_points" : 7,
+        "special" : "peut infliger 2 dégats de saignement par tour"
+    }
+}
