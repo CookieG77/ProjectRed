@@ -1,4 +1,4 @@
-package PPR
+package Smenu
 
 import (
 	"bytes"

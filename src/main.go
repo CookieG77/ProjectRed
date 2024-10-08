@@ -1,19 +1,20 @@
 package main
 
 import (
-	PPR "PPR/Scene"
+	"PPR/Scene"
+	"PPR/Smenu"
 	"os"
 )
 
 func main() {
-	PPR.SmenuRender()
 	// run := true
 	// for !run {
 	// 	clearCmd()
 
 	// 	time.Sleep(time.Second / 24)
 	// }
-	PPR.CreatePlayerWindow()
+	Scene.CreatePlayerWindow()
+	Smenu.SmenuRender()
 
 }
 
