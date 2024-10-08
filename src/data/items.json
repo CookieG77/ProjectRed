@@ -6,7 +6,7 @@
         "value" : 50,
         "pvalue" : 3
     },
-    "CJ_poison" : {
+    "CJ_Poison" : {
         "name" : "Potion de jet de poison",
         "description" : "Inflige 10 points de dégâts par seconde pendant 3 secondes.",
         "type" : "dps",
@@ -14,7 +14,7 @@
         "duration" : 3,
         "pvalue" : 6
     },
-    "O_plume" : {
+    "O_Plume" : {
         "name" : "Plume de corbeau",
         "description" : "Objet de fabrication.",
         "type" : "crafting",
@@ -26,7 +26,7 @@
         "type" : "crafting",
         "pvalue" : 3
     },
-    "O_WolfPelte" : {
+    "O_WolfPelt" : {
         "name" : "Peau de loup",
         "description" : "Objet de fabrication.",
         "type" : "crafting",
@@ -39,7 +39,7 @@
         "pvalue" : 7
     },
     "EC_Adventurer" : {
-        "name" : "Casque de l'aventurier",
+        "name" : "Chapeau de l'aventurier",
         "description" : "Casque en cuir de sanglier affublé d'une plume de corbeau.",
         "type" : "maxhealth",
         "value" : 10
@@ -50,10 +50,40 @@
         "type" : "maxhealth",
         "value" : 25
     },
-    "ES_Adventurer" : {
+    "EL_Adventurer" : {
+        "name" : "Jambières de l'aventurier",
+        "description" : "Jambières en cuir de sanglier embélies Renforcé avec de la peau de troll.",
+        "type" : "maxhealth",
+        "value" : 20
+    },
+    "EB_Adventurer" : {
         "name" : "Bottes de l'aventurier",
         "description" : "Bottes en cuir de sanglier embélies de fourrure de loup.",
         "type" : "maxhealth",
+        "value" : 15
+    },
+    "EC_Mage" : {
+        "name" : "Chapeau du mage",
+        "description" : "Chapeau en peau de troll, décorer de plumes de corbeau.",
+        "type" : "maxmana",
+        "value" : 10
+    },
+    "EA_Mage" : {
+        "name" : "Robe du mage",
+        "description" : "Robe en fourrure de loup renforcé avec de la peau de troll.",
+        "type" : "maxmana",
+        "value" : 25
+    },
+    "EL_Mage" : {
+        "name" : "Jambières du mage",
+        "description" : "Jambières en cuire de sanglier renforcé avec de la peau de troll.",
+        "type" : "maxmana",
+        "value" : 20
+    },
+    "EB_Mage" : {
+        "name" : "Bottes du mage",
+        "description" : "Bottes en cuire de sanglier renforcé avec des plumes de corbeau.",
+        "type" : "maxmana",
         "value" : 15
     }
 }
