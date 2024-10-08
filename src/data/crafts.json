@@ -1,0 +1,17 @@
+{
+    "EC_Adventurer" : {
+        "O_Plume" : 1,
+        "O_BoarLeather" : 1,
+        "cvalue" : 5
+    },
+    "EA_Adventurer" : {
+        "O_WolfPelt" : 2,
+        "O_TrollSkin" : 1,
+        "cvalue" : 5
+    },
+    "ES_Adventurer" : {
+        "O_WolfPelt" : 1,
+        "O_BoarLeather" : 1,
+        "cvalue" : 5
+    }
+}
