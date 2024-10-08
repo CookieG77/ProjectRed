@@ -1,0 +1,23 @@
+{
+    "PL_humain" : {
+        "class" : "Humain",
+        "max_hp" : 100,
+        "starting_hp" : 50,
+        "starting_lvl" : 1,
+        "starting_spell" : "Coup de Poing"
+    },
+    "PL_elf" : {
+        "class" : "Elf",
+        "max_hp" : 80,
+        "starting_hp" : 40,
+        "starting_lvl" : 1,
+        "starting_spell" : "Coup de Poing"
+    },
+    "PL_nain" : {
+        "class" : "Nain",
+        "max_hp" : 120,
+        "starting_hp" : 60,
+        "starting_lvl" : 1,
+        "starting_spell" : "Coup de Poing"
+    }
+}
