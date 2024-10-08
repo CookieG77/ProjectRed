@@ -1,7 +1,7 @@
 package main
 
 import (
-	"PPR"
+	PPR "PPR/Scene"
 	"os"
 )
 
@@ -13,6 +13,7 @@ func main() {
 
 	// 	time.Sleep(time.Second / 24)
 	// }
+	PPR.CreatePlayerWindow()
 
 }
 
