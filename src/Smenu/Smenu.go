@@ -37,10 +37,53 @@ func SmenuRender() {
 	textView.SetBorder(true)
 	fmt.Print(textView, texte)
 
+	newPrimitive := func(text string) tview.Primitive {
+		return tview.NewTextView().
+			SetTextAlign(tview.AlignCenter).
+			SetText(text)
+	}
+	// menu := newPrimitive("Menu")
+	// main := newPrimitive("Main content")
+	// sideBar := newPrimitive("Side Bar")
+	casque := newPrimitive("Casque")
+	plastron := newPrimitive("Plastron")
+	jambières := newPrimitive("Jambières")
+	bottes := newPrimitive("Bottes")
+
+	// grid := tview.NewGrid().
+	// 	SetRows(3, 0, 3).
+	// 	SetColumns(0, 0, 0).
+	// 	SetBorders(true).
+	// 	AddItem(newPrimitive("Header"), 0, 0, 1, 3, 0, 0, false).
+	// 	AddItem(newPrimitive("Footer"), 2, 0, 1, 3, 0, 0, false)
+
+	grid := tview.NewGrid().
+		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
+		SetColumns(0, 0)
+	grid.SetBorder(true)
+	grid.AddItem(newPrimitive("Equipement"), 0, 0, 1, 2, 0, 0, false)
+	grid.AddItem(newPrimitive("Barre de vie"), 5, 0, 1, 2, 0, 0, false)
+	grid.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
+	// // Layout for screens narrower than 100 cells (menu and side bar are hidden).
+	// grid.AddItem(menu, 0, 0, 0, 0, 0, 0, false).
+	// 	AddItem(main, 1, 0, 1, 3, 0, 0, false).
+	// 	AddItem(sideBar, 0, 0, 0, 0, 0, 0, false)
+
+	grid.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
+	grid.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
+	grid.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
+	grid.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
+
+	// // Layout for screens wider than 100 cells.
+	// grid.AddItem(menu, 1, 0, 1, 1, 0, 0, false).
+	// 	AddItem(main, 1, 1, 1, 1, 0, 0, false).
+	// 	AddItem(sideBar, 1, 2, 1, 1, 0, 0, false)
+
 	Droiteflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
-		AddItem(textView, 0, 1, false)
+		// AddItem(textView, 0, 1, false)
+		AddItem(grid, 0, 1, false)
 
 	// =============================== partit gauche ====================================
 
