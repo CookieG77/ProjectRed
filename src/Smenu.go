@@ -44,8 +44,21 @@ func SmenuRender() {
 
 	// =============================== partit gauche ====================================
 
-	Gaucheflex := tview.NewFlex().
+	headergauche := tview.NewTextView().SetText("Ce deplacé a :")
+	headergauche.SetBorder(true)
+	headergauche.SetTextColor(tcell.ColorGhostWhite)
+	headergauche.SetTextAlign(tview.AlignCenter)
+
+	gaucheforet := tview.NewFlex().
 		SetDirection(tview.FlexRow)
+
+	gauchevillage := tview.NewFlex().
+		SetDirection(tview.FlexRow)
+
+	Gaucheflex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(gauchevillage, 0, 1, true).
+		AddItem(gaucheforet, 0, 1, true)
 
 	// =============================== partit centre ====================================
 
