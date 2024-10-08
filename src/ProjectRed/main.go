@@ -1,36 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"image"
-	"image/png"
+	"PPR"
 	"os"
-
-	"github.com/gdamore/tcell/v2"
-	"github.com/rivo/tview"
-)
-
-const (
-	icon_humain = "ressource/icon_humain.png"
-	icon_elf    = "ressource/icon_elf.png"
-	icon_nain   = "ressource/icon_nain.png"
 )
 
 func main() {
-	redColor := tcell.NewRGBColor(255, 0, 0)
-
-	app := tview.NewApplication()
-	image := tview.NewImage()
-	box := tview.NewBox().SetBorder(true).SetTitle("[ RED PROJECT ULTIMATE ]")
-	box.SetBorderColor(redColor)
-	imgdata, err := TViewMakeImg(icon_nain)
-	if err {
-		return
-	}
-	image.SetImage(imgdata)
-	if err4 := app.SetRoot(image, true).Run(); err4 != nil {
-		panic(err4)
-	}
+	PPR.SmenuRender()
 	// run := true
 	// for !run {
 	// 	clearCmd()
@@ -55,12 +31,3 @@ func getArgs() []string {
 // 		cmd.Run()
 // 	}
 // }
-
-func TViewMakeImg(addresse string) (image.Image, bool) {
-	IMGbyte, err := os.ReadFile(icon_humain)
-	graphics, err2 := png.Decode(bytes.NewReader(IMGbyte))
-	if err2 != nil || err != nil {
-		return nil, true
-	}
-	return graphics, false
-}
