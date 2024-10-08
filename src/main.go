@@ -7,14 +7,34 @@ import (
 )
 
 func main() {
-	// run := true
-	// for !run {
-	// 	clearCmd()
-
-	// 	time.Sleep(time.Second / 24)
-	// }
+	// idk like If no player save somewhere skip
 	Scene.CreatePlayerWindow()
-	Smenu.SmenuRender()
+
+	// running := true
+	// var scene int
+	print(Smenu.SmenuRender())
+	// for running {
+	// 	scene = Smenu.SmenuRender()
+	// 	// switching beetween scenes
+	// 	switch scene {
+	// 	// Village
+	// 	case 1:
+	// 		fmt.Println("one")
+	// 	// Foret
+	// 	case 2:
+	// 		fmt.Println("two")
+	// 	// Inventaire
+	// 	case 3:
+	// 		fmt.Println("three")
+	// 	// QUIT
+	// 	case 4:
+	// 		// idk os . cmd do Control+C for the user
+	// 	// ERROR
+	// 	case 5:
+	// 		// idk something like, write in error.txt error has happened
+	// 	}
+
+	// }
 
 }
 
