@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	icon_humain = "ressource/icon_humain.png"
-	icon_elf    = "ressource/icon_elf.png"
-	icon_nain   = "ressource/icon_nain.png"
+	Icon_humain = "ressource/icon_humain.png"
+	Icon_elf    = "ressource/icon_elf.png"
+	Icon_nain   = "ressource/icon_nain.png"
 	texte       = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
 )
 
@@ -26,7 +26,7 @@ func SmenuRender() {
 	// ============================partit droite=====================================
 
 	image := tview.NewImage()
-	imgdata, err := TViewMakeImg(icon_humain)
+	imgdata, err := TViewMakeImg(Icon_humain)
 	if err {
 		return
 	}
