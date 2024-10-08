@@ -1,19 +1,14 @@
 package main
 
 import (
-<<<<<<< Updated upstream
-=======
 	"PPR"
 	"bytes"
 	"image"
 	"image/png"
->>>>>>> Stashed changes
 	"os"
 )
 
 func main() {
-<<<<<<< Updated upstream
-=======
 	redColor := tcell.NewRGBColor(255, 0, 0)
 	PPR.FormTest()
 	app := tview.NewApplication()
@@ -35,7 +30,6 @@ func main() {
 	// 	time.Sleep(time.Second / 24)
 	// }
 
->>>>>>> Stashed changes
 }
 
 func getArgs() []string {
