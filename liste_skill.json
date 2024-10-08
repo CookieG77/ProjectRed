@@ -1,0 +1,10 @@
+{
+    "SK_coupDePoing" : {
+        "atk_points" : 8,
+        "mana_cost" : 0
+    },
+    "SK_bouleDeFeu" : {
+        "atk_points" : 18,
+        "mana_cost" : 20
+    }
+}
