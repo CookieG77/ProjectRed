@@ -1,4 +1,4 @@
-package PPR
+package InventoryTool
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type inventory = map[string]int
+type Inventory = map[string]int
 
 func OpenJson(res *map[string]map[string]interface{}, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
@@ -49,11 +49,11 @@ func InitItemList(res *map[string]map[string]interface{}, filepath string) bool 
 // |					Gestion Inventaire                  |
 // |========================================================|
 
-func InitInventory() inventory {
-	return make(inventory)
+func InitInventory() Inventory {
+	return make(Inventory)
 }
 
-func AddItemToInventory(inv *inventory, itemID string, quantity int) {
+func AddItemToInventory(inv *Inventory, itemID string, quantity int) {
 	//quantity doit être positif
 	_, ok := (*inv)[itemID]
 	if ok {
@@ -63,7 +63,7 @@ func AddItemToInventory(inv *inventory, itemID string, quantity int) {
 	}
 }
 
-func RemoveItemFromInventory(inv *inventory, itemID string, quantity int) bool {
+func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 	//quantity doit être positif
 	//Retourne false si on a réussit à lui retirer sinon renvoie true.
 	invquantity, ok := (*inv)[itemID]
@@ -78,7 +78,7 @@ func RemoveItemFromInventory(inv *inventory, itemID string, quantity int) bool {
 	return false
 }
 
-func PrintInventory(inv inventory) {
+func PrintInventory(inv Inventory) {
 	print("{\n")
 	for k, v := range inv {
 		fmt.Printf(string('\u0009')+"%s : %d\n", k, v)
@@ -93,10 +93,17 @@ func PrintInventory(inv inventory) {
 func InitPlayer() map[string]interface{} {
 	res := make(map[string]interface{})
 	res["name"] = ""
-	res["maxhp"] = 0
-	res["hp"] = 0
+	res["maxhp"] = 100
+	res["hp"] = 100
+	res["mana"] = 0
+	res["maxmana"] = 0
 	res["gold"] = 0
 	res["class"] = ""
+	res["EquipmentHead"] = ""
+	res["EquipmentTorso"] = ""
+	res["EquipmentLegs"] = ""
+	res["EquipmentBoots"] = ""
+	res["EquipmentWeapon"] = ""
 	return res
 }
 
@@ -126,6 +133,55 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 	return false
 }
 
+func IsPlayerDead(player map[string]interface{}) bool {
+	return player["pv"].(int) <= 0
+}
+
+func HurtPlayer(player *map[string]interface{}, quantity int) bool {
+	if (*player)["hp"].(int)-quantity <= 0 {
+		(*player)["hp"] = 0
+		return true
+	}
+	(*player)["hp"] = (*player)["hp"].(int) - quantity
+	return false
+}
+
+func PlayerCanEquip(
+	player map[string]interface{},
+	equipment string,
+	inv Inventory,
+) bool {
+	if val, ok := inv[equipment]; ok && val > 0 {
+		return true
+	}
+	return false
+}
+
+func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Inventory) {
+	slot := ""
+	switch itemID[:2] {
+	case "EC":
+		slot = "EquipmentHead"
+
+	case "EA":
+		slot = "EquipmentTorso"
+
+	case "EL":
+		slot = "EquipmentLegs"
+
+	case "EB":
+		slot = "EquipmentBoots"
+
+	case "W":
+		slot = "EquipmentWeapon"
+	}
+	if (*player)[slot] != "" {
+		AddItemToInventory(inv, (*player)[slot].(string), 1)
+	}
+	(*player)[slot] = itemID
+	RemoveItemFromInventory(inv, itemID, 1)
+}
+
 // |========================================================|
 // |				   	  Gestion Crafts                    |
 // |========================================================|
@@ -133,7 +189,7 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 func CanCraft(
 	craftID string,
 	craftlist map[string]map[string]int,
-	inv inventory,
+	inv Inventory,
 	player map[string]interface{},
 ) bool {
 	craft := craftlist[craftID]
@@ -155,7 +211,7 @@ func CanCraft(
 
 func GetCraftableList(
 	craftlist map[string]map[string]int,
-	inv inventory,
+	inv Inventory,
 	player map[string]interface{},
 ) []string {
 	var res []string
@@ -170,7 +226,7 @@ func GetCraftableList(
 func Craft(
 	craftID string,
 	craftlist map[string]map[string]int,
-	inv *inventory,
+	inv *Inventory,
 	player *map[string]interface{},
 ) {
 	for k, v := range craftlist[craftID] {

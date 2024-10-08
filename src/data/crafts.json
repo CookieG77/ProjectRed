@@ -9,7 +9,12 @@
         "O_TrollSkin" : 1,
         "cvalue" : 5
     },
-    "ES_Adventurer" : {
+    "EL_Adventurer" :{
+        "O_BoarLeather" : 1,
+        "O_TrollSkin" : 1,
+        "cvalue" : 5
+    },
+    "EB_Adventurer" : {
         "O_WolfPelt" : 1,
         "O_BoarLeather" : 1,
         "cvalue" : 5
