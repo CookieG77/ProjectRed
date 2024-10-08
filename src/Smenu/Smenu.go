@@ -44,21 +44,39 @@ func SmenuRender() {
 
 	// =============================== partit gauche ====================================
 
-	headergauche := tview.NewTextView().SetText("Ce deplacé a :")
+	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction de :")
 	headergauche.SetBorder(true)
 	headergauche.SetTextColor(tcell.ColorGhostWhite)
 	headergauche.SetTextAlign(tview.AlignCenter)
+	headergauche.SetBorder(true)
+
+	appButtonF := tview.NewApplication()
+	buttonF := tview.NewButton("Hit Enter to close").SetSelectedFunc(func() {
+		appButtonF.Stop()
+	})
+	buttonF.SetBorder(true).SetRect(0, 0, 22, 3)
+
+	appButtonV := tview.NewApplication()
+	buttonV := tview.NewButton("Hit Enter to close").SetSelectedFunc(func() {
+		appButtonV.Stop()
+	})
+	buttonV.SetBorder(true).SetRect(0, 0, 22, 3)
 
 	gaucheforet := tview.NewFlex().
 		SetDirection(tview.FlexRow)
+	gaucheforet.SetBorder(true)
+	gaucheforet.AddItem(buttonF, 3, 1, false)
 
 	gauchevillage := tview.NewFlex().
 		SetDirection(tview.FlexRow)
+	gauchevillage.SetBorder(true)
+	gauchevillage.AddItem(buttonV, 3, 1, false)
 
 	Gaucheflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(gauchevillage, 0, 1, true).
-		AddItem(gaucheforet, 0, 1, true)
+		AddItem(headergauche, 3, 1, false).
+		AddItem(gauchevillage, 0, 1, false).
+		AddItem(gaucheforet, 0, 1, false)
 
 	// =============================== partit centre ====================================
 
@@ -75,8 +93,8 @@ func SmenuRender() {
 
 	Machted := tview.NewFlex().
 		SetDirection(tview.FlexColumn).
-		AddItem(Gaucheflex, 0, 1, true).
-		AddItem(Centreflex, 0, 1, true).
+		AddItem(Gaucheflex, 42, 1, false).
+		AddItem(Centreflex, 0, 1, false).
 		AddItem(Droiteflex, 0, 1, false)
 
 	// =============================== running =============================================
