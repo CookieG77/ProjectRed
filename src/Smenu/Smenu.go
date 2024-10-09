@@ -33,21 +33,13 @@ func SmenuRender(
 	headergauche.SetBorder(true)
 
 	// ++++++ images ++++++
-	// imageV := tview.NewImage()
-	// imgdataV, err := TViewMakeImg(icon_village)
-	// if err {
-	// 	return 5
-	// }
-	// imageV.SetImage(imgdataV)
-	// imageV.SetBorder(true)
+	imageV := tview.NewImage()
+	imageV.SetBorder(true)
+	imageV.SetImage(bg_imgs["village_short"])
 
-	// imageF := tview.NewImage()
-	// imgdataF, err := TViewMakeImg(icon_forest)
-	// if err {
-	// 	return 5
-	// }
-	// imageF.SetImage(imgdataF)
-	// imageF.SetBorder(true)
+	imageF := tview.NewImage()
+	imageF.SetBorder(true)
+	imageF.SetImage(bg_imgs["forest_short"])
 
 	// ++++++ Buttons ++++++
 	buttonF := tview.NewButton("go to forest").SetSelectedFunc(func() {
@@ -67,13 +59,13 @@ func SmenuRender(
 		SetDirection(tview.FlexRow)
 	gaucheforet.SetBorder(true)
 	gaucheforet.AddItem(buttonF, 3, 1, true)
-	//gaucheforet.AddItem(imageF, 0, 1, false)
+	gaucheforet.AddItem(imageF, 0, 1, false)
 
 	gauchevillage := tview.NewFlex().
 		SetDirection(tview.FlexRow)
 	gauchevillage.SetBorder(true)
 	gauchevillage.AddItem(buttonV, 3, 1, true)
-	//gauchevillage.AddItem(imageV, 0, 1, false)
+	gauchevillage.AddItem(imageV, 0, 1, false)
 
 	// ++++++ build ++++++
 	Gaucheflex := tview.NewFlex().

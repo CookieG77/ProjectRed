@@ -486,7 +486,7 @@ func LoadBG(imglst *map[string]image.Image, filepath string) bool {
 			if err2 {
 				return true
 			}
-			name := fname.Name()[5 : len(fname.Name())-4]
+			name := fname.Name()[3 : len(fname.Name())-4]
 			(*imglst)[name] = tmp
 		}
 	}
