@@ -1,11 +1,8 @@
 package Smenu
 
 import (
-	"bytes"
+	"PPR/InventoryTool"
 	"fmt"
-	"image"
-	"image/png"
-	"os"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -26,7 +23,7 @@ func SmenuRender() {
 	// ============================partit droite=====================================
 
 	image := tview.NewImage()
-	imgdata, err := TViewMakeImg(Icon_humain)
+	imgdata, err := InventoryTool.TViewMakeImg(Icon_humain)
 	if err {
 		return
 	}
@@ -84,13 +81,4 @@ func SmenuRender() {
 	if err4 := app.SetRoot(Machted, true).Run(); err4 != nil {
 		panic(err4)
 	}
-}
-
-func TViewMakeImg(addresse string) (image.Image, bool) {
-	IMGbyte, err := os.ReadFile(addresse)
-	graphics, err2 := png.Decode(bytes.NewReader(IMGbyte))
-	if err2 != nil || err != nil {
-		return nil, true
-	}
-	return graphics, false
 }

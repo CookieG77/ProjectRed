@@ -1,12 +1,19 @@
 package InventoryTool
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"image"
+	"image/png"
 	"os"
 )
 
 type Inventory = map[string]int
+
+// |========================================================|
+// |					Gestion data files                  |
+// |========================================================|
 
 func OpenJson(res *map[string]map[string]interface{}, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
@@ -43,6 +50,14 @@ func InitItemList(res *map[string]map[string]interface{}, filepath string) bool 
 		(*res)[k] = ninter
 	}
 	return false
+}
+
+func GetClassList(res *map[string]map[string]interface{}, filepath string) bool {
+	return InitItemList(res, filepath)
+}
+
+func GetMonsterList(res *map[string]map[string]interface{}, filepath string) bool {
+	return InitItemList(res, filepath)
 }
 
 // |========================================================|
@@ -237,4 +252,57 @@ func Craft(
 		}
 	}
 	AddItemToInventory(inv, craftID, 1)
+}
+
+//
+//
+//
+
+func MakeClassDescs(listclass map[string]map[string]interface{}) string {
+	res := ""
+	for _, v := range listclass {
+		res += v["stats_desc"].(string) + "\n"
+	}
+	return res
+}
+
+func GetClassNames(listclass map[string]map[string]interface{}) []string {
+	res := []string{}
+	for _, v := range listclass {
+		res = append(res, v["class"].(string))
+	}
+	return res
+}
+
+// |========================================================|
+// |				 Gestion ressource files                |
+// |========================================================|
+
+func LoadClassIcons(imglst *map[string]image.Image, filepath string) bool {
+	files, err := os.ReadDir(filepath)
+	if err != nil {
+		return true
+	}
+	for _, fname := range files {
+		print(fname.Name() + "\n")
+		if (fname.Name())[:4] == "icon" {
+			print(filepath + "/" + fname.Name())
+			tmp, err2 := TViewMakeImg(filepath + "/" + fname.Name())
+			if err2 {
+				return true
+			}
+			name := fname.Name()[5 : len(fname.Name())-4]
+			(*imglst)[name] = tmp
+		}
+	}
+	return false
+}
+
+func TViewMakeImg(addresse string) (image.Image, bool) {
+	IMGbyte, err := os.ReadFile(addresse)
+	graphics, err2 := png.Decode(bytes.NewReader(IMGbyte))
+	if err2 != nil || err != nil {
+		return nil, true
+	}
+	return graphics, false
 }

@@ -1,29 +1,33 @@
 package Scene
 
 import (
-	"PPR/Smenu"
+	"PPR/InventoryTool"
 	"fmt"
+	"image"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
-func CreatePlayerWindow() {
+func CreatePlayerWindow(
+	classList map[string]map[string]interface{},
+	icons map[string]image.Image,
+) {
+	classNames := InventoryTool.GetClassNames(classList)
 	app := tview.NewApplication()
 	form := tview.NewForm()
 	image := tview.NewImage()
 	image.SetBorder(true)
-	imgdata, err := Smenu.TViewMakeImg(Smenu.Icon_humain)
-	imgdata2, err2 := Smenu.TViewMakeImg(Smenu.Icon_elf)
-	imgdata3, err3 := Smenu.TViewMakeImg(Smenu.Icon_nain)
-	if err || err2 || err3 {
-		return
+	for k, v := range classList {
+		if v["class"].(string) == classNames[0] {
+			image.SetImage(icons[k])
+			break
+		}
 	}
-	image.SetImage(imgdata)
-	box := tview.NewTextView().SetText("[yellow]Humain:[white]\n- Points de vie: [red]100[white]\n- Points de Mana: [blue]60[white]\n\n[green]Elfe:[white]\n- Points de vie: [red]80[white]\n- Points de Mana: [blue]80[white]\n\n[purple]Nain:[white]\n- Points de vie: [red]120[white]\n- Points de Mana: [blue]40[white]\n").SetTextColor(tcell.ColorYellowGreen)
+	box := tview.NewTextView().SetText(InventoryTool.MakeClassDescs(classList)).SetTextColor(tcell.ColorYellowGreen)
 	box.SetBorder(true).SetTitle(" Stats des Classes ").SetTitleAlign(tview.AlignCenter)
 	box.SetDynamicColors(true)
-	form.AddDropDown("Classe", []string{"Humain", "Elfe", "Nain"}, 0, nil).
+	form.AddDropDown("Classe", classNames, 0, nil).
 		AddInputField("Nom du Personnage", "", 16, nil, nil).
 		AddButton("Jouer", func() {
 			name := form.GetFormItemByLabel("Nom du Personnage").(*tview.InputField).GetText()
@@ -38,16 +42,13 @@ func CreatePlayerWindow() {
 		})
 
 	form.GetFormItemByLabel("Classe").(*tview.DropDown).SetSelectedFunc(func(text string, index int) {
-		switch index {
-		case 0:
-			image.SetImage(imgdata)
-
-		case 1:
-			image.SetImage(imgdata2)
-
-		case 2:
-			image.SetImage(imgdata3)
+		for k, v := range classList {
+			if v["class"].(string) == text {
+				image.SetImage(icons[k])
+				return
+			}
 		}
+
 	})
 	form.SetBorder(true).SetTitle(" Création du personnage ").SetTitleAlign(tview.AlignCenter)
 	flex := tview.NewFlex().
