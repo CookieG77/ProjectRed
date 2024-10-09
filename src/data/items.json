@@ -3,48 +3,64 @@
         "name" : "Potion de soin",
         "description" : "Restaure 50 points de vie.",
         "type" : "heal",
-        "value" : 50,
-        "pvalue" : 0
+        "value" : 50
     },
     "CP_Mana" : {
         "name" : "Potion de mana",
         "description" : "Restaure 40 points de mana.",
         "type" : "manaheal",
-        "value" : 40,
-        "pvalue" : 3
+        "value" : 40
     },
+
+
+
+
+
+    
     "CJ_Poison" : {
         "name" : "Potion de jet de poison",
         "description" : "Inflige 10 points de dégâts par seconde pendant 3 secondes.",
         "type" : "dps",
         "value" : 10,
-        "duration" : 3,
-        "pvalue" : 6
+        "duration" : 3
     },
+
+
+
+
+
+
     "O_Plume" : {
         "name" : "Plume de corbeau",
         "description" : "Objet de fabrication.",
-        "type" : "crafting",
-        "pvalue" : 1
+        "type" : "crafting"
     },
     "O_BoarLeather" : {
         "name" : "Cuir de sanglier",
         "description" : "Objet de fabrication.",
-        "type" : "crafting",
-        "pvalue" : 3
+        "type" : "crafting"
     },
     "O_WolfPelt" : {
         "name" : "Peau de loup",
         "description" : "Objet de fabrication.",
-        "type" : "crafting",
-        "pvalue" : 4
+        "type" : "crafting"
     },
     "O_TrollSkin": {
         "name" : "Peau de troll",
         "description" : "Objet de fabrication.",
-        "type" : "crafting",
-        "pvalue" : 7
+        "type" : "crafting"
     },
+    "O_ManaStone" : {
+        "name" : "Pierre de mana",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting"
+    },
+
+
+
+
+
+
     "EC_Adventurer" : {
         "name" : "Chapeau de l'aventurier",
         "description" : "Casque en cuir de sanglier affublé d'une plume de corbeau.",

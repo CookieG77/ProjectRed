@@ -1,0 +1,19 @@
+{
+    "village_trader" : {
+        "sells" : {
+            "CP_heal" : 0,
+            "CP_mana" : 3,
+            "CJ_poison" : 6,
+            "O_plume" : 2,
+            "O_boarLeather" : 4,
+            "O_wolfPelt" : 6,
+            "O_trollSkin" : 8
+        },
+        "buys" : {
+            "O_plume" : 1,
+            "O_boarLeather" : 3,
+            "EL_adventurer" : 4,
+            "O_TrollSkin" : 7
+        }
+    }
+}
