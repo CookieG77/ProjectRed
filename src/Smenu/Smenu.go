@@ -2,19 +2,15 @@ package Smenu
 
 import (
 	"image"
+	"strconv"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
-const (
-	bg_village = "ressource/icon_village"
-	bg_forest  = "ressource/icon_forest"
-	texte      = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
-)
-
 func SmenuRender(
 	classes_icons map[string]image.Image,
+	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 ) int {
 	sceneValue := 0
@@ -34,8 +30,26 @@ func SmenuRender(
 	newPrimitive := func(text string) tview.Primitive {
 		return tview.NewTextView().
 			SetTextAlign(tview.AlignCenter).
-			SetText(text)
+			SetText(text).
+			SetDynamicColors(true)
 	}
+
+	newBarPrimitive := func(value int, max_val int, colorA string, colorB string) tview.Primitive {
+		bar := "╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white]" + colorA
+		tmp := int((float64(value) / float64(max_val)) * float64(55))
+		for i := 0; i < tmp; i++ {
+			bar += "▮"
+		}
+		bar += colorB
+		for i := tmp; i < 55; i++ {
+			bar += "▯"
+		}
+		return tview.NewTextView().
+			SetTextAlign(tview.AlignCenter).
+			SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝").
+			SetDynamicColors(true)
+	}
+
 	casque := newPrimitive("Casque")
 	plastron := newPrimitive("Plastron")
 	jambières := newPrimitive("Jambières")
@@ -47,8 +61,10 @@ func SmenuRender(
 	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
 	gridDownRight.SetBorder(true)
 	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("Barre de vie:"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
 	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
 	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)

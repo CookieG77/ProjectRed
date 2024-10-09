@@ -12,6 +12,9 @@ func main() {
 	icons := make(map[string]image.Image)
 	InventoryTool.LoadClassIcons(&icons, "ressource")
 
+	bg := make(map[string]image.Image)
+	InventoryTool.LoadBG(&bg, "ressource")
+
 	classList := make(map[string]map[string]interface{})
 	InventoryTool.GetClassList(&classList, "data/classes.json")
 
@@ -25,6 +28,6 @@ func main() {
 
 	//Execution du programme
 
-	print(Smenu.SmenuRender(icons, &player))
+	print(Smenu.SmenuRender(icons, bg, &player))
 
 }
