@@ -2,7 +2,6 @@ package Smenu
 
 import (
 	"bytes"
-	"fmt"
 	"image"
 	"image/png"
 	"os"
@@ -27,6 +26,7 @@ func SmenuRender() int {
 
 	// ============================partit droite=====================================
 
+	// Affichage de l'image
 	image := tview.NewImage()
 	imgdata, err := TViewMakeImg(icon_humain)
 	if err {
@@ -35,10 +35,7 @@ func SmenuRender() int {
 	image.SetImage(imgdata)
 	image.SetBorder(true)
 
-	textView := tview.NewTextView().SetText(texte).SetTextColor(tcell.ColorDarkRed)
-	textView.SetBorder(true)
-	fmt.Print(textView, texte)
-
+	// Affichage menu equipements et barres de vie et de mana
 	newPrimitive := func(text string) tview.Primitive {
 		return tview.NewTextView().
 			SetTextAlign(tview.AlignCenter).
@@ -64,7 +61,6 @@ func SmenuRender() int {
 	Droiteflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
-		// AddItem(textView, 0, 1, false)
 		AddItem(gridDownRight, 0, 1, false)
 
 	// =============================== partit gauche ====================================
@@ -115,26 +111,21 @@ func SmenuRender() int {
 	header.SetBorder(true)
 	header.SetTextColor(redColor)
 	header.SetTextAlign(tview.AlignCenter)
-	// /!\
+	// boite centrale
 	centerBox := tview.NewTextView().SetText("")
 	centerBox.SetBorder(true)
 	centerBox.SetTextAlign(tview.AlignCenter)
-
+	// affichage bas
 	gridCenter := tview.NewGrid().
 		SetRows(0).
 		SetColumns(0)
 	gridCenter.SetBorder(true)
-	// /!\
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(header, 3, 1, false).
-
-		// /!\
 		AddItem(centerBox, 0, 1, false).
 		AddItem(gridCenter, 0, 1, false)
-
-		// /!\
 
 	// ================================ assemblage ======================================
 
