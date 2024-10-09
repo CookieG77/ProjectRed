@@ -1,10 +1,17 @@
 {
-    "SK_coupDePoing" : {
+    "punch" : {
+        "name" : "Coup de poing",
         "atk_points" : 8,
         "mana_cost" : 0
     },
-    "SK_bouleDeFeu" : {
+    "fireball" : {
+        "name" : "Boule de feu",
         "atk_points" : 18,
         "mana_cost" : 20
+    },
+    "firetrait" : {
+        "name" : "Trait de feu",
+        "atk_points" : 9,
+        "mana_cost" : 10
     }
 }

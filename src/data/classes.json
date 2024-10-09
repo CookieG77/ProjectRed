@@ -32,11 +32,11 @@
     "tieffelin" : {
         "class" : "Tieffelin",
         "max_hp" : 90,
-        "max_mana" : 70,
+        "max_mana" : 60,
         "starting_hp" : 45,
         "starting_mana" : 70,
         "starting_lvl" : 1,
-        "starting_spell" : ["punch"],
-        "stats_desc" : "[red]Tieffelin:[white]\n- Points de vie: [red]90[white]\n- Points de Mana: [blue]70[white]\n"
+        "starting_spell" : ["punch", "firetrait"],
+        "stats_desc" : "[red]Tieffelin:[white]\n- Points de vie: [red]90[white]\n- Points de Mana: [blue]60[white]\n- Skill de départ: [yellow]Trait de feu[white]\n"
     }
 }
