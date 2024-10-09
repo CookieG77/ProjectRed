@@ -2,7 +2,6 @@ package Scene
 
 import (
 	"PPR/InventoryTool"
-	"fmt"
 	"image"
 
 	"github.com/gdamore/tcell/v2"
@@ -12,6 +11,7 @@ import (
 func CreatePlayerWindow(
 	classList map[string]map[string]interface{},
 	icons map[string]image.Image,
+	player *map[string]interface{},
 ) {
 	classNames := InventoryTool.GetClassNames(classList)
 	app := tview.NewApplication()
@@ -33,8 +33,24 @@ func CreatePlayerWindow(
 			name := form.GetFormItemByLabel("Nom du Personnage").(*tview.InputField).GetText()
 			_, class := form.GetFormItemByLabel("Classe").(*tview.DropDown).GetCurrentOption()
 			app.Stop()
-			fmt.Println(name)
-			fmt.Println(class)
+			(*player)["name"] = name
+			for k, v := range classList {
+				if v["class"].(string) == class {
+					(*player)["class"] = k
+					(*player)["max_hp"] = v["max_hp"].(int)
+					(*player)["hp"] = v["starting_hp"].(int)
+					(*player)["max_mana"] = v["max_mana"].(int)
+					(*player)["mana"] = v["starting_mana"].(int)
+					(*player)["lvl"] = v["starting_lvl"].(int)
+					tmp := []string{}
+					for _, v := range v["starting_spell"].([]interface{}) {
+						tmp = append(tmp, v.(string))
+					}
+					(*player)["skills"] = tmp
+
+					break
+				}
+			}
 
 		}).
 		AddButton("Quitter", func() {

@@ -3,24 +3,31 @@ package main
 import (
 	"PPR/InventoryTool"
 	"PPR/Scene"
-	"PPR/Smenu"
 	"image"
 )
 
 func main() {
+	//Importation et chargement des données et ressources
 	icons := make(map[string]image.Image)
-	classList := make(map[string]map[string]interface{})
-	monsterList := make(map[string]map[string]interface{})
 	InventoryTool.LoadClassIcons(&icons, "ressource")
+
+	classList := make(map[string]map[string]interface{})
 	InventoryTool.GetClassList(&classList, "data/classes.json")
+
+	monsterList := make(map[string]map[string]interface{})
 	InventoryTool.GetClassList(&monsterList, "data/monsters.json")
-	Scene.CreatePlayerWindow(classList, icons)
-	// idk like If no player save somewhere skip
-	Scene.CreatePlayerWindow()
+
+	//Créations des données du joueur
+	player := InventoryTool.InitPlayer()
+	//inv := InventoryTool.InitInventory()
+
+	Scene.CreatePlayerWindow(classList, icons, &player)
+
+	//Execution du programme
 
 	// running := true
 	// var scene int
-	print(Smenu.SmenuRender())
+	//print(Smenu.SmenuRender(icons))
 	// for running {
 	// 	scene = Smenu.SmenuRender()
 	// 	// switching beetween scenes

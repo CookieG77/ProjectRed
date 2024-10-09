@@ -110,10 +110,10 @@ func PrintInventory(inv Inventory) {
 func InitPlayer() map[string]interface{} {
 	res := make(map[string]interface{})
 	res["name"] = ""
-	res["maxhp"] = 100
-	res["hp"] = 100
+	res["max_hp"] = 0
+	res["hp"] = 0
 	res["mana"] = 0
-	res["maxmana"] = 0
+	res["max_mana"] = 0
 	res["gold"] = 0
 	res["class"] = ""
 	res["EquipmentHead"] = ""
@@ -121,6 +121,8 @@ func InitPlayer() map[string]interface{} {
 	res["EquipmentLegs"] = ""
 	res["EquipmentBoots"] = ""
 	res["EquipmentWeapon"] = ""
+	res["skills"] = []string{}
+	res["lvl"] = 0
 	return res
 }
 
