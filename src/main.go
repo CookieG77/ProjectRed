@@ -26,12 +26,19 @@ func main() {
 
 	tradeList := make(map[string]map[string]map[string]int)
 	InventoryTool.GetTradesList(&tradeList, "data/trades.json")
+
+	skillList := make(map[string]map[string]interface{})
+	InventoryTool.GetSkillList(&skillList, "data/skills.json")
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
 	inv := InventoryTool.InitInventory()
 
 	//Execution du programme
 	Scene.CreatePlayerWindow(classList, icons, &player, inv)
-	print(Smenu.SmenuRender(icons, bg, &player, itemlist, inv))
+	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
+	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
+	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
+	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
+	print(Smenu.SmenuRender(icons, bg, &player, itemlist, &inv, classList, skillList))
 
 }

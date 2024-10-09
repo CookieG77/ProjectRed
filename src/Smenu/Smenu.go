@@ -13,7 +13,9 @@ func SmenuRender(
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
 ) int {
 	sceneValue := 0
 
@@ -21,10 +23,10 @@ func SmenuRender(
 
 	app := tview.NewApplication()
 
-	// ============================partit droite=====================================
+	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 
-	// =============================== partit gauche ====================================
+	// =============================== Partie gauche ====================================
 
 	// ++++++ header ++++++
 	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction de :")
@@ -74,7 +76,7 @@ func SmenuRender(
 		AddItem(gauchevillage, 0, 1, true).
 		AddItem(gaucheforet, 0, 1, true)
 
-	// =============================== partit centre ====================================
+	// =============================== Partie centre ====================================
 
 	//header
 	header := tview.NewTextView().SetText("RED PROJECT ULTIMATE")
@@ -93,14 +95,20 @@ func SmenuRender(
 	quitButton.SetBorder(true)
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+		ShowInventory(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 	})
 	invBoutton.SetBorder(true)
+	statsButton := tview.NewButton("Info Joueur").SetSelectedFunc(func() {
+		app.Stop()
+		ShowPlayerStats(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
+	})
+	statsButton.SetBorder(true)
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
 		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
-		AddItem(invBoutton, 4, 2, 1, 2, 0, 0, true)
+		AddItem(invBoutton, 4, 2, 1, 2, 0, 0, true).
+		AddItem(statsButton, 4, 0, 1, 2, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
@@ -141,34 +149,36 @@ func ShowInventory(
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
-	// ============================partit droite=====================================
+	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv)
+			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	consumableButton := tview.NewButton("Consommable").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowConsumable(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowConsumable(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 
 	equipementButton := tview.NewButton("Equipement").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowEquipement(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowEquipement(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	othersButton := tview.NewButton("Autre").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowOthers(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowOthers(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -200,16 +210,18 @@ func ShowConsumable(
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
-	// ============================partit droite=====================================
+	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
@@ -242,16 +254,18 @@ func ShowEquipement(
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
-	// ============================partit droite=====================================
+	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
@@ -284,16 +298,18 @@ func ShowOthers(
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
 ) int {
 	app := tview.NewApplication()
-	// ============================partit droite=====================================
+	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
@@ -398,4 +414,87 @@ func CreateRightPart(
 		AddItem(image, 0, 1, false).
 		AddItem(gridDownRight, 0, 1, false)
 	return Droiteflex
+}
+
+func ShowPlayerStats(
+	classes_icons map[string]image.Image,
+	bg_imgs map[string]image.Image,
+	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
+) {
+	app := tview.NewApplication()
+
+	// Partie droite
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+
+	// Partie gauche
+	recap := "Nom : " + (*player)["name"].(string)
+	recap += "\nClasse : " + classList[(*player)["class"].(string)]["class"].(string)
+	recap += "\nPV : " + strconv.Itoa((*player)["hp"].(int)) + " / " + strconv.Itoa((*player)["max_hp"].(int)) + " [red]♥[white]"
+	recap += "\nMana : " + strconv.Itoa((*player)["mana"].(int)) + " / " + strconv.Itoa((*player)["max_mana"].(int)) + " [blue]✦[white]"
+	recap += "\nOr : " + strconv.Itoa((*player)["gold"].(int))
+	recap += "\nSkills : "
+	for _, v := range (*player)["skills"].([]string) {
+		recap += "\n\u0009- [yellow]" + skillList[v]["name"].(string) + " :[white] "
+		switch skillList[v]["type"].(string) {
+		case "dmg":
+			recap += "Inflige " + strconv.Itoa(skillList[v]["atk_points"].(int)) + " dégats "
+
+		case "heal":
+			recap += "Soigne " + strconv.Itoa(skillList[v]["atk_points"].(int)) + " hp "
+		}
+		if skillList[v]["target_player"].(bool) {
+			recap += "au joueur."
+		} else {
+			recap += "à l'ennemi."
+		}
+		if skillList[v]["mana_cost"].(int) > 0 {
+			recap += " Coute " + strconv.Itoa(skillList[v]["mana_cost"].(int)) + "mana."
+		}
+	}
+	tmp1 := (*player)["max_hp"].(int) - classList[(*player)["class"].(string)]["max_hp"].(int)
+	tmp2 := (*player)["max_mana"].(int) - classList[(*player)["class"].(string)]["max_mana"].(int)
+	recap += "\nBuffs d'équipement :"
+	if tmp1 == 0 && tmp2 == 0 {
+		recap += " Aucun " + strconv.Itoa((*player)["max_hp"].(int)) + " " + strconv.Itoa((*player)["max_mana"].(int))
+	}
+	if tmp1 > 0 {
+		recap += "\n\u0009- +" + strconv.Itoa(tmp1) + " [red]♥[white]"
+	}
+	if tmp2 > 0 {
+		recap += "\n\u0009- +" + strconv.Itoa(tmp2) + " [blue]✦[white]"
+	}
+	playerDesc := tview.NewTextView().SetText(recap)
+	playerDesc.SetDynamicColors(true)
+	playerDesc.SetBorderColor(tcell.ColorLightYellow)
+
+	// Bouttons
+	quitButton := tview.NewButton("Retour").
+		SetSelectedFunc(func() {
+			app.Stop()
+			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList)
+		})
+
+	// Box Centrale
+	gridCenter := tview.NewGrid().
+		SetRows(0, 0, 0, 0).
+		SetColumns(0, 0, 0, 0).
+		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
+		AddItem(playerDesc, 0, 0, 4, 5, 0, 0, true)
+	gridCenter.SetBorder(true).SetBackgroundColor(tcell.ColorBlack)
+
+	//build
+	Centreflex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(gridCenter, 0, 1, true)
+	Machted := tview.NewFlex().
+		SetDirection(tview.FlexColumn).
+		AddItem(Centreflex, 0, 13, true).
+		AddItem(Droiteflex, 0, 7, false)
+	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
+		panic(err4)
+	}
 }
