@@ -173,7 +173,7 @@ func SmenuRender(
 	quitButton.SetBorder(true)
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, player)
+		ShowInventory(classes_icons, bg_imgs, player, itemlist)
 	})
 	invBoutton.SetBorder(true)
 	gridCenter := tview.NewGrid().
@@ -216,6 +216,7 @@ func ShowInventory(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
 ) int {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
@@ -277,7 +278,7 @@ func ShowInventory(
 	quitButton := tview.NewButton("Quitter").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, player)
+			SmenuRender(classes_icons, bg_imgs, player, itemlist)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// Box Centrale
