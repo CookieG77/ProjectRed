@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	icon_village = "ressource/icon_village"
-	icon_forest  = "ressource/icon_forest"
-	texte        = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
+	bg_village = "ressource/icon_village"
+	bg_forest  = "ressource/icon_forest"
+	texte      = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
 )
 
 func SmenuRender(
