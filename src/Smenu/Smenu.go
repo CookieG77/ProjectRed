@@ -22,80 +22,7 @@ func SmenuRender(
 	app := tview.NewApplication()
 
 	// ============================partit droite=====================================
-
-	// Affichage de l'image
-	image := tview.NewImage()
-	image.SetImage(classes_icons[(*player)["class"].(string)])
-	image.SetBorder(true)
-
-	// Affichage menu equipements et barres de vie et de mana
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text).
-			SetDynamicColors(true)
-	}
-
-	newBarPrimitive := func(value int, max_val int, colorA string, colorB string) tview.Primitive {
-		bar := "╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white]" + colorA
-		tmp := int((float64(value) / float64(max_val)) * float64(55))
-		for i := 0; i < tmp; i++ {
-			bar += "▮"
-		}
-		bar += colorB
-		for i := tmp; i < 55; i++ {
-			bar += "▯"
-		}
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝").
-			SetDynamicColors(true)
-	}
-
-	newPrimitiveEquipmentSlot := func(text string, slot string) tview.Primitive {
-		res := text
-		if (*player)[slot].(string) != "" {
-			res += " " + itemlist[(*player)[slot].(string)]["name"].(string) + "\n"
-			switch itemlist[(*player)[slot].(string)]["type"].(string) {
-			case "maxhealth":
-				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[red]♥"
-			case "maxmana":
-				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[blue]✦"
-			}
-
-		} else {
-			res += " Ø\n "
-		}
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(res).
-			SetDynamicColors(true)
-	}
-
-	casque := newPrimitiveEquipmentSlot("Casque :", "EquipmentHead")
-	plastron := newPrimitiveEquipmentSlot("Plastron :", "EquipmentTorso")
-	jambières := newPrimitiveEquipmentSlot("Jambières :", "EquipmentLegs")
-	bottes := newPrimitiveEquipmentSlot("Bottes :", "EquipmentBoots")
-
-	gridDownRight := tview.NewGrid().
-		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
-		SetColumns(0, 0)
-	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
-	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie : "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
-
-	Droiteflex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(image, 0, 1, false).
-		AddItem(gridDownRight, 0, 1, false)
+	Droiteflex := CreateRightPart(classes_icons, player)
 
 	// =============================== partit gauche ====================================
 
@@ -226,60 +153,7 @@ func ShowInventory(
 ) int {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-
-	// Affichage de l'image
-	image := tview.NewImage()
-	image.SetImage(classes_icons[(*player)["class"].(string)])
-	image.SetBorder(true)
-	// Affichage menu equipements et barres de vie et de mana
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text).
-			SetDynamicColors(true)
-	}
-
-	newBarPrimitive := func(value int, max_val int, colorA string, colorB string) tview.Primitive {
-		bar := "╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white]" + colorA
-		tmp := int((float64(value) / float64(max_val)) * float64(55))
-		for i := 0; i < tmp; i++ {
-			bar += "▮"
-		}
-		bar += colorB
-		for i := tmp; i < 55; i++ {
-			bar += "▯"
-		}
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝").
-			SetDynamicColors(true)
-	}
-
-	casque := newPrimitive("Casque")
-	plastron := newPrimitive("Plastron")
-	jambières := newPrimitive("Jambières")
-	bottes := newPrimitive("Bottes")
-
-	gridDownRight := tview.NewGrid().
-		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
-		SetColumns(0, 0)
-	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
-	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
-
-	Droiteflex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(image, 0, 1, false).
-		AddItem(gridDownRight, 0, 1, false)
-
+	Droiteflex := CreateRightPart(classes_icons, player)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -339,60 +213,7 @@ func ShowConsumable(
 ) int {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-
-	// Affichage de l'image
-	image := tview.NewImage()
-	image.SetImage(classes_icons[(*player)["class"].(string)])
-	image.SetBorder(true)
-	// Affichage menu equipements et barres de vie et de mana
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text).
-			SetDynamicColors(true)
-	}
-
-	newBarPrimitive := func(value int, max_val int, colorA string, colorB string) tview.Primitive {
-		bar := "╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white]" + colorA
-		tmp := int((float64(value) / float64(max_val)) * float64(55))
-		for i := 0; i < tmp; i++ {
-			bar += "▮"
-		}
-		bar += colorB
-		for i := tmp; i < 55; i++ {
-			bar += "▯"
-		}
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝").
-			SetDynamicColors(true)
-	}
-
-	casque := newPrimitive("Casque")
-	plastron := newPrimitive("Plastron")
-	jambières := newPrimitive("Jambières")
-	bottes := newPrimitive("Bottes")
-
-	gridDownRight := tview.NewGrid().
-		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
-		SetColumns(0, 0)
-	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
-	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
-
-	Droiteflex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(image, 0, 1, false).
-		AddItem(gridDownRight, 0, 1, false)
-
+	Droiteflex := CreateRightPart(classes_icons, player)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -435,60 +256,7 @@ func ShowEquipement(
 ) int {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-
-	// Affichage de l'image
-	image := tview.NewImage()
-	image.SetImage(classes_icons[(*player)["class"].(string)])
-	image.SetBorder(true)
-	// Affichage menu equipements et barres de vie et de mana
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text).
-			SetDynamicColors(true)
-	}
-
-	newBarPrimitive := func(value int, max_val int, colorA string, colorB string) tview.Primitive {
-		bar := "╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white]" + colorA
-		tmp := int((float64(value) / float64(max_val)) * float64(55))
-		for i := 0; i < tmp; i++ {
-			bar += "▮"
-		}
-		bar += colorB
-		for i := tmp; i < 55; i++ {
-			bar += "▯"
-		}
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝").
-			SetDynamicColors(true)
-	}
-
-	casque := newPrimitive("Casque")
-	plastron := newPrimitive("Plastron")
-	jambières := newPrimitive("Jambières")
-	bottes := newPrimitive("Bottes")
-
-	gridDownRight := tview.NewGrid().
-		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
-		SetColumns(0, 0)
-	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
-	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
-
-	Droiteflex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(image, 0, 1, false).
-		AddItem(gridDownRight, 0, 1, false)
-
+	Droiteflex := CreateRightPart(classes_icons, player)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -530,6 +298,42 @@ func ShowOthers(
 	inv map[string]int,
 ) int {
 	app := tview.NewApplication()
+	// ============================partit droite=====================================
+	Droiteflex := CreateRightPart(classes_icons, player)
+	// Buttons
+	quitButton := tview.NewButton("Retour").
+		SetSelectedFunc(func() {
+			app.Stop()
+			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+		})
+	quitButton.SetBackgroundColor(tcell.ColorRed)
+	// TextView for inv items
+	app.Stop()
+
+	// Box Centrale
+	gridCenter := tview.NewGrid().
+		SetRows(0, 0, 0, 0).
+		SetColumns(0, 0, 0, 0).
+		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true)
+	gridCenter.SetBorder(true)
+	//build
+	Centreflex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(gridCenter, 0, 1, true)
+	Machted := tview.NewFlex().
+		SetDirection(tview.FlexColumn).
+		AddItem(Centreflex, 0, 13, true).
+		AddItem(Droiteflex, 0, 7, false)
+	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
+		panic(err4)
+	}
+	return 5
+}
+
+func CreateRightPart(
+	classes_icons map[string]image.Image,
+	player *map[string]interface{},
+) *tview.Flex {
 	// ============================partit droite=====================================
 
 	// Affichage de l'image
@@ -584,33 +388,5 @@ func ShowOthers(
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
 		AddItem(gridDownRight, 0, 1, false)
-
-	// Buttons
-	quitButton := tview.NewButton("Retour").
-		SetSelectedFunc(func() {
-			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
-		})
-	quitButton.SetBackgroundColor(tcell.ColorRed)
-	// TextView for inv items
-	app.Stop()
-
-	// Box Centrale
-	gridCenter := tview.NewGrid().
-		SetRows(0, 0, 0, 0).
-		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true)
-	gridCenter.SetBorder(true)
-	//build
-	Centreflex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(gridCenter, 0, 1, true)
-	Machted := tview.NewFlex().
-		SetDirection(tview.FlexColumn).
-		AddItem(Centreflex, 0, 13, true).
-		AddItem(Droiteflex, 0, 7, false)
-	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
-		panic(err4)
-	}
-	return 5
+	return Droiteflex
 }
