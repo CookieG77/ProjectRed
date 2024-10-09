@@ -44,48 +44,28 @@ func SmenuRender() int {
 			SetTextAlign(tview.AlignCenter).
 			SetText(text)
 	}
-	// menu := newPrimitive("Menu")
-	// main := newPrimitive("Main content")
-	// sideBar := newPrimitive("Side Bar")
 	casque := newPrimitive("Casque")
 	plastron := newPrimitive("Plastron")
 	jambières := newPrimitive("Jambières")
 	bottes := newPrimitive("Bottes")
 
-	// grid := tview.NewGrid().
-	// 	SetRows(3, 0, 3).
-	// 	SetColumns(0, 0, 0).
-	// 	SetBorders(true).
-	// 	AddItem(newPrimitive("Header"), 0, 0, 1, 3, 0, 0, false).
-	// 	AddItem(newPrimitive("Footer"), 2, 0, 1, 3, 0, 0, false)
-
-	grid := tview.NewGrid().
+	gridDownRight := tview.NewGrid().
 		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
 		SetColumns(0, 0)
-	grid.SetBorder(true)
-	grid.AddItem(newPrimitive("Equipement"), 0, 0, 1, 2, 0, 0, false)
-	grid.AddItem(newPrimitive("Barre de vie"), 5, 0, 1, 2, 0, 0, false)
-	grid.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
-	// // Layout for screens narrower than 100 cells (menu and side bar are hidden).
-	// grid.AddItem(menu, 0, 0, 0, 0, 0, 0, false).
-	// 	AddItem(main, 1, 0, 1, 3, 0, 0, false).
-	// 	AddItem(sideBar, 0, 0, 0, 0, 0, 0, false)
-
-	grid.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	grid.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	grid.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	grid.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
-
-	// // Layout for screens wider than 100 cells.
-	// grid.AddItem(menu, 1, 0, 1, 1, 0, 0, false).
-	// 	AddItem(main, 1, 1, 1, 1, 0, 0, false).
-	// 	AddItem(sideBar, 1, 2, 1, 1, 0, 0, false)
+	gridDownRight.SetBorder(true)
+	gridDownRight.AddItem(newPrimitive("Equipement"), 0, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Barre de vie"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
 
 	Droiteflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
 		// AddItem(textView, 0, 1, false)
-		AddItem(grid, 0, 1, false)
+		AddItem(gridDownRight, 0, 1, false)
 
 	// =============================== partit gauche ====================================
 
@@ -135,11 +115,26 @@ func SmenuRender() int {
 	header.SetBorder(true)
 	header.SetTextColor(redColor)
 	header.SetTextAlign(tview.AlignCenter)
+	// /!\
+	centerBox := tview.NewTextView().SetText("")
+	centerBox.SetBorder(true)
+	centerBox.SetTextAlign(tview.AlignCenter)
 
+	gridCenter := tview.NewGrid().
+		SetRows(0).
+		SetColumns(0)
+	gridCenter.SetBorder(true)
+	// /!\
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(header, 3, 1, false)
+		AddItem(header, 3, 1, false).
+
+		// /!\
+		AddItem(centerBox, 0, 1, false).
+		AddItem(gridCenter, 0, 1, false)
+
+		// /!\
 
 	// ================================ assemblage ======================================
 
