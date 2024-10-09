@@ -6,7 +6,7 @@
         "starting_hp" : 50,
         "starting_mana" : 60,
         "starting_lvl" : 1,
-        "starting_spell" : "punch",
+        "starting_spell" : ["punch"],
         "stats_desc" : "[yellow]Humain:[white]\n- Points de vie: [red]100[white]\n- Points de Mana: [blue]60[white]\n"
     },
     "elf" : {
@@ -16,7 +16,7 @@
         "starting_hp" : 40,
         "starting_mana" : 80,
         "starting_lvl" : 1,
-        "starting_spell" : "punch",
+        "starting_spell" : ["punch"],
         "stats_desc" : "[green]Elfe:[white]\n- Points de vie: [red]80[white]\n- Points de Mana: [blue]80[white]\n"
     },
     "nain" : {
@@ -26,7 +26,7 @@
         "starting_hp" : 60,
         "starting_mana" : 40,
         "starting_lvl" : 1,
-        "starting_spell" : "punch",
+        "starting_spell" : ["punch"],
         "stats_desc" : "[purple]Nain:[white]\n- Points de vie: [red]120[white]\n- Points de Mana: [blue]40[white]\n"
     },
     "tieffelin" : {
@@ -36,7 +36,7 @@
         "starting_hp" : 45,
         "starting_mana" : 70,
         "starting_lvl" : 1,
-        "starting_spell" : "punch",
+        "starting_spell" : ["punch"],
         "stats_desc" : "[red]Tieffelin:[white]\n- Points de vie: [red]90[white]\n- Points de Mana: [blue]70[white]\n"
     }
 }

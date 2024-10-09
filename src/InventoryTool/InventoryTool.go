@@ -15,15 +15,7 @@ type Inventory = map[string]int
 // |					Gestion data files                  |
 // |========================================================|
 
-func OpenJson(res *map[string]map[string]interface{}, filepath string) bool {
-	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
-	file, err1 := os.ReadFile(filepath)
-	if err1 != nil || json.Unmarshal(file, res) != nil {
-		return true
-	}
-	return false
-}
-
+// Ouvre le fichier json 'filepath' et le converti en variable lisible par golang
 func GetCraftList(res *map[string]map[string]int, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
 	file, err1 := os.ReadFile(filepath)
@@ -33,8 +25,10 @@ func GetCraftList(res *map[string]map[string]int, filepath string) bool {
 	return false
 }
 
-func InitItemList(res *map[string]map[string]interface{}, filepath string) bool {
-	if OpenJson(res, filepath) {
+// Ouvre le fichier json 'filepath' et le converti en variable lisible par golang et converti les nombres à virgules en nombres entier.
+func GetItemList(res *map[string]map[string]interface{}, filepath string) bool {
+	file, err1 := os.ReadFile(filepath)
+	if err1 != nil || json.Unmarshal(file, res) != nil {
 		return true
 	}
 	for k, v := range *res {
@@ -52,22 +46,26 @@ func InitItemList(res *map[string]map[string]interface{}, filepath string) bool 
 	return false
 }
 
+// Juste un alias pour simplifier la compréhension du code au main car les fonctions marchent de la même manière
 func GetClassList(res *map[string]map[string]interface{}, filepath string) bool {
-	return InitItemList(res, filepath)
+	return GetItemList(res, filepath)
 }
 
+// Juste un alias pour simplifier la compréhension du code au main car les fonctions marchent de la même manière
 func GetMonsterList(res *map[string]map[string]interface{}, filepath string) bool {
-	return InitItemList(res, filepath)
+	return GetItemList(res, filepath)
 }
 
 // |========================================================|
 // |					Gestion Inventaire                  |
 // |========================================================|
 
+// Initialise une variable de type inventaire.
 func InitInventory() Inventory {
 	return make(Inventory)
 }
 
+// Permet l'ajout de l'item portant l'id 'itemID' à l'inventaire 'inv' avec pour quantité 'quantity'.
 func AddItemToInventory(inv *Inventory, itemID string, quantity int) {
 	//quantity doit être positif
 	_, ok := (*inv)[itemID]
@@ -78,6 +76,8 @@ func AddItemToInventory(inv *Inventory, itemID string, quantity int) {
 	}
 }
 
+// Permet la suppréssion de l'item portant l'id 'itemID' à l'inventaire 'inv' avec pour quantité 'quantity'.
+// Renvoie 'true' si l'action est impossible (retirer plus d'item que le joueur en a) et sinon renvoie 'false'.
 func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 	//quantity doit être positif
 	//Retourne false si on a réussit à lui retirer sinon renvoie true.
@@ -93,6 +93,7 @@ func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 	return false
 }
 
+// Fonction à but de test uniquement, permet l'affichage de 'inv' sous la forme d'un dictionnaire.
 func PrintInventory(inv Inventory) {
 	print("{\n")
 	for k, v := range inv {
@@ -105,6 +106,7 @@ func PrintInventory(inv Inventory) {
 // |					  Gestion Joueur                    |
 // |========================================================|
 
+// Fonction permettant l'initialisation des variables d'un joueur.
 func InitPlayer() map[string]interface{} {
 	res := make(map[string]interface{})
 	res["name"] = ""
@@ -122,6 +124,7 @@ func InitPlayer() map[string]interface{} {
 	return res
 }
 
+// Fonction à but de test uniquement, permet l'affichage de 'player' sous la forme d'un dictionnaire.
 func PrintPlayer(player map[string]interface{}) {
 	print("{\n")
 	for k, v := range player {
@@ -135,10 +138,13 @@ func PrintPlayer(player map[string]interface{}) {
 	print("}\n")
 }
 
+// Fonction permettant l'ajout de pièce d'or à un joueur.
 func AddGoldToPlayer(player *map[string]interface{}, quantity int) {
 	(*player)["gold"] = (*player)["gold"].(int) + quantity
 }
 
+// Permet la supréssion d'or au joueur 'player' avec pour quantité 'quantity'.
+// Renvoie 'true' si l'action est impossible (retirer plus d'or que le joueur en a) et sinon renvoie 'false'.
 func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 	val := (*player)["gold"].(int)
 	if val < quantity {
@@ -148,10 +154,13 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 	return false
 }
 
+// Permet de savoir si oui ou non le joueur est mort (quand il n'a plus de PV).
 func IsPlayerDead(player map[string]interface{}) bool {
 	return player["pv"].(int) <= 0
 }
 
+// Permet d'infliger 'quantity' dégat(s) au joueur 'player', si l'on inflige plus de dégats que de PV restant au joueur, ses PV sont mits à 0.
+// Renvoie true si le joueur meurt des dégats sinon renvoie false.
 func HurtPlayer(player *map[string]interface{}, quantity int) bool {
 	if (*player)["hp"].(int)-quantity <= 0 {
 		(*player)["hp"] = 0
@@ -161,6 +170,8 @@ func HurtPlayer(player *map[string]interface{}, quantity int) bool {
 	return false
 }
 
+// Renvoie 'true' si le joueur 'playr' peut équipé un item 'equipment' en vérifiant si il en possède au moins un dans l'inventaire 'inv'.
+// Sinon renvoie 'false'.
 func PlayerCanEquip(
 	player map[string]interface{},
 	equipment string,
@@ -172,6 +183,9 @@ func PlayerCanEquip(
 	return false
 }
 
+// Equipe le joueur 'player' avec l'équipement 'itemID', déséquipe l'équipement actuelle dans le même emplacement si il en a déjà un.
+// Les items équipé et déséquipé sont ajouté et retirer de l'inventaire 'inv'.
+// Cette fonction à pour objectif d'être utiliser après avoir vérifier si l'item 'itemID' peut être équipé.
 func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Inventory) {
 	slot := ""
 	switch itemID[:2] {
@@ -201,6 +215,8 @@ func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Invento
 // |				   	  Gestion Crafts                    |
 // |========================================================|
 
+// Fonction pour vérifier si le joueur 'player' peut crafter l'objet 'craftID' (vérifie les matériaux et or nécessaire au craft).
+// Renvoie 'true' si le craft est possible sinon renvoie 'false'.
 func CanCraft(
 	craftID string,
 	craftlist map[string]map[string]int,
@@ -224,6 +240,7 @@ func CanCraft(
 	return true
 }
 
+// Fonction renvoyant un slice (une liste) contenant l'id des objets que le joueur 'player' peut craft
 func GetCraftableList(
 	craftlist map[string]map[string]int,
 	inv Inventory,
@@ -238,6 +255,8 @@ func GetCraftableList(
 	return res
 }
 
+// Craft l'item 'itemID' et retire les matériaux nécessaire de l'inventaire 'inv' du joueur 'player' ainsi que la quantité d'or nécessaire
+// Cette fonction à pour objectif d'être utiliser après avoir vérifier si l'item 'itemID' peut être craft.
 func Craft(
 	craftID string,
 	craftlist map[string]map[string]int,
@@ -254,10 +273,11 @@ func Craft(
 	AddItemToInventory(inv, craftID, 1)
 }
 
-//
-//
-//
+// |========================================================|
+// |	     Outils pour la création du personnage          |
+// |========================================================|
 
+// Renvoie un text comprennant la déscription de toutes les classes dans 'listclass'
 func MakeClassDescs(listclass map[string]map[string]interface{}) string {
 	res := ""
 	for _, v := range listclass {
@@ -266,6 +286,7 @@ func MakeClassDescs(listclass map[string]map[string]interface{}) string {
 	return res
 }
 
+// Renvoie la liste du nom de toutes les classes dans 'listclass'
 func GetClassNames(listclass map[string]map[string]interface{}) []string {
 	res := []string{}
 	for _, v := range listclass {
@@ -278,6 +299,8 @@ func GetClassNames(listclass map[string]map[string]interface{}) []string {
 // |				 Gestion ressource files                |
 // |========================================================|
 
+// Charge les images commencant par 'icon_' placé dans le dossier 'filepath' et les range dans 'imglst'.
+// Si une erreur apparai durant le chargement des images, la fonction s'arrète et renvoie 'true', sinon renvoie 'false'.
 func LoadClassIcons(imglst *map[string]image.Image, filepath string) bool {
 	files, err := os.ReadDir(filepath)
 	if err != nil {
@@ -298,6 +321,7 @@ func LoadClassIcons(imglst *map[string]image.Image, filepath string) bool {
 	return false
 }
 
+// Fonctions permettant de chargé et décodé une image en 'png' pour utilisation avec la librairie Tview.
 func TViewMakeImg(addresse string) (image.Image, bool) {
 	IMGbyte, err := os.ReadFile(addresse)
 	graphics, err2 := png.Decode(bytes.NewReader(IMGbyte))

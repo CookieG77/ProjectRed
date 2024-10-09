@@ -4,7 +4,6 @@ import (
 	"PPR/InventoryTool"
 	"PPR/Scene"
 	"image"
-	"os"
 )
 
 func main() {
@@ -15,8 +14,4 @@ func main() {
 	InventoryTool.GetClassList(&classList, "data/classes.json")
 	InventoryTool.GetClassList(&monsterList, "data/monsters.json")
 	Scene.CreatePlayerWindow(classList, icons)
-}
-
-func getArgs() []string {
-	return os.Args[1:]
 }
