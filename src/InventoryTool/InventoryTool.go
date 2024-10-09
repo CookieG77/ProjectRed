@@ -7,6 +7,7 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"time"
 )
 
 type Inventory = map[string]int
@@ -229,6 +230,37 @@ func HurtPlayer(player *map[string]interface{}, quantity int) bool {
 	}
 	(*player)["hp"] = (*player)["hp"].(int) - quantity
 	return false
+}
+
+// Permet de remplir le mana du joueur 'player' de 'quantity' mana.
+func HealPlayerMana(player *map[string]interface{}, quantity int) {
+	tmp := (*player)["mana"].(int) + quantity
+	if tmp > (*player)["mana_hp"].(int) {
+		(*player)["mana"] = (*player)["mana_hp"]
+	} else {
+		(*player)["mana"] = tmp
+	}
+}
+
+// Permet de consomé 'quantity' mana au joueur 'player', si l'on consomme plus de mana que de mana restant au joueur, son mana est mit à 0.
+// Renvoie true si le joueur n'a plus des dégats sinon renvoie false.
+func UsePlayerMana(player *map[string]interface{}, quantity int) bool {
+	if (*player)["mana"].(int)-quantity <= 0 {
+		(*player)["mana"] = 0
+		return true
+	}
+	(*player)["mana"] = (*player)["mana"].(int) - quantity
+	return false
+}
+
+// Permet d'infliger 'quantity' dégats au joueur 'player' chaques secondes pendant 'duration' secondes.
+// Un 'quantity' ou 'duration' inférieur ou égale à 0 arretera la fonction instantanément.
+func HurtPlayerDPS(player *map[string]interface{}, quantity int, duration int) {
+	if duration > 0 || quantity > 0 {
+		time.Sleep(1 * time.Second)
+		HurtPlayer(player, quantity)
+		go HurtPlayerDPS(player, quantity, duration-1)
+	}
 }
 
 // Renvoie 'true' si le joueur 'playr' peut équipé un item 'equipment' en vérifiant si il en possède au moins un dans l'inventaire 'inv'.

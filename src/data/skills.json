@@ -1,17 +1,30 @@
 {
     "punch" : {
         "name" : "Coup de poing",
+        "type" : "dmg",
+        "target_player" : false,
         "atk_points" : 8,
         "mana_cost" : 0
     },
     "fireball" : {
         "name" : "Boule de feu",
+        "type" : "dmg",
+        "target_player" : false,
         "atk_points" : 18,
         "mana_cost" : 20
     },
     "firetrait" : {
         "name" : "Trait de feu",
+        "type" : "dmg",
+        "target_player" : false,
         "atk_points" : 9,
         "mana_cost" : 10
+    },
+    "minorheal" : {
+        "name" : "Soin mineur",
+        "type" : "heal",
+        "target_player" : true,
+        "atk_points" : 10,
+        "mana_cost" : 5
     }
 }
