@@ -2,6 +2,7 @@ package combattool
 
 import (
 	"PPR/InventoryTool"
+	"math/rand/v2"
 	"time"
 )
 
@@ -160,4 +161,20 @@ func HurtMonserDPS(monster *map[string]interface{}, quantity int, duration int) 
 		HurtMonster(monster, quantity)
 		go HurtMonserDPS(monster, quantity, duration-1)
 	}
+}
+
+func GenRandMonster(monsterList map[string]map[string]interface{}) map[string]interface{} {
+	monster := make(map[string]interface{})
+	randomM := rand.IntN(len(monsterList))
+	i := 0
+	for k, v := range monsterList {
+		if i == randomM {
+			monster = v
+			monster["id"] = k
+			monster["hp"] = monster["max_hp"].(int)
+			break
+		}
+		i++
+	}
+	return monster
 }

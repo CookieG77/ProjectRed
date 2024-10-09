@@ -499,6 +499,24 @@ func LoadBG(imglst *map[string]image.Image, filepath string) bool {
 	return false
 }
 
+func LoadMonsterIcons(imglst *map[string]image.Image, filepath string) bool {
+	files, err := os.ReadDir(filepath)
+	if err != nil {
+		return true
+	}
+	for _, fname := range files {
+		if (fname.Name())[:5] == "micon" {
+			tmp, err2 := TViewMakeImg(filepath + "/" + fname.Name())
+			if err2 {
+				return true
+			}
+			name := fname.Name()[6 : len(fname.Name())-4]
+			(*imglst)[name] = tmp
+		}
+	}
+	return false
+}
+
 // Fonctions permettant de chargé et décodé une image en 'png',
 // pour utilisation avec la librairie Tview.
 func TViewMakeImg(addresse string) (image.Image, bool) {

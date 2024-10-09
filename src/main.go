@@ -9,11 +9,14 @@ import (
 
 func main() {
 	//Importation et chargement des données et ressources
-	icons := make(map[string]image.Image)
-	InventoryTool.LoadClassIcons(&icons, "ressource")
+	class_icons := make(map[string]image.Image)
+	InventoryTool.LoadClassIcons(&class_icons, "ressource")
 
 	bg := make(map[string]image.Image)
 	InventoryTool.LoadBG(&bg, "ressource")
+
+	monster_icons := make(map[string]image.Image)
+	InventoryTool.LoadMonsterIcons(&monster_icons, "ressource")
 
 	itemlist := make(map[string]map[string]interface{})
 	InventoryTool.GetItemList(&itemlist, "data/items.json")
@@ -29,16 +32,17 @@ func main() {
 
 	skillList := make(map[string]map[string]interface{})
 	InventoryTool.GetSkillList(&skillList, "data/skills.json")
+
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
 	inv := InventoryTool.InitInventory()
 
 	//Execution du programme
-	Scene.CreatePlayerWindow(classList, icons, &player, inv)
+	Scene.CreatePlayerWindow(classList, class_icons, &player, inv)
 	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
 	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
 	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
 	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
-	print(Smenu.SmenuRender(icons, bg, &player, itemlist, &inv, classList, skillList))
+	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList))
 
 }
