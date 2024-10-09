@@ -281,7 +281,7 @@ func ShowInventory(
 		AddItem(gridDownRight, 0, 1, false)
 
 	// Buttons
-	quitButton := tview.NewButton("Quitter").
+	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
 			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv)
@@ -394,7 +394,7 @@ func ShowConsumable(
 		AddItem(gridDownRight, 0, 1, false)
 
 	// Buttons
-	quitButton := tview.NewButton("Quitter").
+	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
@@ -490,7 +490,7 @@ func ShowEquipement(
 		AddItem(gridDownRight, 0, 1, false)
 
 	// Buttons
-	quitButton := tview.NewButton("Quitter").
+	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
@@ -586,7 +586,7 @@ func ShowOthers(
 		AddItem(gridDownRight, 0, 1, false)
 
 	// Buttons
-	quitButton := tview.NewButton("Quitter").
+	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
