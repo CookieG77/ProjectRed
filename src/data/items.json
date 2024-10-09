@@ -4,6 +4,13 @@
         "description" : "Restaure 50 points de vie.",
         "type" : "heal",
         "value" : 50,
+        "pvalue" : 0
+    },
+    "CP_Mana" : {
+        "name" : "Potion de mana",
+        "description" : "Restaure 40 points de mana.",
+        "type" : "manaheal",
+        "value" : 40,
         "pvalue" : 3
     },
     "CJ_Poison" : {

@@ -93,9 +93,55 @@ func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 	return false
 }
 
-//func GetInventory(inv Inventory) ([]string, []int) {
+// Renvoie la liste des items commencant par les tags 'item_types' fournies dans l'inventaire 'inv'.
+func getInventoryByItemType(inv Inventory, item_types []string) ([]string, []int) {
+	res := []string{}
+	res2 := []int{}
+	for consumableID, quantity := range inv {
+		for _, str := range item_types {
+			if consumableID[:len(str)] == str {
+				res = append(res, consumableID)
+				res2 = append(res2, quantity)
+			}
+		}
+	}
+	return res, res2
+}
 
-//}
+// Renvoie la liste des items ne commencant pas par les tags 'item_types' fournies dans l'inventaire 'inv'.
+func getInventoryNotItemType(inv Inventory, item_types []string) ([]string, []int) {
+	res := []string{}
+	res2 := []int{}
+	for consumableID, quantity := range inv {
+		ok := true
+		for _, str := range item_types {
+			if consumableID[:len(str)] == str {
+				ok = false
+				break
+			}
+		}
+		if ok {
+			res = append(res, consumableID)
+			res2 = append(res2, quantity)
+		}
+	}
+	return res, res2
+}
+
+// Renvoie la liste des items consomables ainsi qu'une autre liste contenant la quantité de chaques chacun.
+func GetInventoryConsumables(inv Inventory) ([]string, []int) {
+	return getInventoryByItemType(inv, []string{"CP"})
+}
+
+// Renvoie la liste des items équipables ainsi qu'une autre liste contenant la quantité de chacun.
+func GetInventoryEquipable(inv Inventory) ([]string, []int) {
+	return getInventoryByItemType(inv, []string{"EC", "EA", "EL", "EB", "EW"})
+}
+
+// Renvoie la liste des autres items
+func GetInventoryOther(inv Inventory) ([]string, []int) {
+	return getInventoryNotItemType(inv, []string{"EC", "EA", "EL", "EB", "EW", "CP"})
+}
 
 // Fonction à but de test uniquement, permet l'affichage de 'inv' sous la forme d'un dictionnaire.
 func PrintInventory(inv Inventory) {
@@ -163,6 +209,15 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 // Permet de savoir si oui ou non le joueur est mort (quand il n'a plus de PV).
 func IsPlayerDead(player map[string]interface{}) bool {
 	return player["pv"].(int) <= 0
+}
+
+func HealPlayer(player *map[string]interface{}, quantity int) {
+	tmp := (*player)["hp"].(int) + quantity
+	if tmp > (*player)["max_hp"].(int) {
+		(*player)["hp"] = (*player)["max_hp"]
+	} else {
+		(*player)["hp"] = tmp
+	}
 }
 
 // Permet d'infliger 'quantity' dégat(s) au joueur 'player', si l'on inflige plus de dégats que de PV restant au joueur, ses PV sont mits à 0.
@@ -313,9 +368,25 @@ func LoadClassIcons(imglst *map[string]image.Image, filepath string) bool {
 		return true
 	}
 	for _, fname := range files {
-		print(fname.Name() + "\n")
 		if (fname.Name())[:4] == "icon" {
-			print(filepath + "/" + fname.Name())
+			tmp, err2 := TViewMakeImg(filepath + "/" + fname.Name())
+			if err2 {
+				return true
+			}
+			name := fname.Name()[5 : len(fname.Name())-4]
+			(*imglst)[name] = tmp
+		}
+	}
+	return false
+}
+
+func LoadBG(imglst *map[string]image.Image, filepath string) bool {
+	files, err := os.ReadDir(filepath)
+	if err != nil {
+		return true
+	}
+	for _, fname := range files {
+		if (fname.Name())[:2] == "bg" {
 			tmp, err2 := TViewMakeImg(filepath + "/" + fname.Name())
 			if err2 {
 				return true

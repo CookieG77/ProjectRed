@@ -15,6 +15,7 @@ const (
 
 func SmenuRender(
 	classes_icons map[string]image.Image,
+	player *map[string]interface{},
 ) int {
 	sceneValue := 0
 
@@ -26,7 +27,7 @@ func SmenuRender(
 
 	// Affichage de l'image
 	image := tview.NewImage()
-	image.SetImage(classes_icons["humain"])
+	image.SetImage(classes_icons[(*player)["class"].(string)])
 	image.SetBorder(true)
 
 	// Affichage menu equipements et barres de vie et de mana
@@ -43,9 +44,10 @@ func SmenuRender(
 	gridDownRight := tview.NewGrid().
 		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
 		SetColumns(0, 0)
+	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
 	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("Barre de vie"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Barre de vie:"), 5, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
 	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
