@@ -24,6 +24,8 @@ func main() {
 	monsterList := make(map[string]map[string]interface{})
 	InventoryTool.GetClassList(&monsterList, "data/monsters.json")
 
+	tradeList := make(map[string]map[string]map[string]int)
+	InventoryTool.GetTradesList(&tradeList, "data/trades.json")
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
 	inv := InventoryTool.InitInventory()
