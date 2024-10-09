@@ -22,7 +22,7 @@ func SmenuRender(
 	app := tview.NewApplication()
 
 	// ============================partit droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 
 	// =============================== partit gauche ====================================
 
@@ -141,7 +141,7 @@ func SmenuRender(
 }
 
 /*
-Fonction pour afficher l'inventaire
+Fonction pour afficher l'inventaire.
 Génial n'est-ce pas ?
 */
 func ShowInventory(
@@ -150,10 +150,10 @@ func ShowInventory(
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv map[string]int,
-) int {
+) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -198,7 +198,6 @@ func ShowInventory(
 	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
 		panic(err4)
 	}
-	return 5
 }
 
 /*
@@ -210,10 +209,10 @@ func ShowConsumable(
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv map[string]int,
-) int {
+) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -241,7 +240,6 @@ func ShowConsumable(
 	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
 		panic(err4)
 	}
-	return 5
 }
 
 /*
@@ -253,10 +251,10 @@ func ShowEquipement(
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv map[string]int,
-) int {
+) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -284,7 +282,6 @@ func ShowEquipement(
 	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
 		panic(err4)
 	}
-	return 5
 }
 
 /*
@@ -299,7 +296,7 @@ func ShowOthers(
 ) int {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 	// Buttons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
@@ -333,13 +330,13 @@ func ShowOthers(
 func CreateRightPart(
 	classes_icons map[string]image.Image,
 	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
 ) *tview.Flex {
-	// ============================partit droite=====================================
-
 	// Affichage de l'image
 	image := tview.NewImage()
 	image.SetImage(classes_icons[(*player)["class"].(string)])
 	image.SetBorder(true)
+
 	// Affichage menu equipements et barres de vie et de mana
 	newPrimitive := func(text string) tview.Primitive {
 		return tview.NewTextView().
@@ -364,10 +361,30 @@ func CreateRightPart(
 			SetDynamicColors(true)
 	}
 
-	casque := newPrimitive("Casque")
-	plastron := newPrimitive("Plastron")
-	jambières := newPrimitive("Jambières")
-	bottes := newPrimitive("Bottes")
+	newPrimitiveEquipmentSlot := func(text string, slot string) tview.Primitive {
+		res := text
+		if (*player)[slot].(string) != "" {
+			res += " " + itemlist[(*player)[slot].(string)]["name"].(string) + "\n"
+			switch itemlist[(*player)[slot].(string)]["type"].(string) {
+			case "maxhealth":
+				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[red]♥"
+			case "maxmana":
+				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[blue]✦"
+			}
+
+		} else {
+			res += " Ø\n "
+		}
+		return tview.NewTextView().
+			SetTextAlign(tview.AlignCenter).
+			SetText(res).
+			SetDynamicColors(true)
+	}
+
+	casque := newPrimitiveEquipmentSlot("Casque :", "EquipmentHead")
+	plastron := newPrimitiveEquipmentSlot("Plastron :", "EquipmentTorso")
+	jambières := newPrimitiveEquipmentSlot("Jambières :", "EquipmentLegs")
+	bottes := newPrimitiveEquipmentSlot("Bottes :", "EquipmentBoots")
 
 	gridDownRight := tview.NewGrid().
 		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
@@ -375,7 +392,7 @@ func CreateRightPart(
 	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
 	gridDownRight.SetBorder(true)
 	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("\nPoints de vie : "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
