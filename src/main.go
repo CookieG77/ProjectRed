@@ -27,7 +27,7 @@ func main() {
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
 	inv := InventoryTool.InitInventory()
-	Scene.CreatePlayerWindow(classList, icons, &player)
+	Scene.CreatePlayerWindow(classList, icons, &player, inv)
 
 	//Execution du programme
 	InventoryTool.AddItemToInventory(&inv, "EC_Mage", 1)
@@ -36,6 +36,6 @@ func main() {
 	player["mana"] = player["max_mana"].(int)
 	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
 
-	print(Smenu.SmenuRender(icons, bg, &player, itemlist))
+	print(Smenu.SmenuRender(icons, bg, &player, itemlist, inv))
 
 }

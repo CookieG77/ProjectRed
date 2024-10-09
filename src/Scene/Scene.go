@@ -12,6 +12,7 @@ func CreatePlayerWindow(
 	classList map[string]map[string]interface{},
 	icons map[string]image.Image,
 	player *map[string]interface{},
+	inv map[string]int,
 ) {
 	classNames := InventoryTool.GetClassNames(classList)
 	app := tview.NewApplication()
@@ -54,7 +55,7 @@ func CreatePlayerWindow(
 				}
 			} else {
 				app.Stop()
-				CreatePlayerWindow(classList, icons, player)
+				CreatePlayerWindow(classList, icons, player, inv)
 			}
 
 		}).
