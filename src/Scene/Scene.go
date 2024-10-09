@@ -32,24 +32,29 @@ func CreatePlayerWindow(
 		AddButton("Jouer", func() {
 			name := form.GetFormItemByLabel("Nom du Personnage").(*tview.InputField).GetText()
 			_, class := form.GetFormItemByLabel("Classe").(*tview.DropDown).GetCurrentOption()
-			app.Stop()
-			(*player)["name"] = name
-			for k, v := range classList {
-				if v["class"].(string) == class {
-					(*player)["class"] = k
-					(*player)["max_hp"] = v["max_hp"].(int)
-					(*player)["hp"] = v["starting_hp"].(int)
-					(*player)["max_mana"] = v["max_mana"].(int)
-					(*player)["mana"] = v["starting_mana"].(int)
-					(*player)["lvl"] = v["starting_lvl"].(int)
-					tmp := []string{}
-					for _, v := range v["starting_spell"].([]interface{}) {
-						tmp = append(tmp, v.(string))
-					}
-					(*player)["skills"] = tmp
+			if IsNameValide(&name) {
+				app.Stop()
+				(*player)["name"] = name
+				for k, v := range classList {
+					if v["class"].(string) == class {
+						(*player)["class"] = k
+						(*player)["max_hp"] = v["max_hp"].(int)
+						(*player)["hp"] = v["starting_hp"].(int)
+						(*player)["max_mana"] = v["max_mana"].(int)
+						(*player)["mana"] = v["starting_mana"].(int)
+						(*player)["lvl"] = v["starting_lvl"].(int)
+						tmp := []string{}
+						for _, v := range v["starting_spell"].([]interface{}) {
+							tmp = append(tmp, v.(string))
+						}
+						(*player)["skills"] = tmp
 
-					break
+						break
+					}
 				}
+			} else {
+				app.Stop()
+				CreatePlayerWindow(classList, icons, player)
 			}
 
 		}).
@@ -75,4 +80,30 @@ func CreatePlayerWindow(
 	if err := app.SetRoot(flex, true).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
+}
+
+/*
+Fonction qui verifie si la longeur du nom est valide et met le nom
+dans le bon format (dAnIeL -> Daniel)
+*/
+func IsNameValide(name *string) bool {
+	nom := ""
+	if len(*name) > 16 || len(*name) < 3 {
+		return false
+	}
+	for i, c := range *name {
+		replace := true
+		if i == 0 && c >= 'a' && c <= 'z' {
+			nom += string(c - 32)
+			replace = false
+		} else if i > 0 && c >= 'A' && c <= 'Z' {
+			nom += string(c + 32)
+			replace = false
+		}
+		if replace {
+			nom += string(c)
+		}
+	}
+	*name = nom
+	return true
 }
