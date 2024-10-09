@@ -93,6 +93,10 @@ func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 	return false
 }
 
+//func GetInventory(inv Inventory) ([]string, []int) {
+
+//}
+
 // Fonction à but de test uniquement, permet l'affichage de 'inv' sous la forme d'un dictionnaire.
 func PrintInventory(inv Inventory) {
 	print("{\n")
