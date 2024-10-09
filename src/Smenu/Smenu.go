@@ -1,84 +1,162 @@
 package Smenu
 
 import (
-	"PPR/InventoryTool"
-	"fmt"
+	"image"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
 const (
-	Icon_humain = "ressource/icon_humain.png"
-	Icon_elf    = "ressource/icon_elf.png"
-	Icon_nain   = "ressource/icon_nain.png"
-	texte       = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
+	icon_village = "ressource/icon_village"
+	icon_forest  = "ressource/icon_forest"
+	texte        = "je suis un grand tres grand meme texte qui sert a prouvé les qualité de mon ecriture et mon affichage de niveau absolu et profetionelle"
 )
 
-func SmenuRender() {
+func SmenuRender(
+	classes_icons map[string]image.Image,
+) int {
+	sceneValue := 0
+
 	redColor := tcell.NewRGBColor(255, 0, 0)
 
 	app := tview.NewApplication()
 
 	// ============================partit droite=====================================
 
+	// Affichage de l'image
 	image := tview.NewImage()
-	imgdata, err := InventoryTool.TViewMakeImg(Icon_humain)
-	if err {
-		return
-	}
-	image.SetImage(imgdata)
+	image.SetImage(classes_icons["humain"])
 	image.SetBorder(true)
 
-	textView := tview.NewTextView().SetText(texte).SetTextColor(tcell.ColorDarkRed)
-	textView.SetBorder(true)
-	fmt.Print(textView, texte)
+	// Affichage menu equipements et barres de vie et de mana
+	newPrimitive := func(text string) tview.Primitive {
+		return tview.NewTextView().
+			SetTextAlign(tview.AlignCenter).
+			SetText(text)
+	}
+	casque := newPrimitive("Casque")
+	plastron := newPrimitive("Plastron")
+	jambières := newPrimitive("Jambières")
+	bottes := newPrimitive("Bottes")
+
+	gridDownRight := tview.NewGrid().
+		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
+		SetColumns(0, 0)
+	gridDownRight.SetBorder(true)
+	gridDownRight.AddItem(newPrimitive("Equipement"), 0, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Barre de vie"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("Barre de mana"), 7, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
+	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
 
 	Droiteflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
-		AddItem(textView, 0, 1, false)
+		AddItem(gridDownRight, 0, 1, false)
 
 	// =============================== partit gauche ====================================
 
-	headergauche := tview.NewTextView().SetText("Ce deplacé a :")
-	headergauche.SetBorder(true)
+	// ++++++ header ++++++
+	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction de :")
 	headergauche.SetTextColor(tcell.ColorGhostWhite)
 	headergauche.SetTextAlign(tview.AlignCenter)
+	headergauche.SetBorder(true)
 
+	// ++++++ images ++++++
+	// imageV := tview.NewImage()
+	// imgdataV, err := TViewMakeImg(icon_village)
+	// if err {
+	// 	return 5
+	// }
+	// imageV.SetImage(imgdataV)
+	// imageV.SetBorder(true)
+
+	// imageF := tview.NewImage()
+	// imgdataF, err := TViewMakeImg(icon_forest)
+	// if err {
+	// 	return 5
+	// }
+	// imageF.SetImage(imgdataF)
+	// imageF.SetBorder(true)
+
+	// ++++++ Buttons ++++++
+	buttonF := tview.NewButton("go to forest").SetSelectedFunc(func() {
+		sceneValue = 2
+		app.Stop()
+	})
+	buttonF.SetBorder(true) //.SetRect(0, 0, 22, 3)
+
+	buttonV := tview.NewButton("go to village").SetSelectedFunc(func() {
+		sceneValue = 1
+		app.Stop()
+	})
+	buttonV.SetBorder(true) //.SetRect(0, 0, 22, 3)
+
+	// ++++++ flex windows ++++++
 	gaucheforet := tview.NewFlex().
 		SetDirection(tview.FlexRow)
+	gaucheforet.SetBorder(true)
+	gaucheforet.AddItem(buttonF, 3, 1, true)
+	//gaucheforet.AddItem(imageF, 0, 1, false)
 
 	gauchevillage := tview.NewFlex().
 		SetDirection(tview.FlexRow)
+	gauchevillage.SetBorder(true)
+	gauchevillage.AddItem(buttonV, 3, 1, true)
+	//gauchevillage.AddItem(imageV, 0, 1, false)
 
+	// ++++++ build ++++++
 	Gaucheflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
+		AddItem(headergauche, 3, 1, true).
 		AddItem(gauchevillage, 0, 1, true).
 		AddItem(gaucheforet, 0, 1, true)
 
 	// =============================== partit centre ====================================
 
+	//header
 	header := tview.NewTextView().SetText("RED PROJECT ULTIMATE")
 	header.SetBorder(true)
 	header.SetTextColor(redColor)
 	header.SetTextAlign(tview.AlignCenter)
-
+	// boite centrale
+	centerBox := tview.NewTextView().SetText("")
+	centerBox.SetBorder(true)
+	centerBox.SetTextAlign(tview.AlignCenter)
+	// affichage bas
+	gridCenter := tview.NewGrid().
+		SetRows(0).
+		SetColumns(0)
+	gridCenter.SetBorder(true)
+	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(header, 3, 1, false)
+		AddItem(header, 3, 1, false).
+		AddItem(centerBox, 0, 1, false).
+		AddItem(gridCenter, 0, 1, false)
 
 	// ================================ assemblage ======================================
 
+	//build
 	Machted := tview.NewFlex().
 		SetDirection(tview.FlexColumn).
-		AddItem(Gaucheflex, 0, 1, true).
+		AddItem(Gaucheflex, 42, 1, true).
 		AddItem(Centreflex, 0, 1, true).
 		AddItem(Droiteflex, 0, 1, false)
 
 	// =============================== running =============================================
+	app.SetFocus(buttonV)
+	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
+		return 5
+		// panic(err4)
+	}
 
-	if err4 := app.SetRoot(Machted, true).Run(); err4 != nil {
-		panic(err4)
+	if sceneValue != 0 {
+		return sceneValue
+	} else {
+		return 0
 	}
 }
