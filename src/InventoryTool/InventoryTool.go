@@ -247,7 +247,8 @@ func PlayerCanEquip(
 // Equipe le joueur 'player' avec l'équipement 'itemID', déséquipe l'équipement actuelle dans le même emplacement si il en a déjà un.
 // Les items équipé et déséquipé sont ajouté et retirer de l'inventaire 'inv'.
 // Cette fonction à pour objectif d'être utiliser après avoir vérifier si l'item 'itemID' peut être équipé.
-func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Inventory) {
+// Applique aussi les effets des armures au joueur comme "maxhealth" et "maxmana".
+func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Inventory, itemList map[string]map[string]interface{}) {
 	slot := ""
 	switch itemID[:2] {
 	case "EC":
@@ -265,11 +266,35 @@ func EquipPlayerWith(player *map[string]interface{}, itemID string, inv *Invento
 	case "W":
 		slot = "EquipmentWeapon"
 	}
-	if (*player)[slot] != "" {
+	if (*player)[slot].(string) != "" { // Si le slot n'est pas vide, on rend l'équipement au joueur dans son inventaire puis on recalcule les stats.
 		AddItemToInventory(inv, (*player)[slot].(string), 1)
+		switch itemList[(*player)[slot].(string)]["type"].(string) {
+		case "maxhealth":
+			{
+				(*player)["max_hp"] = (*player)["max_hp"].(int) - itemList[(*player)[slot].(string)]["value"].(int)
+				if (*player)["hp"].(int) > (*player)["max_hp"].(int) {
+					(*player)["hp"] = (*player)["max_hp"].(int)
+				}
+			}
+		case "maxmana":
+			{
+				(*player)["max_mana"] = (*player)["max_mana"].(int) - itemList[(*player)[slot].(string)]["value"].(int)
+				if (*player)["mana"].(int) > (*player)["max_mana"].(int) {
+					(*player)["mana"] = (*player)["max_mana"].(int)
+				}
+			}
+		}
 	}
+	//On équipe le joueur avec 'itemID' dans le bon slot.
 	(*player)[slot] = itemID
 	RemoveItemFromInventory(inv, itemID, 1)
+	switch itemList[itemID]["type"].(string) {
+	case "maxhealth":
+		(*player)["max_hp"] = (*player)["max_hp"].(int) + itemList[itemID]["value"].(int)
+	case "maxmana":
+		(*player)["max_mana"] = (*player)["max_mana"].(int) + itemList[itemID]["value"].(int)
+	}
+
 }
 
 // |========================================================|

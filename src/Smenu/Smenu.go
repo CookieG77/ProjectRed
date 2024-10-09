@@ -12,6 +12,7 @@ func SmenuRender(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
 	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
 ) int {
 	sceneValue := 0
 
@@ -50,10 +51,30 @@ func SmenuRender(
 			SetDynamicColors(true)
 	}
 
-	casque := newPrimitive("Casque")
-	plastron := newPrimitive("Plastron")
-	jambières := newPrimitive("Jambières")
-	bottes := newPrimitive("Bottes")
+	newPrimitiveEquipmentSlot := func(text string, slot string) tview.Primitive {
+		res := text
+		if (*player)[slot].(string) != "" {
+			res += " " + itemlist[(*player)[slot].(string)]["name"].(string) + "\n"
+			switch itemlist[(*player)[slot].(string)]["type"].(string) {
+			case "maxhealth":
+				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[red]♥"
+			case "maxmana":
+				res += "+ " + strconv.Itoa(itemlist[(*player)[slot].(string)]["value"].(int)) + "[blue]✦"
+			}
+
+		} else {
+			res += " Ø\n "
+		}
+		return tview.NewTextView().
+			SetTextAlign(tview.AlignCenter).
+			SetText(res).
+			SetDynamicColors(true)
+	}
+
+	casque := newPrimitiveEquipmentSlot("Casque :", "EquipmentHead")
+	plastron := newPrimitiveEquipmentSlot("Plastron :", "EquipmentTorso")
+	jambières := newPrimitiveEquipmentSlot("Jambières :", "EquipmentLegs")
+	bottes := newPrimitiveEquipmentSlot("Bottes :", "EquipmentBoots")
 
 	gridDownRight := tview.NewGrid().
 		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
@@ -61,7 +82,7 @@ func SmenuRender(
 	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
 	gridDownRight.SetBorder(true)
 	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie: "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
+	gridDownRight.AddItem(newPrimitive("\nPoints de vie : "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
 	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)

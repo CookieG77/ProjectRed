@@ -15,6 +15,9 @@ func main() {
 	bg := make(map[string]image.Image)
 	InventoryTool.LoadBG(&bg, "ressource")
 
+	itemlist := make(map[string]map[string]interface{})
+	InventoryTool.GetItemList(&itemlist, "data/items.json")
+
 	classList := make(map[string]map[string]interface{})
 	InventoryTool.GetClassList(&classList, "data/classes.json")
 
@@ -23,11 +26,16 @@ func main() {
 
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
-	//inv := InventoryTool.InitInventory()
+	inv := InventoryTool.InitInventory()
 	Scene.CreatePlayerWindow(classList, icons, &player)
 
 	//Execution du programme
+	InventoryTool.AddItemToInventory(&inv, "EC_Mage", 1)
+	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
+	InventoryTool.EquipPlayerWith(&player, "EC_Mage", &inv, itemlist)
+	player["mana"] = player["max_mana"].(int)
+	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
 
-	print(Smenu.SmenuRender(icons, bg, &player))
+	print(Smenu.SmenuRender(icons, bg, &player, itemlist))
 
 }
