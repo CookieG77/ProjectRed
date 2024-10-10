@@ -467,25 +467,27 @@ func Svillage(
 
 	//================================PARTIT GAUCHE ===============================
 
-	linkTop := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
-	linkBottom := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
+	// linkTop := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
+	// linkBottom := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
 
 	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, inv, bg_imgs, bg_imgs,
 		"top", "bottom", "Rendre visite a votre tres cher :", app)
 
 	buttonTOP.SetSelectedFunc(func() {
 		app.Stop()
-		if err4 := app.SetRoot(linkTop, true).EnableMouse(true).Run(); err4 != nil {
-			panic(err4)
-		}
+		Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
+		// if err4 := app.SetRoot(linkTop, true).EnableMouse(true).Run(); err4 != nil {
+		// 	panic(err4)
+		// }
 		//forgeron
 	})
 
 	buttonBottom.SetSelectedFunc(func() {
 		app.Stop()
-		if err4 := app.SetRoot(linkBottom, true).EnableMouse(true).Run(); err4 != nil {
-			panic(err4)
-		}
+		Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
+		// if err4 := app.SetRoot(linkBottom, true).EnableMouse(true).Run(); err4 != nil {
+		// 	panic(err4)
+		// }
 		//vendeur
 	})
 
@@ -541,7 +543,7 @@ func Sshopvillage(
 	itemlist map[string]map[string]interface{},
 	inv map[string]int,
 	who string,
-) tview.Primitive {
+) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
 
@@ -611,8 +613,9 @@ func Sshopvillage(
 		AddItem(Centreflex, 0, 1, true).
 		AddItem(Droiteflex, 0, 1, false)
 
-	return Machted
-	// if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
-	// 	panic(err4)
-	// }
+	// return Machted
+	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
+		panic(err4)
+	}
+
 }
