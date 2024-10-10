@@ -32,6 +32,9 @@ func main() {
 
 	skillList := make(map[string]map[string]interface{})
 	InventoryTool.GetSkillList(&skillList, "data/skills.json")
+	
+	lootList := make(map[string]map[string]interface{})
+	InventoryTool.GetLootList(&lootList, "data/loots.json")
 
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
@@ -48,6 +51,6 @@ func main() {
 	InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
 	InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
 	InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
-	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList))
+	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList))
 
 }

@@ -66,6 +66,12 @@ func GetSkillList(res *map[string]map[string]interface{}, filepath string) bool 
 	return GetItemList(res, filepath)
 }
 
+// Juste un alias de GetItemList pour simplifier la compréhension du code au main,
+// car les fonctions marchent de la même manière
+func GetLootList(res *map[string]map[string]interface{}, filepath string) bool {
+	return GetItemList(res, filepath)
+}
+
 // Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res'
 func GetTradesList(res *map[string]map[string]map[string]int, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
