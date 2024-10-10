@@ -2,6 +2,8 @@ package combattool
 
 import (
 	"PPR/InventoryTool"
+	"math/rand/v2"
+	"strconv"
 	"time"
 )
 
@@ -35,7 +37,7 @@ func UseSkill(
 	switch skillList[skill]["type"].(string) {
 	case "dmg":
 		{
-			if skillList[skill]["monster_player"].(bool) {
+			if skillList[skill]["target_player"].(bool) {
 				InventoryTool.HurtPlayer(player, skillList[skill]["atk_points"].(int))
 				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
 			} else {
@@ -45,7 +47,7 @@ func UseSkill(
 		}
 	case "heal":
 		{
-			if skillList[skill]["monster_player"].(bool) {
+			if skillList[skill]["target_player"].(bool) {
 				InventoryTool.HealPlayer(player, skillList[skill]["atk_points"].(int))
 				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
 			} else {
@@ -62,6 +64,7 @@ func UseConsumable(
 	monster *map[string]interface{},
 	consumableID string,
 	itemList map[string]map[string]interface{},
+	inv *map[string]int,
 ) {
 	monsterPlayer := consumableID[:2] == "CP"
 	itemData := itemList[consumableID]
@@ -74,7 +77,7 @@ func UseConsumable(
 				HealMonster(monster, itemData["value"].(int))
 			}
 		}
-	case "healmana":
+	case "manaheal":
 		{
 			if monsterPlayer {
 				InventoryTool.HealPlayerMana(player, itemData["value"].(int))
@@ -90,32 +93,75 @@ func UseConsumable(
 				HurtMonserDPS(monster, itemData["value"].(int), itemData["duration"].(int))
 			}
 		}
+	case "spellbook":
+		{
+			if monsterPlayer {
+				InventoryTool.PlayerLearnSkill(player, itemData["value"].(string))
+			} else {
+				monsterLearnSkill(monster, itemData["value"].(string))
+			}
+		}
 	}
+	InventoryTool.RemoveItemFromInventory(inv, consumableID, 1)
 }
 
 func MonsterAttack(
 	player *map[string]interface{},
 	monster *map[string]interface{},
 	monsterList map[string]map[string]interface{},
-) {
-	switch (*player)["name"].(string) {
-	case "CP_Heal":
+	turn int,
+) (string, bool) {
+	res := ""
+	switch (*monster)["spe"].(string) {
+	case "crit":
 		{
-
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int)*(*monster)["special"].(int))
+				res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats." + (*monster)["spe_msg"].(string)
+			} else {
+				InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+				res += (*monster)["atk_msg"].(string)
+			}
 		}
-	case "CP_Mana":
+	case "heal":
 		{
-
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				HealMonster(monster, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
 		}
-	case "CJ_Poison":
+	case "steal_and_run":
 		{
-
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				InventoryTool.RemoveGoldFromPlayer(player, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+				return res, true
+			}
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+		}
+	case "dpt":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			if (*monster)["tour"].(int) < rand.IntN(100) {
+				InventoryTool.HurtPlayer(player, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+		}
+	case "reduce_dmg":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
 		}
 	}
+	return res, false
 }
 
 func IsMonsterDead(monster map[string]interface{}) bool {
-	return monster["pv"].(int) <= 0
+	return monster["hp"].(int) <= 0
 }
 
 func HealMonster(monster *map[string]interface{}, quantity int) {
@@ -128,18 +174,25 @@ func HealMonster(monster *map[string]interface{}, quantity int) {
 }
 
 func HurtMonster(monster *map[string]interface{}, quantity int) bool {
-	if (*monster)["hp"].(int)-quantity <= 0 {
+	realquantity := quantity
+	if (*monster)["spe"].(string) == "reduce_dmg" {
+		realquantity -= (*monster)["special"].(int)
+		if realquantity < 0 {
+			realquantity = 0
+		}
+	}
+	if (*monster)["hp"].(int)-realquantity <= 0 {
 		(*monster)["hp"] = 0
 		return true
 	}
-	(*monster)["hp"] = (*monster)["hp"].(int) - quantity
+	(*monster)["hp"] = (*monster)["hp"].(int) - realquantity
 	return false
 }
 
 func HealMonsterMana(monster *map[string]interface{}, quantity int) {
 	tmp := (*monster)["mana"].(int) + quantity
-	if tmp > (*monster)["mana_hp"].(int) {
-		(*monster)["mana"] = (*monster)["mana_hp"]
+	if tmp > (*monster)["max_mana"].(int) {
+		(*monster)["mana"] = (*monster)["max_mana"]
 	} else {
 		(*monster)["mana"] = tmp
 	}
@@ -160,4 +213,24 @@ func HurtMonserDPS(monster *map[string]interface{}, quantity int, duration int) 
 		HurtMonster(monster, quantity)
 		go HurtMonserDPS(monster, quantity, duration-1)
 	}
+}
+
+func monsterLearnSkill(monster *map[string]interface{}, skill string) {
+	(*monster)["skills"] = append((*monster)["skills"].([]string), skill)
+}
+
+func GenRandMonster(monsterList map[string]map[string]interface{}) map[string]interface{} {
+	monster := make(map[string]interface{})
+	randomM := rand.IntN(len(monsterList))
+	i := 0
+	for k, v := range monsterList {
+		if i == randomM {
+			monster = v
+			monster["id"] = k
+			monster["hp"] = monster["max_hp"].(int)
+			break
+		}
+		i++
+	}
+	return monster
 }

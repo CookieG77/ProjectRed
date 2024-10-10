@@ -60,6 +60,12 @@ func GetMonsterList(res *map[string]map[string]interface{}, filepath string) boo
 	return GetItemList(res, filepath)
 }
 
+// Juste un alias de GetItemList pour simplifier la compréhension du code au main,
+// car les fonctions marchent de la même manière
+func GetSkillList(res *map[string]map[string]interface{}, filepath string) bool {
+	return GetItemList(res, filepath)
+}
+
 // Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res'
 func GetTradesList(res *map[string]map[string]map[string]int, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
@@ -117,7 +123,7 @@ func getInventoryByItemType(inv Inventory, item_types []string) ([]string, []int
 	res2 := []int{}
 	for consumableID, quantity := range inv {
 		for _, str := range item_types {
-			if consumableID[:len(str)] == str {
+			if consumableID[:len(str)] == str && quantity > 0 {
 				res = append(res, consumableID)
 				res2 = append(res2, quantity)
 			}
@@ -139,7 +145,7 @@ func getInventoryNotItemType(inv Inventory, item_types []string) ([]string, []in
 				break
 			}
 		}
-		if ok {
+		if ok && quantity > 0 {
 			res = append(res, consumableID)
 			res2 = append(res2, quantity)
 		}
@@ -181,12 +187,12 @@ func PrintInventory(inv Inventory) {
 func InitPlayer() map[string]interface{} {
 	res := make(map[string]interface{})
 	res["name"] = ""
+	res["class"] = ""
 	res["max_hp"] = 0
 	res["hp"] = 0
-	res["mana"] = 0
 	res["max_mana"] = 0
+	res["mana"] = 0
 	res["gold"] = 0
-	res["class"] = ""
 	res["EquipmentHead"] = ""
 	res["EquipmentTorso"] = ""
 	res["EquipmentLegs"] = ""
@@ -231,7 +237,7 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 
 // Permet de savoir si oui ou non le joueur est mort (quand il n'a plus de PV).
 func IsPlayerDead(player map[string]interface{}) bool {
-	return player["pv"].(int) <= 0
+	return player["hp"].(int) <= 0
 }
 
 func HealPlayer(player *map[string]interface{}, quantity int) {
@@ -258,8 +264,8 @@ func HurtPlayer(player *map[string]interface{}, quantity int) bool {
 // Permet de remplir le mana du joueur 'player' de 'quantity' mana.
 func HealPlayerMana(player *map[string]interface{}, quantity int) {
 	tmp := (*player)["mana"].(int) + quantity
-	if tmp > (*player)["mana_hp"].(int) {
-		(*player)["mana"] = (*player)["mana_hp"]
+	if tmp > (*player)["max_mana"].(int) {
+		(*player)["mana"] = (*player)["max_mana"]
 	} else {
 		(*player)["mana"] = tmp
 	}
@@ -299,6 +305,11 @@ func PlayerCanEquip(
 		return true
 	}
 	return false
+}
+
+// Permet d'jouter le skill 'skill' à la liste des skills connu du joueur 'player'
+func PlayerLearnSkill(player *map[string]interface{}, skill string) {
+	(*player)["skills"] = append((*player)["skills"].([]string), skill)
 }
 
 // Equipe le joueur 'player' avec l'équipement 'itemID'.
@@ -486,7 +497,25 @@ func LoadBG(imglst *map[string]image.Image, filepath string) bool {
 			if err2 {
 				return true
 			}
-			name := fname.Name()[5 : len(fname.Name())-4]
+			name := fname.Name()[3 : len(fname.Name())-4]
+			(*imglst)[name] = tmp
+		}
+	}
+	return false
+}
+
+func LoadMonsterIcons(imglst *map[string]image.Image, filepath string) bool {
+	files, err := os.ReadDir(filepath)
+	if err != nil {
+		return true
+	}
+	for _, fname := range files {
+		if (fname.Name())[:5] == "micon" {
+			tmp, err2 := TViewMakeImg(filepath + "/" + fname.Name())
+			if err2 {
+				return true
+			}
+			name := fname.Name()[6 : len(fname.Name())-4]
 			(*imglst)[name] = tmp
 		}
 	}

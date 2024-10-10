@@ -1,5 +1,5 @@
 {
-    "village_trader" : {
+    "merchant" : {
         "sells" : {
             "CP_heal" : 0,
             "CP_mana" : 3,
