@@ -22,7 +22,7 @@ func CreatePlayerWindow(
 	footer := tview.NewTextView()
 	footer.SetBorder(true)
 	footer.SetBackgroundColor(tcell.ColorOrangeRed)
-	footer.SetText("Attention, pour profité un maximum de la haute resolution des images, il est préférable de joué avec un terminal en pleine écran :)")
+	footer.SetText("Attention, pour profité un maximum du jeux, joué dans un terminal en plein écran + mise a l'echelle de votre écran à 100% ;)")
 	footer.SetTitleAlign(tview.AlignCenter)
 	image.SetBorder(true)
 	for k, v := range classList {
