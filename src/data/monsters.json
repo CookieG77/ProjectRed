@@ -2,15 +2,22 @@
     "goblin" : {
         "name" : "Goblin",
         "description" : "Une petite créature verte malveillante et laide.",
+        "encounter_msg" : "Un goblin saute d'un buisson et vous attaque !",
+        "atk_msg" : "Le goblin vous frappe avec son gourdin.",
+        "spe_msg" : "\nIl vous inflige un coup critique !",
         "max_hp" : 40,
         "atk_points" : 5,
         "special_com" : "inflige 200% de dégats tous les 3 tours",
+        "spe" : "crit",
         "special": 2,
         "tour" : 3
     },
     "troll" : {
         "name" : "Troll",
         "description" : "Une creature plus grande qu'un homme connue pour la vitesse à laquelle ses blessures guérissent.",
+        "encounter_msg" : "Un troll émerge des arbres et vous attaque !",
+        "atk_msg" : "Le troll vous frappe avec sa massue.",
+        "spe_msg" : "\nLe troll fait appelle à son pouvoir et se soigne de 5 points de vie.",
         "max_hp" : 60,
         "atk_points" : 6,
         "special_com" : "regagne 5 points de vie tous les 2 tours",
@@ -21,6 +28,9 @@
     "raven" : {
         "name" : "Corbeau",
         "description" : "Un oiseau au plumage noir qui aime voler les objets brillants.",
+        "encounter_msg" : "Un corbeau fond sur vous et vous attaque !",
+        "atk_msg" : "Le corbeau se met à vous picorer.",
+        "spe_msg" : "Le corbeau vous vole une pièce d'or et s'enfuit...",
         "max_hp" : 30,
         "atk_points" : 2,
         "special_com" : "Vole 1 pièce d'or par tour et s'enfuit au tour 3",
@@ -31,6 +41,9 @@
     "boar" : {
         "name" : "Sanglier",
         "description" : "Porc sauvage à peau épaisse vivant dans les forets.",
+        "encounter_msg" : "Un sanglier charge droit sur vous !",
+        "atk_msg" : "Le sanglier vous charge avec ses défenses.",
+        "spe_msg" : "",
         "max_hp" : 70,
         "atk_points" : 5,
         "special_com" : "les dégats qu'il reçoit sont réduits de 1",
@@ -40,11 +53,14 @@
     "wolf" : {
         "name" : "Loup Solitaire",
         "description" : "Un prédateur silencieux des forets qui ne lâche jamais sa proie.",
+        "encounter_msg" : "Un loup solitaire vous attaque !",
+        "atk_msg" : "Le loup vous mord à la jambe.",
+        "spe_msg" : "\nVous vous mettez à saigner, vous perdez 2 points de vie en plus.",
         "max_hp" : 50,
         "atk_points" : 7,
         "special_com" : "peut infliger 2 dégats de saignement par tour",
         "spe" : "dpt",
         "special" : 2,
-        "tour" : 1
+        "tour" : 50
     }
 }

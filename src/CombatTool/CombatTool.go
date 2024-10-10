@@ -3,6 +3,7 @@ package combattool
 import (
 	"PPR/InventoryTool"
 	"math/rand/v2"
+	"strconv"
 	"time"
 )
 
@@ -99,11 +100,58 @@ func MonsterAttack(
 	monster *map[string]interface{},
 	monsterList map[string]map[string]interface{},
 	turn int,
-) {
+) (string, bool) {
+	res := ""
+	switch (*monster)["spe"].(string) {
+	case "crit":
+		{
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int)*(*monster)["special"].(int))
+				res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats." + (*monster)["spe_msg"].(string)
+			} else {
+				InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+				res += (*monster)["atk_msg"].(string)
+			}
+		}
+	case "heal":
+		{
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				HealMonster(monster, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
+		}
+	case "steal_and_run":
+		{
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				InventoryTool.RemoveGoldFromPlayer(player, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+				return res, true
+			}
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+		}
+	case "dpt":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			if (*monster)["tour"].(int) < rand.IntN(100) {
+				InventoryTool.HurtPlayer(player, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+		}
+	case "reduce_dmg":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+		}
+	}
+	return res, false
 }
 
 func IsMonsterDead(monster map[string]interface{}) bool {
-	return monster["pv"].(int) <= 0
+	return monster["hp"].(int) <= 0
 }
 
 func HealMonster(monster *map[string]interface{}, quantity int) {
@@ -116,18 +164,25 @@ func HealMonster(monster *map[string]interface{}, quantity int) {
 }
 
 func HurtMonster(monster *map[string]interface{}, quantity int) bool {
-	if (*monster)["hp"].(int)-quantity <= 0 {
+	realquantity := quantity
+	if (*monster)["spe"].(string) == "reduce_dmg" {
+		realquantity -= (*monster)["special"].(int)
+		if realquantity < 0 {
+			realquantity = 0
+		}
+	}
+	if (*monster)["hp"].(int)-realquantity <= 0 {
 		(*monster)["hp"] = 0
 		return true
 	}
-	(*monster)["hp"] = (*monster)["hp"].(int) - quantity
+	(*monster)["hp"] = (*monster)["hp"].(int) - realquantity
 	return false
 }
 
 func HealMonsterMana(monster *map[string]interface{}, quantity int) {
 	tmp := (*monster)["mana"].(int) + quantity
-	if tmp > (*monster)["mana_hp"].(int) {
-		(*monster)["mana"] = (*monster)["mana_hp"]
+	if tmp > (*monster)["max_mana"].(int) {
+		(*monster)["mana"] = (*monster)["max_mana"]
 	} else {
 		(*monster)["mana"] = tmp
 	}

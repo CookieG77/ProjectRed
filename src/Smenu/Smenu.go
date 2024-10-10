@@ -581,6 +581,9 @@ func ForestBattleWindow(
 	AttackMenu.SetBorder(true).SetTitle("<[ Vos skills ]>")
 
 	ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + ": À vous de jouer ]>")
+	if turn == 0 {
+		ChatBox.SetText((*monster)["encounter_msg"].(string))
+	}
 	MonsterHPBar.SetTextAlign(tview.AlignCenter).SetTitle("<[ " + (*monster)["name"].(string) + " ]>").SetBorder(true)
 	MonsterIcon.SetImage(monster_icons[(*monster)["id"].(string)])
 	MonsterIcon.SetBorder(true)
@@ -596,8 +599,30 @@ func ForestBattleWindow(
 
 	//Fonction du tour du monstre
 	monsterTurn := func() {
-		buttonActivated = 5
-		combattool.MonsterAttack(player, monster, monsterList, turn)
+		time.Sleep(2 * time.Second)
+		app.QueueUpdateDraw(func() {
+			buttonActivated = 5
+			msg, end := combattool.MonsterAttack(player, monster, monsterList, turn)
+			updateRightBottomPart(Droiteflex, *player, itemlist)
+			if end {
+				MonsterIcon.SetImage(bg_imgs["forest"])
+				ChatBox.SetText(msg)
+				buttonActivated = 6
+				go differedStop(5)
+			} else if InventoryTool.IsPlayerDead(*player) {
+				ChatBox.SetText(msg + "\nVous vous éfondrez sous les coups.")
+				buttonActivated = 7
+				go differedStop(5)
+			} else if combattool.IsMonsterDead(*monster) {
+				MonsterIcon.SetImage(bg_imgs["forest"])
+				ChatBox.SetText(msg + "\nVotre ennemi tombe au combat.")
+				buttonActivated = 8
+				go differedStop(5)
+			} else {
+				ChatBox.SetText(msg)
+				go differedStop(2)
+			}
+		})
 	}
 
 	//Fonction refresh bar de vie de l'ennemi
@@ -644,7 +669,14 @@ func ForestBattleWindow(
 						actuMonsterHPBar()
 						gridCenter.RemoveItem(AttackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
-						monsterTurn()
+						if combattool.IsMonsterDead(*monster) {
+							MonsterIcon.SetImage(bg_imgs["forest"])
+							ChatBox.SetText("\nVotre ennemi tombe au combat.")
+							buttonActivated = 8
+							go differedStop(5)
+						} else {
+							go monsterTurn()
+						}
 					} else {
 						ChatBox.Clear()
 						ChatBox.SetText("Vous n'avez pas assez de mana pour lancer : " + skillList[k]["name"].(string))
@@ -682,7 +714,14 @@ func ForestBattleWindow(
 						actuMonsterHPBar()
 						gridCenter.RemoveItem(BackpackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
-						monsterTurn()
+						if combattool.IsMonsterDead(*monster) {
+							MonsterIcon.SetImage(bg_imgs["forest"])
+							ChatBox.SetText("\nVotre ennemi tombe au combat.")
+							buttonActivated = 8
+							go differedStop(5)
+						} else {
+							go monsterTurn()
+						}
 					})
 				}
 				app.SetFocus(BackpackMenu)
@@ -733,6 +772,14 @@ func ForestBattleWindow(
 	switch buttonActivated {
 	case 4:
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
+	case 5:
+		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, monster, turn+1)
+	case 6:
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
+	case 7:
+		GameOverWindow(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
+	case 8:
+		VictoryWindow(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
 	}
 }
 

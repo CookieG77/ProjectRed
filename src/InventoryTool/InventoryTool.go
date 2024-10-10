@@ -237,7 +237,7 @@ func RemoveGoldFromPlayer(player *map[string]interface{}, quantity int) bool {
 
 // Permet de savoir si oui ou non le joueur est mort (quand il n'a plus de PV).
 func IsPlayerDead(player map[string]interface{}) bool {
-	return player["pv"].(int) <= 0
+	return player["hp"].(int) <= 0
 }
 
 func HealPlayer(player *map[string]interface{}, quantity int) {
