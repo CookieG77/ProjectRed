@@ -61,6 +61,7 @@ func CreatePlayerWindow(
 		}).
 		AddButton("Quitter", func() {
 			app.Stop()
+
 		})
 
 	form.GetFormItemByLabel("Classe").(*tview.DropDown).SetSelectedFunc(func(text string, index int) {

@@ -37,6 +37,8 @@ func main() {
 
 	lootList := make(map[string]map[string]interface{})
 	InventoryTool.GetLootList(&lootList, "data/loots.json")
+	craftList := make(map[string]map[string]int)
+	InventoryTool.GetCraftList(&craftList, "data/crafts.json")
 
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
@@ -57,7 +59,15 @@ func main() {
 		InventoryTool.PlayerLearnSkill(&player, "opskill")
 		InventoryTool.PlayerLearnSkill(&player, "suicideskill")
 	}
-	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList))
+	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList))
+	InventoryTool.AddItemToInventory(&inv, "O_WolfPelt", 2)
+	InventoryTool.AddItemToInventory(&inv, "O_TrollSkin", 2)
+	InventoryTool.AddItemToInventory(&inv, "O_BoarLeather", 2)
+
+	InventoryTool.AddGoldToPlayer(&player, 100)
+	if player["max_hp"] != 0 {
+		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList)
+	}
 
 }
 
