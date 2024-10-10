@@ -37,7 +37,7 @@ func SmenuRender(
 	// =============================== Partie gauche ====================================
 
 	// ++++++ header ++++++
-	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction de :")
+	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction :")
 	headergauche.SetTextColor(tcell.ColorGhostWhite)
 	headergauche.SetTextAlign(tview.AlignCenter)
 	headergauche.SetBorder(true)
@@ -760,7 +760,7 @@ func ForestBattleWindow(
 						if skillList[k]["type"].(string) == "dmg" {
 							tmp += " Vous infliguez "
 							if (*monster)["spe"].(string) == "reduce_dmg" {
-								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)-(*monster)["special"].(int)) + " dégats." + "\nL'ennemi à une peau renforcé, ces dégats subies sont réduits."
+								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)-(*monster)["special"].(int)) + " dégats." + "\nL'ennemi à une peau renforcé, les dégats qu'il subi sont réduits."
 							} else {
 								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)) + " dégats."
 							}
@@ -777,7 +777,7 @@ func ForestBattleWindow(
 						if InventoryTool.IsPlayerDead(*player) {
 							end := func() {
 								time.Sleep(3 * time.Second)
-								ChatBox.SetText("\nVous vous éfondrez sous les coups.")
+								ChatBox.SetText("\nVous vous effondrez sous les coups.")
 								buttonActivated = 7
 								go differedStop(5)
 							}
@@ -934,8 +934,8 @@ func GameOverWindow(
 		app.Stop()
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
 	})
-	gameover_msg := "Vous êtes tomber au combat face à ennemi (" + monster["name"].(string) + "). Vous perdez " + strconv.Itoa((*player)["gold"].(int)/3) + " or."
-	gameover_msg += "\nVous regagnez la moitier de vos points de vie ainsi que votre mana. Faite plus attention à l'avenir..."
+	gameover_msg := "Vous êtes tombé(e) au combat face à ennemi (" + monster["name"].(string) + "). Vous perdez " + strconv.Itoa((*player)["gold"].(int)/3) + " or."
+	gameover_msg += "\nVous regagnez la moitié de vos points de vie ainsi que votre mana. Faites plus attention à l'avenir..."
 	image_gameover := tview.NewImage()
 	chatbox := tview.NewTextView().SetText(gameover_msg)
 	chatbox.SetDynamicColors(true).SetBorder(true)
