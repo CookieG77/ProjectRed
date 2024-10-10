@@ -41,6 +41,7 @@ func main() {
 	Scene.CreatePlayerWindow(classList, class_icons, &player, inv)
 	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
 	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
+	InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
 	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
 	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
 	InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)

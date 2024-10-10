@@ -28,7 +28,6 @@ func SmenuRender(
 	redColor := tcell.NewRGBColor(255, 0, 0)
 
 	app := tview.NewApplication()
-
 	// ============================Partie droite=====================================
 	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
 
@@ -236,14 +235,15 @@ func ShowConsumable(
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
-	// TextView for inv items
-	app.Stop()
+	items := tview.NewList()
+	CreateItemRow(inv, itemlist, player, true, false, &items)
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true)
+		AddItem(items, 0, 0, 6, 4, 0, 0, true).
+		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
@@ -283,13 +283,15 @@ func ShowEquipement(
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
-	app.Stop()
+	items := tview.NewList()
+	CreateItemRow(inv, itemlist, player, false, true, &items)
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true)
+		AddItem(items, 0, 0, 6, 4, 0, 0, true).
+		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
@@ -328,14 +330,15 @@ func ShowOthers(
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
-	// TextView for inv items
-	app.Stop()
-
+	// Items de l'inventaire
+	items := tview.NewList()
+	CreateItemRow(inv, itemlist, player, false, false, &items)
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true)
+		AddItem(items, 0, 0, 6, 4, 0, 0, true).
+		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
@@ -349,6 +352,46 @@ func ShowOthers(
 		panic(err4)
 	}
 	return 5
+}
+
+// Crée une liste des items, "consumable" doit être mis en true s'il s'agit
+// de la page des items consommable, pareil pour "equipable" (les deux ne doivent pas être en 'true')
+// et mettre les deux en 'false' si on veut la liste des autres objets.
+func CreateItemRow(inv *map[string]int, itemlist map[string]map[string]interface{}, player *map[string]interface{}, consumable bool, equipable bool, list **tview.List) {
+	(*list).Clear()
+	var Item []string
+	var Count []int
+	if consumable {
+		Item, Count = InventoryTool.GetInventoryConsumables(*inv)
+	} else if equipable {
+		Item, Count = InventoryTool.GetInventoryEquipable(*inv)
+	} else {
+		Item, Count = InventoryTool.GetInventoryOther(*inv)
+	}
+	a := 'a'
+	for i := 0; i < len(Item); i++ {
+		if Count[i] != 0 {
+			var name string
+			if !equipable {
+				name = itemlist[string(Item[i])]["name"].(string) + ": " + strconv.Itoa(Count[i])
+			} else {
+				name = itemlist[string(Item[i])]["name"].(string)
+			}
+			if consumable || equipable {
+				(*list).AddItem(name, itemlist[string(Item[i])]["description"].(string), a, func() {
+					if consumable {
+						combattool.UseConsumable(player, player, Item[i], itemlist, inv)
+					} else if equipable {
+						InventoryTool.EquipPlayerWith(player, Item[i], inv, itemlist)
+					}
+					CreateItemRow(inv, itemlist, player, consumable, equipable, list)
+				})
+			} else {
+				(*list).AddItem(name, itemlist[string(Item[i])]["description"].(string), a, nil)
+			}
+			a += 1
+		}
+	}
 }
 
 func CreateRightPart(
@@ -709,7 +752,7 @@ func ForestBattleWindow(
 				for i, k := range ks {
 					BackpackMenu.AddItem(itemlist[k]["name"].(string)+" : "+strconv.Itoa(vs[i]), itemlist[k]["description"].(string), rune('a'+i), func() {
 						ChatBox.SetText(itemlist[k]["use_text"].(string))
-						combattool.UseConsumable(player, monster, k, itemlist)
+						combattool.UseConsumable(player, monster, k, itemlist, inv)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
 						actuMonsterHPBar()
 						gridCenter.RemoveItem(BackpackMenu)

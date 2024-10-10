@@ -94,12 +94,16 @@ func IsNameValide(name *string) bool {
 	}
 	for i, c := range *name {
 		replace := true
-		if i == 0 && c >= 'a' && c <= 'z' {
-			nom += string(c - 32)
-			replace = false
-		} else if i > 0 && c >= 'A' && c <= 'Z' {
-			nom += string(c + 32)
-			replace = false
+		if c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || i > 0 && c == ' ' {
+			if i == 0 && c >= 'a' && c <= 'z' {
+				nom += string(c - 32)
+				replace = false
+			} else if i > 0 && c >= 'A' && c <= 'Z' {
+				nom += string(c + 32)
+				replace = false
+			}
+		} else {
+			return false
 		}
 		if replace {
 			nom += string(c)

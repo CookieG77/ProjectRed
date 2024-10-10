@@ -64,6 +64,7 @@ func UseConsumable(
 	monster *map[string]interface{},
 	consumableID string,
 	itemList map[string]map[string]interface{},
+	inv *map[string]int,
 ) {
 	monsterPlayer := consumableID[:2] == "CP"
 	itemData := itemList[consumableID]
@@ -93,6 +94,7 @@ func UseConsumable(
 			}
 		}
 	}
+	InventoryTool.RemoveItemFromInventory(inv, consumableID, 1)
 }
 
 func MonsterAttack(
