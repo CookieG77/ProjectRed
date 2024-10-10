@@ -42,15 +42,13 @@ func SmenuRender(
 
 	// ++++++ images ++++++
 	imageV := tview.NewImage()
-	imageV.SetBorder(true)
 	imageV.SetImage(bg_imgs["village_short"])
 
 	imageF := tview.NewImage()
-	imageF.SetBorder(true)
 	imageF.SetImage(bg_imgs["forest_short"])
 
 	// ++++++ Boutons ++++++
-	buttonF := tview.NewButton("go to forest").SetSelectedFunc(func() {
+	buttonF := tview.NewButton("de la sombre foret").SetSelectedFunc(func() {
 		sceneValue = 2
 		app.Stop()
 		Monster := combattool.GenRandMonster(monsterList)
@@ -58,7 +56,7 @@ func SmenuRender(
 	})
 	buttonF.SetBorder(true) //.SetRect(0, 0, 22, 3)
 
-	buttonV := tview.NewButton("go to village").SetSelectedFunc(func() {
+	buttonV := tview.NewButton("du grand village").SetSelectedFunc(func() {
 		app.Stop()
 		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList)
 	})
@@ -110,6 +108,7 @@ func SmenuRender(
 		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList)
 	})
 	statsButton.SetBorder(true)
+
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
@@ -190,14 +189,22 @@ func ShowInventory(
 			app.Stop()
 			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList)
 		})
+
+	// image inventaire
+
+	imageInventaire := tview.NewImage()
+	imageInventaire.SetBorder(true)
+	imageInventaire.SetImage(bg_imgs["inventory"])
+
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
-		AddItem(consumableButton, 4, 3, 1, 1, 0, 0, true).
-		AddItem(equipementButton, 4, 2, 1, 1, 0, 0, true).
-		AddItem(othersButton, 4, 1, 1, 1, 0, 0, true)
+		AddItem(imageInventaire, 0, 0, 4, 4, 0, 0, true).
+		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true).
+		AddItem(consumableButton, 4, 2, 1, 1, 0, 0, true).
+		AddItem(equipementButton, 4, 1, 1, 1, 0, 0, true).
+		AddItem(othersButton, 4, 0, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
@@ -899,8 +906,8 @@ func CreateLeftPart(
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv map[string]int,
-	imageTop map[string]image.Image,
-	imageBottom map[string]image.Image,
+	imageTop string,
+	imageBottom string,
 	nameTop string,
 	nameBottom string,
 	headerText string,
@@ -918,16 +925,21 @@ func CreateLeftPart(
 	buttonBottom := tview.NewButton(nameBottom)
 	buttonBottom.SetBorder(true)
 
+	imageT := tview.NewImage()
+	imageT.SetImage(bg_imgs[imageTop])
+	imageB := tview.NewImage()
+	imageB.SetImage(bg_imgs[imageBottom])
+
 	flexTOP := tview.NewFlex().
 		SetDirection(tview.FlexRow).
+		AddItem(imageT, 0, 1, true).
 		AddItem(buttonTOP, 3, 1, true)
-		// futur une imageTop
 	flexTOP.SetBorder(true)
 
 	flexBottom := tview.NewFlex().
 		SetDirection(tview.FlexRow).
+		AddItem(imageB, 0, 1, true).
 		AddItem(buttonBottom, 3, 1, true)
-		// futur une imageBottom
 	flexBottom.SetBorder(true)
 
 	GaucheFlex := tview.NewFlex().
@@ -958,28 +970,17 @@ func Svillage(
 
 	//================================PARTIT GAUCHE ===============================
 
-	// linkTop := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
-	// linkBottom := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
-
-	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, *inv, bg_imgs, bg_imgs,
-		"top", "bottom", "Rendre visite a votre tres cher :", app)
+	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, *inv, "forge", "merchant",
+		"Le Forgeron", "Le Marchant", "Rendre visite a votre tres cher :", app)
 
 	buttonTOP.SetSelectedFunc(func() {
 		app.Stop()
 		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, "forgeron")
-		// if err4 := app.SetRoot(linkTop, true).EnableMouse(true).Run(); err4 != nil {
-		// 	panic(err4)
-		// }
-		//forgeron
 	})
 
 	buttonBottom.SetSelectedFunc(func() {
 		app.Stop()
 		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, "vendeur")
-		// if err4 := app.SetRoot(linkBottom, true).EnableMouse(true).Run(); err4 != nil {
-		// 	panic(err4)
-		// }
-		//vendeur
 	})
 
 	// ============================ CENTRE =============================
@@ -1003,13 +1004,18 @@ func Svillage(
 		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
 		AddItem(invBoutton, 4, 2, 1, 2, 0, 0, true)
 
-	textTop := tview.NewTextView().SetText("je suis un texte qui raconte une histoire tres tres interessente, telement que vous meme avez oublié pouquoi vous liser ceci")
-	textTop.SetBorder(true)
-	textTop.SetTextColor(tcell.ColorDarkRed)
-	textTop.SetTextAlign(tview.AlignCenter)
+	// textTop := tview.NewTextView().SetText("je suis un texte qui raconte une histoire tres tres interessente, telement que vous meme avez oublié pouquoi vous liser ceci")
+	// textTop.SetBorder(true)
+	// textTop.SetTextColor(tcell.ColorDarkRed)
+	// textTop.SetTextAlign(tview.AlignCenter)
+	imageGauche := tview.NewImage()
+	imageGauche.SetBorder(true)
+	imageGauche.SetImage(bg_imgs["village"])
 
 	CentreTop := tview.NewFlex().
-		AddItem(textTop, 0, 1, false)
+		// AddItem(textTop, 0, 1, false)
+		AddItem(imageGauche, 0, 1, true)
+
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
@@ -1166,10 +1172,3 @@ func UpdateBottomGrid(
 	ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, list, bottomGrid)
 	bottomGrid.AddItem(*list, 2, 0, 2, 4, 0, 0, true)
 }
-
-// rightPart *tview.Flex,
-// 	player map[string]interface{},
-// 	itemlist map[string]map[string]interface{},
-// ) {
-// 	rightPart.RemoveItem(rightPart.GetItem(1))
-// 	rightPart.AddItem(createRightBottomPart(&player, itemlist), 0, 1, false)
