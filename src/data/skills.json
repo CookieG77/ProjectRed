@@ -1,7 +1,7 @@
 {
     "punch" : {
         "name" : "Coup de poing",
-        "description" : "Attaque de base au corp à corp. Inflige 8 points de dégâts.",
+        "description" : "Attaque de base au corps à corps. Inflige 8 points de dégâts.",
         "use_text" : "Vous frappez l'ennemi de toutes vos forces d'un coup de poings.",
         "type" : ["dmg"],
         "target_player" : [false],
