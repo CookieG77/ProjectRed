@@ -236,7 +236,7 @@ func ShowConsumable(
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	items := tview.NewList()
-	CreateItemRow(inv, itemlist, player, true, false, &items)
+	CreateItemRow(inv, itemlist, player, true, false, &items, Droiteflex)
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -284,7 +284,7 @@ func ShowEquipement(
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
 	items := tview.NewList()
-	CreateItemRow(inv, itemlist, player, false, true, &items)
+	CreateItemRow(inv, itemlist, player, false, true, &items, Droiteflex)
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -332,7 +332,7 @@ func ShowOthers(
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// Items de l'inventaire
 	items := tview.NewList()
-	CreateItemRow(inv, itemlist, player, false, false, &items)
+	CreateItemRow(inv, itemlist, player, false, false, &items, Droiteflex)
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
@@ -357,7 +357,7 @@ func ShowOthers(
 // Crée une liste des items, "consumable" doit être mis en true s'il s'agit
 // de la page des items consommable, pareil pour "equipable" (les deux ne doivent pas être en 'true')
 // et mettre les deux en 'false' si on veut la liste des autres objets.
-func CreateItemRow(inv *map[string]int, itemlist map[string]map[string]interface{}, player *map[string]interface{}, consumable bool, equipable bool, list **tview.List) {
+func CreateItemRow(inv *map[string]int, itemlist map[string]map[string]interface{}, player *map[string]interface{}, consumable bool, equipable bool, list **tview.List, rightPart *tview.Flex) {
 	(*list).Clear()
 	var Item []string
 	var Count []int
@@ -384,12 +384,14 @@ func CreateItemRow(inv *map[string]int, itemlist map[string]map[string]interface
 					} else if equipable {
 						InventoryTool.EquipPlayerWith(player, Item[i], inv, itemlist)
 					}
-					CreateItemRow(inv, itemlist, player, consumable, equipable, list)
+					CreateItemRow(inv, itemlist, player, consumable, equipable, list, rightPart)
+					updateRightBottomPart(rightPart, *player, itemlist)
 				})
 			} else {
 				(*list).AddItem(name, itemlist[string(Item[i])]["description"].(string), a, nil)
 			}
 			a += 1
+
 		}
 	}
 }
