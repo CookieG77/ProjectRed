@@ -415,47 +415,33 @@ func CreateLeftPart(
 	inv map[string]int,
 	imageTop map[string]image.Image,
 	imageBottom map[string]image.Image,
-	directionTop tview.Primitive,
-	directionBottom tview.Primitive,
 	nameTop string,
 	nameBottom string,
 	headerText string,
 	app *tview.Application,
-) *tview.Flex {
+) (*tview.Flex, *tview.Button, *tview.Button) {
 
 	headergauche := tview.NewTextView().SetText(headerText)
 	headergauche.SetTextColor(tcell.ColorGhostWhite)
 	headergauche.SetTextAlign(tview.AlignCenter)
 	headergauche.SetBorder(true)
 
-	buttonTOP := tview.NewButton(nameTop).SetSelectedFunc(func() {
-		app.Stop()
-		if err4 := app.SetRoot(directionTop, true).EnableMouse(true).Run(); err4 != nil {
-			panic(err4)
-		}
-		//forgeron
-	})
+	buttonTOP := tview.NewButton(nameTop)
 	buttonTOP.SetBorder(true)
 
-	buttonBottom := tview.NewButton(nameBottom).SetSelectedFunc(func() {
-		app.Stop()
-		if err4 := app.SetRoot(directionBottom, true).EnableMouse(true).Run(); err4 != nil {
-			panic(err4)
-		}
-		//vendeur
-	})
+	buttonBottom := tview.NewButton(nameBottom)
 	buttonBottom.SetBorder(true)
 
 	flexTOP := tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(buttonBottom, 3, 1, true)
-		// futur une image
+		AddItem(buttonTOP, 3, 1, true)
+		// futur une imageTop
 	flexTOP.SetBorder(true)
 
 	flexBottom := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(buttonBottom, 3, 1, true)
-		// futur une image
+		// futur une imageBottom
 	flexBottom.SetBorder(true)
 
 	GaucheFlex := tview.NewFlex().
@@ -464,7 +450,7 @@ func CreateLeftPart(
 		AddItem(flexTOP, 0, 1, true).
 		AddItem(flexBottom, 0, 1, true)
 
-	return GaucheFlex
+	return GaucheFlex, buttonTOP, buttonBottom
 }
 
 func Svillage(
@@ -484,8 +470,24 @@ func Svillage(
 	linkTop := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
 	linkBottom := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
 
-	Gaucheflex := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, inv, bg_imgs, bg_imgs, linkTop, linkBottom,
+	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, inv, bg_imgs, bg_imgs,
 		"top", "bottom", "Rendre visite a votre tres cher :", app)
+
+	buttonTOP.SetSelectedFunc(func() {
+		app.Stop()
+		if err4 := app.SetRoot(linkTop, true).EnableMouse(true).Run(); err4 != nil {
+			panic(err4)
+		}
+		//forgeron
+	})
+
+	buttonBottom.SetSelectedFunc(func() {
+		app.Stop()
+		if err4 := app.SetRoot(linkBottom, true).EnableMouse(true).Run(); err4 != nil {
+			panic(err4)
+		}
+		//vendeur
+	})
 
 	// ============================ CENTRE =============================
 
@@ -560,7 +562,7 @@ func Sshopvillage(
 		// liste interactive vendeur
 	case "forgeron":
 		//image forgerons
-		textTopgauche.SetText("Hmfmfhmfm, bricole cassé, objet a bricolé, bienvenu dans les flamme et le fer, rien de mieux pour battre l'enfer mfmfmfm")
+		textTopgauche.SetText("Hmfmfhmfm, armes cassé, objet a bricolé, bienvenu dans les flamme et le fer, rien de mieux pour battre l'enfer mfmfmfm")
 
 		// liste interactive for
 	}
@@ -588,6 +590,7 @@ func Sshopvillage(
 		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
 		AddItem(invBoutton, 4, 2, 1, 2, 0, 0, true)
 	// top
+	// A REMPLAC2 PAR IMAGE DU VILLAGE EN GRAND
 	textTop := tview.NewTextView().SetText("je suis un texte qui raconte une histoire tres tres interessente, telement que vous meme avez oublié pouquoi vous liser ceci")
 	textTop.SetBorder(true)
 	textTop.SetTextColor(tcell.ColorDarkRed)
