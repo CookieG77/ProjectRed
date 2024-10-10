@@ -18,6 +18,12 @@ func CreatePlayerWindow(
 	app := tview.NewApplication()
 	form := tview.NewForm()
 	image := tview.NewImage()
+
+	footer := tview.NewTextView()
+	footer.SetBorder(true)
+	footer.SetBackgroundColor(tcell.ColorOrangeRed)
+	footer.SetText("Attention, pour profité un maximum de la haute resolution des images, il est préférable de joué avec un terminal en pleine écran :)")
+	footer.SetTitleAlign(tview.AlignCenter)
 	image.SetBorder(true)
 	for k, v := range classList {
 		if v["class"].(string) == classNames[0] {
@@ -61,6 +67,7 @@ func CreatePlayerWindow(
 		}).
 		AddButton("Quitter", func() {
 			app.Stop()
+
 		})
 
 	form.GetFormItemByLabel("Classe").(*tview.DropDown).SetSelectedFunc(func(text string, index int) {
@@ -78,7 +85,11 @@ func CreatePlayerWindow(
 		AddItem(form, 0, 1, true).
 		AddItem(box, 0, 1, false).
 		AddItem(image, 0, 1, false)
-	if err := app.SetRoot(flex, true).EnableMouse(true).Run(); err != nil {
+	flexwithwarning := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(flex, 0, 1, true).
+		AddItem(footer, 3, 1, false)
+	if err := app.SetRoot(flexwithwarning, true).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
 }

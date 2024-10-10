@@ -1,0 +1,35 @@
+{
+    "goblin" : {
+      "loot_min": 0,
+      "loot_max": 5,
+      "has_special": false
+    },
+    "troll" : {
+      "loot_min": 0,
+      "loot_max": 2,
+      "has_special": true,
+      "loot_special" : ["O_TrollSkin"],
+      "chance" : [50]
+    },
+    "raven" : {
+        "loot_min": 0,
+        "loot_max": 3,
+        "has_special": true,
+        "loot_special" : ["O_Plume"],
+        "chance" : [25]
+    },
+    "wolf" : {
+        "loot_min": 0,
+        "loot_max": 4,
+        "has_special": true,
+        "loot_special" : ["O_WolfPelt"],
+        "chance" : [75]
+    },
+    "boar" : {
+        "loot_min": 0,
+        "loot_max": 3,
+        "has_special": true,
+        "loot_special" : ["O_BoarLeather"],
+        "chance" : [60]
+    }
+}
