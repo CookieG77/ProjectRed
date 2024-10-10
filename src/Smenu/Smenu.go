@@ -53,7 +53,7 @@ func SmenuRender(
 	// ++++++ Boutons ++++++
 	buttonF := tview.NewButton("De la Sombre fôret").SetSelectedFunc(func() {
 		sceneValue = 2
-		InventoryTool.PlaySound("ressource/sound_init.mp3")
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		Monster := combattool.GenRandMonster(monsterList)
 		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, &Monster, craftList, tradeList, 0)
@@ -61,6 +61,7 @@ func SmenuRender(
 	buttonF.SetBorder(true) //.SetRect(0, 0, 22, 3)
 
 	buttonV := tview.NewButton("Du grand village").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
@@ -99,15 +100,18 @@ func SmenuRender(
 	// affichage bas
 	quitButton := tview.NewButton("Quitter").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 		})
 	quitButton.SetBorder(true)
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	invBoutton.SetBorder(true)
 	statsButton := tview.NewButton("Info Joueur").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
@@ -174,6 +178,7 @@ func ShowInventory(
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -181,17 +186,20 @@ func ShowInventory(
 
 	consumableButton := tview.NewButton("Consommable").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowConsumable(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 
 	equipementButton := tview.NewButton("Equipement").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowEquipement(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	othersButton := tview.NewButton("Autre").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -253,6 +261,7 @@ func ShowConsumable(
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -304,6 +313,7 @@ func ShowEquipement(
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -356,6 +366,7 @@ func ShowOthers(
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -602,6 +613,7 @@ func ShowPlayerStats(
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
@@ -759,6 +771,7 @@ func ForestBattleWindow(
 	// Bouton d'attaque
 	AttackButton.SetSelectedFunc(func() {
 		if buttonActivated == 0 || buttonActivated == 2 || buttonActivated == 3 {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			buttonActivated = 1
 			AttackMenu.Clear()
 			switch buttonActivated {
@@ -839,6 +852,7 @@ func ForestBattleWindow(
 	// Bouton Sac à dos
 	BackpackButton.SetSelectedFunc(func() {
 		if buttonActivated >= 0 && buttonActivated <= 1 {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			switch buttonActivated {
 			case 0:
 				gridCenter.RemoveItem(MonsterIcon)
@@ -892,6 +906,7 @@ func ForestBattleWindow(
 	// Bouton de fuite
 	FleeButton.SetSelectedFunc(func() {
 		if buttonActivated >= 0 && buttonActivated <= 3 {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			switch buttonActivated {
 			case 1:
 				{
@@ -963,6 +978,7 @@ func GameOverWindow(
 	InventoryTool.RemoveGoldFromPlayer(player, (*player)["gold"].(int)/3)
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
@@ -1019,6 +1035,7 @@ func VictoryWindow(
 	InventoryTool.HealPlayerMana(player, (*player)["max_mana"].(int))
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
@@ -1129,11 +1146,13 @@ func Svillage(
 		"Le Forgeron", "Le Marchant", "Rendre visite à votre connaisance :", app)
 
 	buttonTOP.SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "forgeron")
 	})
 
 	buttonBottom.SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur")
 	})
@@ -1142,12 +1161,14 @@ func Svillage(
 
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
@@ -1228,12 +1249,14 @@ func Sshopvillage(
 	//bottom
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
+			InventoryTool.PlaySound("ressource/sound_button.mp3")
 			app.Stop()
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
 		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})

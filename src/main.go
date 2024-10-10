@@ -72,7 +72,7 @@ func main() {
 		InventoryTool.PrintPlayer(player)
 	}
 	if player["max_hp"].(int) > 0 {
-		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList)
+		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	}
 
 }
