@@ -5,6 +5,8 @@ import (
 	"PPR/Scene"
 	"PPR/Smenu"
 	"image"
+	"os"
+	"slices"
 )
 
 func main() {
@@ -32,7 +34,7 @@ func main() {
 
 	skillList := make(map[string]map[string]interface{})
 	InventoryTool.GetSkillList(&skillList, "data/skills.json")
-	
+
 	lootList := make(map[string]map[string]interface{})
 	InventoryTool.GetLootList(&lootList, "data/loots.json")
 
@@ -42,15 +44,23 @@ func main() {
 
 	//Execution du programme
 	Scene.CreatePlayerWindow(classList, class_icons, &player, inv)
-	InventoryTool.AddItemToInventory(&inv, "CP_Fireballbook", 1)
-	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
-	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
-	InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
-	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
-	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
-	InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
-	InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
-	InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
+	if slices.Contains(getArgs(), "-op") {
+		InventoryTool.AddItemToInventory(&inv, "CP_Fireballbook", 1)
+		InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
+		InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
+		InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
+		InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
+		InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
+		InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
+		InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
+		InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
+		InventoryTool.PlayerLearnSkill(&player, "opskill")
+		InventoryTool.PlayerLearnSkill(&player, "suicideskill")
+	}
 	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList))
 
+}
+
+func getArgs() []string {
+	return os.Args[1:]
 }

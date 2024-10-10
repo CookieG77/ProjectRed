@@ -127,10 +127,10 @@ func RemoveItemFromInventory(inv *Inventory, itemID string, quantity int) bool {
 func getInventoryByItemType(inv Inventory, item_types []string) ([]string, []int) {
 	res := []string{}
 	res2 := []int{}
-	for consumableID, quantity := range inv {
+	for itemID, quantity := range inv {
 		for _, str := range item_types {
-			if consumableID[:len(str)] == str && quantity > 0 {
-				res = append(res, consumableID)
+			if itemID[:len(str)] == str && quantity > 0 {
+				res = append(res, itemID)
 				res2 = append(res2, quantity)
 			}
 		}
@@ -143,26 +143,32 @@ func getInventoryByItemType(inv Inventory, item_types []string) ([]string, []int
 func getInventoryNotItemType(inv Inventory, item_types []string) ([]string, []int) {
 	res := []string{}
 	res2 := []int{}
-	for consumableID, quantity := range inv {
+	for itemID, quantity := range inv {
 		ok := true
 		for _, str := range item_types {
-			if consumableID[:len(str)] == str {
+			if itemID[:len(str)] == str {
 				ok = false
 				break
 			}
 		}
 		if ok && quantity > 0 {
-			res = append(res, consumableID)
+			res = append(res, itemID)
 			res2 = append(res2, quantity)
 		}
 	}
 	return res, res2
 }
 
-// Renvoie la liste des items consomables
-// ainsi qu'une autre liste contenant la quantité de chaques chacun.
+// Renvoie la liste des items consomables.
+// Ainsi qu'une autre liste contenant la quantité de chaques chacun.
 func GetInventoryConsumables(inv Inventory) ([]string, []int) {
 	return getInventoryByItemType(inv, []string{"CP"})
+}
+
+// Renvoie la liste des items consomables et consomables utilisable en combat.
+// Ainsi qu'une autre liste contenant la quantité de chaques chacun.
+func GetInventoryConsumablesForCombat(inv Inventory) ([]string, []int) {
+	return getInventoryByItemType(inv, []string{"CP", "CJ"})
 }
 
 // Renvoie la liste des items équipables

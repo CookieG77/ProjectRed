@@ -34,5 +34,23 @@
         "target_player" : true,
         "atk_points" : 10,
         "mana_cost" : 5
+    },
+    "opskill" : {
+        "name" : "Compétence opérative, mort instantanée",
+        "description" : "Inflige 9999 dégats à l'ennemi.",
+        "use_text" : "Vous invoquez une puissance incommensurable qui détruit l'ennemi.",
+        "type" : "dmg",
+        "target_player" : false,
+        "atk_points" : 9999,
+        "mana_cost" : 0
+    },
+    "suicideskill" : {
+        "name" : "Compétence opérative, suicide",
+        "description" : "Inflige 9999 dégats au joueur.",
+        "use_text" : "Vous invoquez une puissance incommensurable qui détruit votre enveloppe charnel.",
+        "type" : "dmg",
+        "target_player" : true,
+        "atk_points" : 9999,
+        "mana_cost" : 0
     }
 }

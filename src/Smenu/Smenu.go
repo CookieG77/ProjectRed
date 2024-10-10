@@ -632,8 +632,7 @@ func ForestBattleWindow(
 	EmptyBackpack.SetTextAlign(tview.AlignCenter).SetBorder(true).SetTitle("<[ Sac à dos ]>")
 	AttackMenu := tview.NewList()
 	AttackMenu.SetBorder(true).SetTitle("<[ Vos skills ]>")
-
-	ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + ": À vous de jouer ]>")
+	ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + " : À vous de jouer ]>")
 	if turn == 0 {
 		ChatBox.SetText((*monster)["encounter_msg"].(string))
 	}
@@ -650,13 +649,49 @@ func ForestBattleWindow(
 		AddItem(FleeButton, 11, 2, 1, 2, 0, 0, true)
 	gridCenter.SetBorder(true)
 
+	//Fonction refresh bar de vie de l'ennemi
+	actuMonsterHPBar := func() {
+		bar := "Vie restante : " + strconv.Itoa((*monster)["hp"].(int)) + " / " + strconv.Itoa((*monster)["max_hp"].(int)) + " [red]♥[white]"
+		bar += "\n\n╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white][red]"
+		tmp := int((float64((*monster)["hp"].(int)) / float64((*monster)["max_hp"].(int))) * float64(55))
+		for i := 0; i < tmp; i++ {
+			bar += "▮"
+		}
+		bar += "[black]"
+		for i := tmp; i < 55; i++ {
+			bar += "▯"
+		}
+		MonsterHPBar.Clear()
+		MonsterHPBar.SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝")
+	}
+	var actuMonsterHPBarRecur func(int)
+	actuMonsterHPBarRecur = func(n int) {
+		if n > 0 {
+			actuMonsterHPBar()
+			time.Sleep(1 * time.Second)
+			go actuMonsterHPBarRecur(n - 1)
+		}
+	}
+
+	//Fonction de reset de la page pour un nouveau tour
+	reset := func() {
+		time.Sleep(3 * time.Second)
+		actuMonsterHPBarRecur(3)
+		turn++
+		ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + " : À vous de jouer ]>")
+		ChatBox.SetText("Que faite vous ?")
+		buttonActivated = 0
+	}
+
 	//Fonction du tour du monstre
 	monsterTurn := func() {
-		time.Sleep(2 * time.Second)
+		time.Sleep(3 * time.Second)
 		app.QueueUpdateDraw(func() {
 			buttonActivated = 5
+			actuMonsterHPBarRecur(3)
 			msg, end := combattool.MonsterAttack(player, monster, monsterList, turn)
 			updateRightBottomPart(Droiteflex, *player, itemlist)
+			ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + " : Au tour de l'ennemi ]>")
 			if end {
 				MonsterIcon.SetImage(bg_imgs["forest"])
 				ChatBox.SetText(msg)
@@ -673,25 +708,9 @@ func ForestBattleWindow(
 				go differedStop(5)
 			} else {
 				ChatBox.SetText(msg)
-				go differedStop(2)
+				go reset()
 			}
 		})
-	}
-
-	//Fonction refresh bar de vie de l'ennemi
-	actuMonsterHPBar := func() {
-		bar := "Vie restante : " + strconv.Itoa((*monster)["hp"].(int)) + " / " + strconv.Itoa((*monster)["max_hp"].(int)) + " [red]♥[white]"
-		bar += "\n\n╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white][red]"
-		tmp := int((float64((*monster)["hp"].(int)) / float64((*monster)["max_hp"].(int))) * float64(55))
-		for i := 0; i < tmp; i++ {
-			bar += "▮"
-		}
-		bar += "[black]"
-		for i := tmp; i < 55; i++ {
-			bar += "▯"
-		}
-		MonsterHPBar.Clear()
-		MonsterHPBar.SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝")
 	}
 
 	// Donner aux boutons leur fonction
@@ -718,7 +737,7 @@ func ForestBattleWindow(
 					if combattool.CanPlayerUseSkill(*player, k, skillList) {
 						tmp := skillList[k]["use_text"].(string)
 						if skillList[k]["type"].(string) == "dmg" {
-							tmp += "Vous infliguez "
+							tmp += " Vous infliguez "
 							if (*monster)["spe"].(string) == "reduce_dmg" {
 								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)-(*monster)["special"].(int)) + " dégats." + "\nL'ennemi à une peau renforcé, ces dégats subies sont réduits."
 							} else {
@@ -731,14 +750,26 @@ func ForestBattleWindow(
 						ChatBox.SetText(tmp)
 						combattool.UseSkill(player, monster, k, skillList)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
-						actuMonsterHPBar()
+						actuMonsterHPBarRecur(3)
 						gridCenter.RemoveItem(AttackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
-						if combattool.IsMonsterDead(*monster) {
-							MonsterIcon.SetImage(bg_imgs["forest"])
-							ChatBox.SetText("\nVotre ennemi tombe au combat.")
-							buttonActivated = 8
-							go differedStop(5)
+						if InventoryTool.IsPlayerDead(*player) {
+							end := func() {
+								time.Sleep(3 * time.Second)
+								ChatBox.SetText("\nVous vous éfondrez sous les coups.")
+								buttonActivated = 7
+								go differedStop(5)
+							}
+							go end()
+						} else if combattool.IsMonsterDead(*monster) {
+							end := func() {
+								time.Sleep(3 * time.Second)
+								MonsterIcon.SetImage(bg_imgs["forest"])
+								ChatBox.SetText("\nVotre ennemi tombe au combat.")
+								buttonActivated = 8
+								go differedStop(5)
+							}
+							go end()
 						} else {
 							go monsterTurn()
 						}
@@ -764,7 +795,7 @@ func ForestBattleWindow(
 				gridCenter.RemoveItem(AttackMenu)
 			}
 			buttonActivated = 2
-			ks, vs := InventoryTool.GetInventoryConsumables(*inv)
+			ks, vs := InventoryTool.GetInventoryConsumablesForCombat(*inv)
 			if len(ks) == 0 {
 				buttonActivated = 3
 				gridCenter.AddItem(EmptyBackpack, 2, 0, 6, 6, 0, 0, false)
@@ -776,14 +807,26 @@ func ForestBattleWindow(
 						ChatBox.SetText(itemlist[k]["use_text"].(string))
 						combattool.UseConsumable(player, monster, k, itemlist, inv)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
-						actuMonsterHPBar()
+						actuMonsterHPBarRecur(3)
 						gridCenter.RemoveItem(BackpackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
-						if combattool.IsMonsterDead(*monster) {
-							MonsterIcon.SetImage(bg_imgs["forest"])
-							ChatBox.SetText("\nVotre ennemi tombe au combat.")
-							buttonActivated = 8
-							go differedStop(5)
+						if InventoryTool.IsPlayerDead(*player) {
+							end := func() {
+								time.Sleep(3 * time.Second)
+								ChatBox.SetText("\nVous vous éfondrez sous les coups.")
+								buttonActivated = 7
+								go differedStop(5)
+							}
+							go end()
+						} else if combattool.IsMonsterDead(*monster) {
+							end := func() {
+								time.Sleep(3 * time.Second)
+								MonsterIcon.SetImage(bg_imgs["forest"])
+								ChatBox.SetText("\nVotre ennemi tombe au combat.")
+								buttonActivated = 8
+								go differedStop(5)
+							}
+							go end()
 						} else {
 							go monsterTurn()
 						}
@@ -837,8 +880,6 @@ func ForestBattleWindow(
 	switch buttonActivated {
 	case 4:
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList)
-	case 5:
-		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, monster, turn+1)
 	case 6:
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList)
 	case 7:
@@ -863,15 +904,15 @@ func GameOverWindow(
 	turn int,
 ) {
 	app := tview.NewApplication()
+	InventoryTool.HealPlayer(player, (*player)["max_hp"].(int)/2)
+	InventoryTool.HealPlayerMana(player, (*player)["max_mana"].(int))
+	InventoryTool.RemoveGoldFromPlayer(player, (*player)["gold"].(int)/3)
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
-		InventoryTool.HealPlayer(player, (*player)["max_hp"].(int)/2)
-		InventoryTool.HealPlayerMana(player, (*player)["ma_mana"].(int))
-		InventoryTool.RemoveGoldFromPlayer(player, (*player)["gold"].(int)/3)
 		app.Stop()
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList)
 	})
-	gameover_msg := "Vous êtes tomber au combat face à ennemi (" + monster["name"].(string) + "). Vous perder " + strconv.Itoa((*player)["gold"].(int)/3) + "or."
+	gameover_msg := "Vous êtes tomber au combat face à ennemi (" + monster["name"].(string) + "). Vous perdez " + strconv.Itoa((*player)["gold"].(int)/3) + " or."
 	gameover_msg += "\nVous regagnez la moitier de vos points de vie ainsi que votre mana. Faite plus attention à l'avenir..."
 	image_gameover := tview.NewImage()
 	chatbox := tview.NewTextView().SetText(gameover_msg)
@@ -911,27 +952,27 @@ func VictoryWindow(
 	InventoryTool.AddGoldToPlayer(player, fgold)
 	fitems := []string{}
 	if mob_loot["has_special"].(bool) {
-		for i, item := range mob_loot["loot_special"].([]string) {
-			if rand.IntN(100) > mob_loot["chance"].([]int)[i] {
-				fitems = append(fitems, item)
-				InventoryTool.AddItemToInventory(inv, item, 1)
+		for i, item := range mob_loot["loot_special"].([]interface{}) {
+			tmp := mob_loot["chance"].([]interface{})[i].(float64)
+			if rand.IntN(100) > int(tmp) {
+				fitems = append(fitems, item.(string))
+				InventoryTool.AddItemToInventory(inv, item.(string), 1)
 			}
 		}
 	}
+	InventoryTool.HealPlayerMana(player, (*player)["max_mana"].(int))
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
-		InventoryTool.HealPlayer(player, (*player)["max_hp"].(int)/2)
-		InventoryTool.HealPlayerMana(player, (*player)["ma_mana"].(int))
-		InventoryTool.RemoveGoldFromPlayer(player, (*player)["gold"].(int)/3)
 		app.Stop()
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList)
 	})
-	gameover_msg := "Vous avez vaillament vaincu l'ennemi (" + monster["name"].(string) + ")."
-	gameover_msg += " Vous avez trouvé : " + strconv.Itoa(fgold) + "or"
+	gameover_msg := "Vous avez vaillamment vaincu l'ennemi (" + monster["name"].(string) + ")."
+	gameover_msg += " Vous avez trouvé : " + strconv.Itoa(fgold) + " or"
 	if len(fitems) > 0 {
+		gameover_msg += " ; "
 		for i, item := range fitems {
 			gameover_msg += itemlist[item]["name"].(string)
-			if i < len(fitems) {
+			if i < len(fitems)-1 {
 				gameover_msg += " ; "
 			}
 		}
@@ -943,7 +984,7 @@ func VictoryWindow(
 	restart_bouton.SetBorder(true)
 	image_gameover.SetBorder(true)
 
-	image_gameover.SetImage(bg_imgs["gameover"])
+	image_gameover.SetImage(bg_imgs["forest"])
 
 	grid := tview.NewGrid().
 		AddItem(image_gameover, 0, 0, 9, 6, 0, 0, false).
@@ -951,6 +992,7 @@ func VictoryWindow(
 		AddItem(restart_bouton, 9, 5, 1, 1, 0, 0, true)
 
 	if err := app.SetRoot(grid, true).EnableMouse(true).Run(); err != nil {
+		print("\n\nICI!\n\n")
 		panic(err)
 	}
 }
