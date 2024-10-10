@@ -6,8 +6,14 @@ import (
 	"fmt"
 	"image"
 	"image/png"
+	"log"
 	"os"
+	"slices"
 	"time"
+
+	"github.com/gopxl/beep"
+	"github.com/gopxl/beep/mp3"
+	"github.com/gopxl/beep/speaker"
 )
 
 type Inventory = map[string]int
@@ -349,7 +355,7 @@ func EquipPlayerWith(
 	case "EB":
 		slot = "EquipmentBoots"
 
-	case "W":
+	case "EW":
 		slot = "EquipmentWeapon"
 	}
 	// Si le slot n'est pas vide,
@@ -371,6 +377,12 @@ func EquipPlayerWith(
 					(*player)["mana"] = (*player)["max_mana"].(int)
 				}
 			}
+		case "skill":
+			{
+				for _, str := range itemList[(*player)[slot].(string)]["value"].([]interface{}) {
+					(*player)["skills"] = slices.DeleteFunc((*player)["skills"].([]string), func(elem string) bool { return elem == str.(string) })
+				}
+			}
 		}
 	}
 	//On équipe le joueur avec 'itemID' dans le bon slot.
@@ -381,8 +393,11 @@ func EquipPlayerWith(
 		(*player)["max_hp"] = (*player)["max_hp"].(int) + itemList[itemID]["value"].(int)
 	case "maxmana":
 		(*player)["max_mana"] = (*player)["max_mana"].(int) + itemList[itemID]["value"].(int)
+	case "skill":
+		for _, str := range itemList[itemID]["value"].([]interface{}) {
+			(*player)["skills"] = append((*player)["skills"].([]string), str.(string))
+		}
 	}
-
 }
 
 // |========================================================|
@@ -534,6 +549,25 @@ func LoadMonsterIcons(imglst *map[string]image.Image, filepath string) bool {
 	return false
 }
 
+func LoadGameSounds(imglst *map[string]map[string]string, filepath string) bool {
+	files, err := os.ReadDir(filepath)
+	if err != nil {
+		return true
+	}
+	(*imglst) = map[string]map[string]string{
+		"sounds": {},
+		"muscis": {},
+	}
+	for _, fname := range files {
+		if (fname.Name())[:5] == "sound" {
+			(*imglst)["sounds"][fname.Name()[6:len(fname.Name())-4]] = filepath + "/" + fname.Name()
+		} else if (fname.Name())[:5] == "music" {
+			(*imglst)["musics"][fname.Name()[6:len(fname.Name())-4]] = filepath + "/" + fname.Name()
+		}
+	}
+	return false
+}
+
 // Fonctions permettant de chargé et décodé une image en 'png',
 // pour utilisation avec la librairie Tview.
 func TViewMakeImg(addresse string) (image.Image, bool) {
@@ -543,6 +577,29 @@ func TViewMakeImg(addresse string) (image.Image, bool) {
 		return nil, true
 	}
 	return graphics, false
+}
+
+// Play a sound using the adresse
+func PlaySound(adresse string) {
+	f, err := os.Open(adresse)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
 }
 
 // |========================================================|

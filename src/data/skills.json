@@ -3,54 +3,99 @@
         "name" : "Coup de poing",
         "description" : "Attaque de base au corp à corp. Inflige 8 points de dégâts.",
         "use_text" : "Vous frappez l'ennemi de toutes vos forces d'un coup de poings.",
-        "type" : "dmg",
-        "target_player" : false,
-        "atk_points" : 8,
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [8],
         "mana_cost" : 0
     },
     "fireball" : {
         "name" : "Boule de feu",
         "description" : "Conjure une boule de feu et l'envoie sur l'ennemi. Inflige 18 points de dégâts.",
         "use_text" : "Vous faites appelle aux arcanes et lancez une boule de feu sur l'ennemi.",
-        "type" : "dmg",
-        "target_player" : false,
-        "atk_points" : 18,
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [18],
         "mana_cost" : 20
     },
     "firetrait" : {
         "name" : "Trait de feu",
         "description" : "Lance un trait de feu sur l'ennemi. Inflige 9 points de dégâts.",
         "use_text" : "Vous invoquez un trait de feu qui part à toute vitesse sur l'ennemi.",
-        "type" : "dmg",
-        "target_player" : false,
-        "atk_points" : 12,
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [12],
         "mana_cost" : 10
     },
     "minorheal" : {
         "name" : "Soin mineur",
         "description" : "Soigne le joueur de 10 points de vie.",
         "use_text" : "Vous invoquez une vague de lumière qui vous soigne.",
-        "type" : "heal",
-        "target_player" : true,
-        "atk_points" : 10,
+        "type" : ["heal"],
+        "target_player" : [true],
+        "atk_points" : [10],
         "mana_cost" : 5
     },
     "opskill" : {
-        "name" : "Compétence opérative, mort instantanée",
+        "name" : "Compétence opérative, mort instantanée de l'ennemi",
         "description" : "Inflige 9999 dégats à l'ennemi.",
         "use_text" : "Vous invoquez une puissance incommensurable qui détruit l'ennemi.",
-        "type" : "dmg",
-        "target_player" : false,
-        "atk_points" : 9999,
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [9999],
         "mana_cost" : 0
     },
     "suicideskill" : {
-        "name" : "Compétence opérative, suicide",
+        "name" : "Compétence opérative, mort instantanée du joueur",
         "description" : "Inflige 9999 dégats au joueur.",
         "use_text" : "Vous invoquez une puissance incommensurable qui détruit votre enveloppe charnel.",
-        "type" : "dmg",
-        "target_player" : true,
-        "atk_points" : 9999,
+        "type" : ["dmg"],
+        "target_player" : [true],
+        "atk_points" : [9999],
         "mana_cost" : 0
+    },
+    "novice_swordslash" : {
+        "name" : "Coup d'épée",
+        "description" : "Attaque d'épée de base. Inflige 16 points de dégâts.",
+        "use_text" : "Vous frappez l'ennemi avec votre épée.",
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [16],
+        "mana_cost" : 0
+    },
+    "advanced_swordslash" : {
+        "name" : "Coup d'épée avancé",
+        "description" : "Attaque d'épée avancée. Inflige 24 points de dégâts.",
+        "use_text" : "Vous frappez l'ennemi avec votre épée avec habilité.",
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [24],
+        "mana_cost" : 0
+    },
+    "magicmissile" : {
+        "name" : "Projectile magique",
+        "description" : "Lance un projectile magique sur l'ennemi. Inflige 12 points de dégâts.",
+        "use_text" : "Vous lancez un projectile magique sur l'ennemi.",
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [12],
+        "mana_cost" : 10
+    },
+    "explode" : {
+        "name" : "Explosion",
+        "description" : "Explosion magique qui inflige 20 points de dégâts à l'ennemi.",
+        "use_text" : "Vous invoquez une explosion magique qui inflige des dégâts à l'ennemi.",
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [35],
+        "mana_cost" : 30
+    },
+    "vampiredague" : {
+        "name" : "Coup de poignard vampirique",
+        "description" : "Attaque de poignard qui vole 5 points de vie à l'ennemi. Inflige 8 points de dégâts.",
+        "use_text" : "Vous frappez l'ennemi avec votre poignard et volez son énergie vitale.",
+        "type" : ["dmg", "heal"],
+        "target_player" : [false, true],
+        "atk_points" : [5, 8],
+        "mana_cost" : 10
     }
 }

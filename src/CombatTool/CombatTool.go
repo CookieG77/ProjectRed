@@ -34,29 +34,30 @@ func UseSkill(
 	skill string,
 	skillList map[string]map[string]interface{},
 ) {
-	switch skillList[skill]["type"].(string) {
-	case "dmg":
-		{
-			if skillList[skill]["target_player"].(bool) {
-				InventoryTool.HurtPlayer(player, skillList[skill]["atk_points"].(int))
-				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
-			} else {
-				HurtMonster(monster, skillList[skill]["atk_points"].(int))
-				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
+	lst_atk_points := skillList[skill]["atk_points"].([]interface{})
+	lst_targets := skillList[skill]["target_player"].([]interface{})
+	for i, k := range skillList[skill]["type"].([]interface{}) {
+		switch k.(string) {
+		case "dmg":
+			{
+				if lst_targets[i].(bool) {
+					InventoryTool.HurtPlayer(player, int(lst_atk_points[i].(float64)))
+				} else {
+					HurtMonster(monster, int(lst_atk_points[i].(float64)))
+				}
 			}
-		}
-	case "heal":
-		{
-			if skillList[skill]["target_player"].(bool) {
-				InventoryTool.HealPlayer(player, skillList[skill]["atk_points"].(int))
-				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
-			} else {
-				HealMonster(monster, skillList[skill]["atk_points"].(int))
-				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
+		case "heal":
+			{
+				if lst_targets[i].(bool) {
+					InventoryTool.HealPlayer(player, int(lst_atk_points[i].(float64)))
+				} else {
+					HealMonster(monster, int(lst_atk_points[i].(float64)))
+				}
 			}
-		}
 
+		}
 	}
+	InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
 }
 
 func UseConsumable(

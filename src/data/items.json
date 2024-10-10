@@ -65,6 +65,11 @@
         "description" : "Objet de fabrication.",
         "type" : "crafting"
     },
+    "O_Steel" : {
+        "name" : "Barre d'acier",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting"
+    },
 
 
 
@@ -118,5 +123,38 @@
         "description" : "Bottes en cuire de sanglier renforcé avec des plumes de corbeau.",
         "type" : "maxmana",
         "value" : 15
+    },
+
+
+
+    "EW_Sword" : {
+        "name" : "Epée de l'aventurier",
+        "description" : "Epée forgée dans l'acier de la montagne.",
+        "type" : "skill",
+        "value" : ["novice_swordslash"]
+    },
+    "EW_AdvancedSword" : {
+        "name" : "Epée de l'aventurier avancé",
+        "description" : "Epée forgée dans l'acier de la montagne, renforcée avec des gemmes de mana.",
+        "type" : "skill",
+        "value" : ["novice_swordslash", "advanced_swordslash"]
+    },
+    "EW_MageStaff" : {
+        "name" : "Baton du mage",
+        "description" : "Baton en bois de chêne renforcé avec des gemmes de mana.",
+        "type" : "skill",
+        "value" : ["magicmissile"]
+    },
+    "EW_AdvancedMageStaff" : {
+        "name" : "Baton du archimage",
+        "description" : "Baton en bois de chêne renforcé avec une gemme de mana et une gemme de mana corrompu.",
+        "type" : "skill",
+        "value" : ["magicmissile", "explode"]
+    },
+    "EW_VampireDagger" : {
+        "name" : "Dague vampirique",
+        "description" : "Dague en acier de la montagne, renforcée avec une gemme de mana corrompu.",
+        "type" : "skill",
+        "value" : ["vampiredague"]
     }
 }

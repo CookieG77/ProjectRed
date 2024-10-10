@@ -37,7 +37,7 @@ func SmenuRender(
 	// =============================== Partie gauche ====================================
 
 	// ++++++ header ++++++
-	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction de :")
+	headergauche := tview.NewTextView().SetText("Intitié le voyage en direction :")
 	headergauche.SetTextColor(tcell.ColorGhostWhite)
 	headergauche.SetTextAlign(tview.AlignCenter)
 	headergauche.SetBorder(true)
@@ -50,15 +50,16 @@ func SmenuRender(
 	imageF.SetImage(bg_imgs["forest_short"])
 
 	// ++++++ Boutons ++++++
-	buttonF := tview.NewButton("de la sombre foret").SetSelectedFunc(func() {
+	buttonF := tview.NewButton("De la Sombre fôret").SetSelectedFunc(func() {
 		sceneValue = 2
+		InventoryTool.PlaySound("ressource/sound_init.mp3")
 		app.Stop()
 		Monster := combattool.GenRandMonster(monsterList)
 		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, &Monster, craftList, 0)
 	})
 	buttonF.SetBorder(true) //.SetRect(0, 0, 22, 3)
 
-	buttonV := tview.NewButton("du grand village").SetSelectedFunc(func() {
+	buttonV := tview.NewButton("Du grand village").SetSelectedFunc(func() {
 		app.Stop()
 		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
 	})
@@ -198,16 +199,16 @@ func ShowInventory(
 	imageInventaire := tview.NewImage()
 	imageInventaire.SetImage(bg_imgs["inventory"])
 
+	// Boite text centrale
+	barCentrale := tview.NewTextView().SetText("[yellow]Vous jetez un œuil dans votre sac. Que cherchez vous ?[white]")
+	barCentrale.SetTextAlign(tview.AlignCenter).SetDynamicColors(true).SetBorder(true)
+
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
 		AddItem(imageInventaire, 0, 0, 5, 4, 0, 0, true).
-		AddItem(tview.NewTextView().
-			SetText("[yellow]Vous jetez un œuil dans votre sac, que cherchez vous ?[white]").
-			SetTextAlign(tview.AlignCenter).
-			SetDynamicColors(true).
-			SetBorder(true), 5, 0, 1, 4, 0, 0, true).
+		AddItem(barCentrale, 5, 0, 1, 4, 0, 0, true).
 		AddItem(quitButton, 6, 3, 1, 1, 0, 0, true).
 		AddItem(consumableButton, 6, 2, 1, 1, 0, 0, true).
 		AddItem(equipementButton, 6, 1, 1, 1, 0, 0, true).
@@ -496,6 +497,12 @@ func createRightBottomPart(
 	plastron := newPrimitiveEquipmentSlot("Plastron :", "EquipmentTorso")
 	jambières := newPrimitiveEquipmentSlot("Jambières :", "EquipmentLegs")
 	bottes := newPrimitiveEquipmentSlot("Bottes :", "EquipmentBoots")
+	weapon := newPrimitiveEquipmentSlot("Arme :", "EquipmentWeapon")
+
+	gold := tview.NewTextView().
+		SetTextAlign(tview.AlignCenter).
+		SetText("OR : " + strconv.Itoa((*player)["gold"].(int)) + " [yellow]⬤[white]").
+		SetDynamicColors(true)
 
 	grid.Clear()
 	grid.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
@@ -509,6 +516,8 @@ func createRightBottomPart(
 	grid.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
 	grid.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
 	grid.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
+	grid.AddItem(weapon, 1, 1, 1, 1, 0, 0, false)
+	grid.AddItem(gold, 4, 1, 1, 1, 0, 0, false)
 
 	return grid
 }
@@ -548,20 +557,24 @@ func ShowPlayerStats(
 	recap += "\nSkills : "
 	for _, v := range (*player)["skills"].([]string) {
 		recap += "\n\u0009- [yellow]" + skillList[v]["name"].(string) + " :[white] "
-		switch skillList[v]["type"].(string) {
-		case "dmg":
-			recap += "Inflige " + strconv.Itoa(skillList[v]["atk_points"].(int)) + " dégats "
-
-		case "heal":
-			recap += "Soigne " + strconv.Itoa(skillList[v]["atk_points"].(int)) + " hp "
-		}
-		if skillList[v]["target_player"].(bool) {
-			recap += "au joueur."
-		} else {
-			recap += "à l'ennemi."
-		}
+		lst_atk_points := skillList[v]["atk_points"].([]interface{})
+		lst_targets := skillList[v]["target_player"].([]interface{})
 		if skillList[v]["mana_cost"].(int) > 0 {
-			recap += " Coute " + strconv.Itoa(skillList[v]["mana_cost"].(int)) + "mana."
+			recap += " Coute " + strconv.Itoa(skillList[v]["mana_cost"].(int)) + " mana."
+		}
+		for i, str := range skillList[v]["type"].([]interface{}) {
+			switch str.(string) {
+			case "dmg":
+				recap += "\n\u0009\u0009- Inflige " + strconv.Itoa(int(lst_atk_points[i].(float64))) + " dégats "
+
+			case "heal":
+				recap += "\n\u0009\u0009- Soigne " + strconv.Itoa(int(lst_atk_points[i].(float64))) + " hp "
+			}
+			if lst_targets[i].(bool) {
+				recap += "au joueur."
+			} else {
+				recap += "à l'ennemi."
+			}
 		}
 	}
 	tmp1 := (*player)["max_hp"].(int) - classList[(*player)["class"].(string)]["max_hp"].(int)
@@ -697,7 +710,7 @@ func ForestBattleWindow(
 	//Fonction de reset de la page pour un nouveau tour
 	reset := func() {
 		time.Sleep(3 * time.Second)
-		actuMonsterHPBarRecur(3)
+		actuMonsterHPBar()
 		turn++
 		ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + " : À vous de jouer ]>")
 		ChatBox.SetText("Que faite vous ?")
@@ -709,7 +722,7 @@ func ForestBattleWindow(
 		time.Sleep(3 * time.Second)
 		app.QueueUpdateDraw(func() {
 			buttonActivated = 5
-			actuMonsterHPBarRecur(3)
+			actuMonsterHPBar()
 			msg, end := combattool.MonsterAttack(player, monster, monsterList, turn)
 			updateRightBottomPart(Droiteflex, *player, itemlist)
 			ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + " : Au tour de l'ennemi ]>")
@@ -756,22 +769,32 @@ func ForestBattleWindow(
 				}
 				AttackMenu.AddItem(name, skillList[k]["description"].(string), rune('a'+i), func() {
 					if combattool.CanPlayerUseSkill(*player, k, skillList) {
-						tmp := skillList[k]["use_text"].(string)
-						if skillList[k]["type"].(string) == "dmg" {
-							tmp += " Vous infliguez "
-							if (*monster)["spe"].(string) == "reduce_dmg" {
-								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)-(*monster)["special"].(int)) + " dégats." + "\nL'ennemi à une peau renforcé, ces dégats subies sont réduits."
-							} else {
-								tmp += strconv.Itoa(skillList[k]["atk_points"].(int)) + " dégats."
+						buttonActivated = 5
+						tmp := ""
+						tmp += skillList[k]["use_text"].(string)
+						lst_atk_points := skillList[k]["atk_points"].([]interface{})
+						for i, k := range skillList[k]["type"].([]interface{}) {
+							switch k.(string) {
+							case "dmg":
+								{
+									tmp += " Vous infliguez "
+									if (*monster)["spe"].(string) == "reduce_dmg" {
+										tmp += strconv.Itoa(int(lst_atk_points[i].(float64))-(*monster)["special"].(int)) + " dégats." + "\nL'ennemi à une peau renforcé, ces dégats subies sont réduits.\n"
+									} else {
+										tmp += strconv.Itoa(int(lst_atk_points[i].(float64))) + " dégats.\n"
+									}
+								}
+							case "heal":
+								{
+									tmp += "Vous récuperez " + strconv.Itoa(int(lst_atk_points[i].(float64))) + " points de vie.\n"
+								}
 							}
-						} else {
-							tmp += "Vous récuperez " + strconv.Itoa(skillList[k]["atk_points"].(int)) + " points de vie."
 						}
 
 						ChatBox.SetText(tmp)
 						combattool.UseSkill(player, monster, k, skillList)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
-						actuMonsterHPBarRecur(3)
+						actuMonsterHPBar()
 						gridCenter.RemoveItem(AttackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
 						if InventoryTool.IsPlayerDead(*player) {
@@ -825,10 +848,11 @@ func ForestBattleWindow(
 				gridCenter.AddItem(BackpackMenu, 2, 0, 6, 6, 0, 0, true)
 				for i, k := range ks {
 					BackpackMenu.AddItem(itemlist[k]["name"].(string)+" : "+strconv.Itoa(vs[i]), itemlist[k]["description"].(string), rune('a'+i), func() {
+						buttonActivated = 5
 						ChatBox.SetText(itemlist[k]["use_text"].(string))
 						combattool.UseConsumable(player, monster, k, itemlist, inv)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
-						actuMonsterHPBarRecur(3)
+						actuMonsterHPBar()
 						gridCenter.RemoveItem(BackpackMenu)
 						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
 						if InventoryTool.IsPlayerDead(*player) {

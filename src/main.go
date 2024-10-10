@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	//Importation et chargement des données et ressources
 	class_icons := make(map[string]image.Image)
 	InventoryTool.LoadClassIcons(&class_icons, "ressource")
@@ -19,6 +20,9 @@ func main() {
 
 	monster_icons := make(map[string]image.Image)
 	InventoryTool.LoadMonsterIcons(&monster_icons, "ressource")
+
+	// soundList := make(map[string]map[string]string)
+	// InventoryTool.LoadGameSounds(&soundList, "ressource")
 
 	itemlist := make(map[string]map[string]interface{})
 	InventoryTool.GetItemList(&itemlist, "data/items.json")
@@ -37,6 +41,7 @@ func main() {
 
 	lootList := make(map[string]map[string]interface{})
 	InventoryTool.GetLootList(&lootList, "data/loots.json")
+
 	craftList := make(map[string]map[string]int)
 	InventoryTool.GetCraftList(&craftList, "data/crafts.json")
 
@@ -51,8 +56,8 @@ func main() {
 		InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
 		InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
 		InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
-		InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
-		InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
+		InventoryTool.AddItemToInventory(&inv, "EW_AdvancedMageStaff", 1)
+		InventoryTool.AddItemToInventory(&inv, "EW_VampireDagger", 1)
 		InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
 		InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
 		InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
@@ -62,8 +67,11 @@ func main() {
 		InventoryTool.AddItemToInventory(&inv, "O_TrollSkin", 2)
 		InventoryTool.AddItemToInventory(&inv, "O_BoarLeather", 2)
 		InventoryTool.AddGoldToPlayer(&player, 1000)
+		InventoryTool.EquipPlayerWith(&player, "EW_AdvancedMageStaff", &inv, itemlist)
+		InventoryTool.EquipPlayerWith(&player, "EW_VampireDagger", &inv, itemlist)
+		InventoryTool.PrintPlayer(player)
 	}
-	if player["max_hp"] != 0 {
+	if player["max_hp"].(int) > 0 {
 		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList)
 	}
 
