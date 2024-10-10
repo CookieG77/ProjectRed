@@ -33,21 +33,22 @@ func main() {
 	skillList := make(map[string]map[string]interface{})
 	InventoryTool.GetSkillList(&skillList, "data/skills.json")
 
+	craftList := make(map[string]map[string]int)
+	InventoryTool.GetCraftList(&craftList, "data/crafts.json")
+
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
 	inv := InventoryTool.InitInventory()
 
 	//Execution du programme
 	Scene.CreatePlayerWindow(classList, class_icons, &player, inv)
-	InventoryTool.AddItemToInventory(&inv, "CP_Fireballbook", 1)
-	InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
-	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
-	InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
-	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
-	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
-	InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
-	InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
-	InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
-	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList))
+	InventoryTool.AddItemToInventory(&inv, "O_WolfPelt", 2)
+	InventoryTool.AddItemToInventory(&inv, "O_TrollSkin", 2)
+	InventoryTool.AddItemToInventory(&inv, "O_BoarLeather", 2)
+
+	InventoryTool.AddGoldToPlayer(&player, 100)
+	if player["max_hp"] != 0 {
+		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, craftList)
+	}
 
 }
