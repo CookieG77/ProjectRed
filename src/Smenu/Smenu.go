@@ -193,7 +193,6 @@ func ShowInventory(
 	// image inventaire
 
 	imageInventaire := tview.NewImage()
-	imageInventaire.SetBorder(true)
 	imageInventaire.SetImage(bg_imgs["inventory"])
 
 	// Box Centrale
@@ -205,7 +204,8 @@ func ShowInventory(
 		AddItem(consumableButton, 4, 2, 1, 1, 0, 0, true).
 		AddItem(equipementButton, 4, 1, 1, 1, 0, 0, true).
 		AddItem(othersButton, 4, 0, 1, 1, 0, 0, true)
-	gridCenter.SetBorder(true)
+	gridCenter.SetBorder(true).
+		SetTitle(" < Inventaire > ")
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
@@ -250,9 +250,10 @@ func ShowConsumable(
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(items, 0, 0, 6, 4, 0, 0, true).
-		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
-	gridCenter.SetBorder(true)
+		AddItem(items, 0, 0, 4, 4, 0, 0, true).
+		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true)
+	gridCenter.SetBorder(true).
+		SetTitle(" < Consommable > ")
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
@@ -298,9 +299,10 @@ func ShowEquipement(
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(items, 0, 0, 6, 4, 0, 0, true).
-		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
-	gridCenter.SetBorder(true)
+		AddItem(items, 0, 0, 4, 4, 0, 0, true).
+		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true)
+	gridCenter.SetBorder(true).
+		SetTitle(" < Equipement > ")
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
@@ -345,9 +347,10 @@ func ShowOthers(
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(items, 0, 0, 6, 4, 0, 0, true).
-		AddItem(quitButton, 6, 4, 1, 1, 0, 0, true)
-	gridCenter.SetBorder(true)
+		AddItem(items, 0, 0, 4, 4, 0, 0, true).
+		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true)
+	gridCenter.SetBorder(true).
+		SetTitle(" < Autre > ")
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
