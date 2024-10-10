@@ -31,7 +31,7 @@
         "encounter_msg" : "Un corbeau fond sur vous et vous attaque !",
         "atk_msg" : "Le corbeau se met à vous picorer.",
         "spe_msg" : "Le corbeau vous vole une pièce d'or et s'enfuit...",
-        "max_hp" : 30,
+        "max_hp" : 15,
         "atk_points" : 2,
         "special_com" : "Vole 1 pièce d'or par tour et s'enfuit au tour 3",
         "spe" : "steal_and_run",

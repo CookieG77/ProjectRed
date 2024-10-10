@@ -709,7 +709,7 @@ func ForestBattleWindow(
 				for i, k := range ks {
 					BackpackMenu.AddItem(itemlist[k]["name"].(string)+" : "+strconv.Itoa(vs[i]), itemlist[k]["description"].(string), rune('a'+i), func() {
 						ChatBox.SetText(itemlist[k]["use_text"].(string))
-						combattool.UseConsumable(player, monster, k, itemlist)
+						combattool.UseConsumable(player, monster, k, itemlist, inv)
 						updateRightBottomPart(Droiteflex, *player, itemlist)
 						actuMonsterHPBar()
 						gridCenter.RemoveItem(BackpackMenu)
@@ -777,15 +777,16 @@ func ForestBattleWindow(
 	case 6:
 		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	case 7:
-		GameOverWindow(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
+		GameOverWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
 	case 8:
-		VictoryWindow(classes_icons, bg_imgs, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
+		VictoryWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, *monster, turn)
 	}
 }
 
 func GameOverWindow(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv *map[string]int,
@@ -795,12 +796,39 @@ func GameOverWindow(
 	monster map[string]interface{},
 	turn int,
 ) {
-	return
+	app := tview.NewApplication()
+
+	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
+		InventoryTool.HealPlayer(player, (*player)["max_hp"].(int)/2)
+		InventoryTool.HealPlayerMana(player, (*player)["ma_mana"].(int))
+		InventoryTool.RemoveGoldFromPlayer(player, (*player)["gold"].(int)/3)
+		app.Stop()
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
+	})
+	gameover_msg := "Vous êtes tomber au combat face à ennemi (" + monster["name"].(string) + "). Vous perder " + strconv.Itoa((*player)["gold"].(int)/3) + "or."
+	gameover_msg += "\nVous regagnez la moitier de vos points de vie ainsi que votre mana. Faite plus attention à l'avenir..."
+	image_gameover := tview.NewImage()
+	chatbox := tview.NewTextView().SetText(gameover_msg)
+	chatbox.SetDynamicColors(true).SetBorder(true)
+	restart_bouton.SetBorder(true)
+	image_gameover.SetBorder(true)
+
+	image_gameover.SetImage(bg_imgs["gameover"])
+
+	grid := tview.NewGrid().
+		AddItem(image_gameover, 0, 0, 9, 6, 0, 0, false).
+		AddItem(chatbox, 9, 0, 1, 5, 0, 0, false).
+		AddItem(restart_bouton, 9, 5, 1, 1, 0, 0, true)
+
+	if err := app.SetRoot(grid, true).EnableMouse(true).Run(); err != nil {
+		panic(err)
+	}
 }
 
 func VictoryWindow(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
 	inv *map[string]int,

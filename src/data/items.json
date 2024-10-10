@@ -13,6 +13,13 @@
         "type" : "manaheal",
         "value" : 40
     },
+    "CP_Fireballbook" : {
+        "name" : "Livre de sort - Boule de feu",
+        "description" : "Ce livre contient le savoir nécessaire pour apprendre à lancer le sort boule de feu.",
+        "use_text" : "Grâce aux connaissances contenues dans ce livre, vous apprenez à lancer le sort boule de feu.",
+        "type" : "spellbook",
+        "value" : "fireball"
+    },
 
 
 

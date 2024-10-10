@@ -123,7 +123,7 @@ func getInventoryByItemType(inv Inventory, item_types []string) ([]string, []int
 	res2 := []int{}
 	for consumableID, quantity := range inv {
 		for _, str := range item_types {
-			if consumableID[:len(str)] == str {
+			if consumableID[:len(str)] == str && quantity > 0 {
 				res = append(res, consumableID)
 				res2 = append(res2, quantity)
 			}
@@ -145,7 +145,7 @@ func getInventoryNotItemType(inv Inventory, item_types []string) ([]string, []in
 				break
 			}
 		}
-		if ok {
+		if ok && quantity > 0 {
 			res = append(res, consumableID)
 			res2 = append(res2, quantity)
 		}
@@ -305,6 +305,11 @@ func PlayerCanEquip(
 		return true
 	}
 	return false
+}
+
+// Permet d'jouter le skill 'skill' à la liste des skills connu du joueur 'player'
+func PlayerLearnSkill(player *map[string]interface{}, skill string) {
+	(*player)["skills"] = append((*player)["skills"].([]string), skill)
 }
 
 // Equipe le joueur 'player' avec l'équipement 'itemID'.

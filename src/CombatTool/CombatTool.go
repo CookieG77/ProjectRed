@@ -64,6 +64,7 @@ func UseConsumable(
 	monster *map[string]interface{},
 	consumableID string,
 	itemList map[string]map[string]interface{},
+	inv *map[string]int,
 ) {
 	monsterPlayer := consumableID[:2] == "CP"
 	itemData := itemList[consumableID]
@@ -92,7 +93,16 @@ func UseConsumable(
 				HurtMonserDPS(monster, itemData["value"].(int), itemData["duration"].(int))
 			}
 		}
+	case "spellbook":
+		{
+			if monsterPlayer {
+				InventoryTool.PlayerLearnSkill(player, itemData["value"].(string))
+			} else {
+				monsterLearnSkill(monster, itemData["value"].(string))
+			}
+		}
 	}
+	InventoryTool.RemoveItemFromInventory(inv, consumableID, 1)
 }
 
 func MonsterAttack(
@@ -203,6 +213,10 @@ func HurtMonserDPS(monster *map[string]interface{}, quantity int, duration int) 
 		HurtMonster(monster, quantity)
 		go HurtMonserDPS(monster, quantity, duration-1)
 	}
+}
+
+func monsterLearnSkill(monster *map[string]interface{}, skill string) {
+	(*monster)["skills"] = append((*monster)["skills"].([]string), skill)
 }
 
 func GenRandMonster(monsterList map[string]map[string]interface{}) map[string]interface{} {
