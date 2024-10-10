@@ -64,7 +64,7 @@ func main() {
 		InventoryTool.AddGoldToPlayer(&player, 1000)
 	}
 	if player["max_hp"] != 0 {
-		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList)
+		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	}
 
 }

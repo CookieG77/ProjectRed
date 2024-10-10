@@ -25,6 +25,7 @@ func SmenuRender(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) int {
 	sceneValue := 0
 
@@ -54,13 +55,13 @@ func SmenuRender(
 		sceneValue = 2
 		app.Stop()
 		Monster := combattool.GenRandMonster(monsterList)
-		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, &Monster, craftList, 0)
+		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, &Monster, craftList, tradeList, 0)
 	})
 	buttonF.SetBorder(true) //.SetRect(0, 0, 22, 3)
 
 	buttonV := tview.NewButton("Du grand village").SetSelectedFunc(func() {
 		app.Stop()
-		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	buttonV.SetBorder(true) //.SetRect(0, 0, 22, 3)
 	// ++++++ flex windows ++++++
@@ -102,12 +103,12 @@ func SmenuRender(
 	quitButton.SetBorder(true)
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	invBoutton.SetBorder(true)
 	statsButton := tview.NewButton("Info Joueur").SetSelectedFunc(func() {
 		app.Stop()
-		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	statsButton.SetBorder(true)
 
@@ -164,6 +165,7 @@ func ShowInventory(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) {
 	app := tview.NewApplication()
 	// ============================Partie droite=====================================
@@ -172,25 +174,25 @@ func ShowInventory(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	consumableButton := tview.NewButton("Consommable").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowConsumable(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowConsumable(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 
 	equipementButton := tview.NewButton("Equipement").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowEquipement(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowEquipement(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	othersButton := tview.NewButton("Autre").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 
 	// image inventaire
@@ -242,6 +244,7 @@ func ShowConsumable(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) {
 	app := tview.NewApplication()
 	// ============================Partie droite=====================================
@@ -250,7 +253,7 @@ func ShowConsumable(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	items := tview.NewList()
@@ -292,6 +295,7 @@ func ShowEquipement(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) {
 	app := tview.NewApplication()
 	// ============================Partie droite=====================================
@@ -300,7 +304,7 @@ func ShowEquipement(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
@@ -343,6 +347,7 @@ func ShowOthers(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) int {
 	app := tview.NewApplication()
 	// ============================Partie droite=====================================
@@ -351,7 +356,7 @@ func ShowOthers(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// Items de l'inventaire
@@ -534,6 +539,7 @@ func ShowPlayerStats(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) {
 	app := tview.NewApplication()
 	// Partie droite
@@ -584,7 +590,7 @@ func ShowPlayerStats(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 
 	// Box Centrale
@@ -621,6 +627,7 @@ func ForestBattleWindow(
 	lootList map[string]map[string]interface{},
 	monster *map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	turn int,
 ) {
 	buttonActivated := 0
@@ -900,13 +907,13 @@ func ForestBattleWindow(
 	}
 	switch buttonActivated {
 	case 4:
-		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	case 6:
-		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	case 7:
-		GameOverWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, *monster, turn)
+		GameOverWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, *monster, turn)
 	case 8:
-		VictoryWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, *monster, turn)
+		VictoryWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, *monster, turn)
 	}
 }
 
@@ -922,6 +929,7 @@ func GameOverWindow(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	monster map[string]interface{},
 	turn int,
 ) {
@@ -932,7 +940,7 @@ func GameOverWindow(
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
 		app.Stop()
-		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	gameover_msg := "Vous êtes tombé(e) au combat face à ennemi (" + monster["name"].(string) + "). Vous perdez " + strconv.Itoa((*player)["gold"].(int)/3) + " or."
 	gameover_msg += "\nVous regagnez la moitié de vos points de vie ainsi que votre mana. Faites plus attention à l'avenir..."
@@ -966,6 +974,7 @@ func VictoryWindow(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	monster map[string]interface{},
 	turn int,
 ) {
@@ -987,7 +996,7 @@ func VictoryWindow(
 
 	restart_bouton := tview.NewButton("Continuer").SetSelectedFunc(func() {
 		app.Stop()
-		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	gameover_msg := "Vous avez vaillamment vaincu l'ennemi (" + monster["name"].(string) + ")."
 	gameover_msg += " Vous avez trouvé : " + strconv.Itoa(fgold) + " or"
@@ -1083,6 +1092,7 @@ func Svillage(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 ) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
@@ -1096,12 +1106,12 @@ func Svillage(
 
 	buttonTOP.SetSelectedFunc(func() {
 		app.Stop()
-		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, "forgeron")
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "forgeron")
 	})
 
 	buttonBottom.SetSelectedFunc(func() {
 		app.Stop()
-		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, "vendeur")
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur")
 	})
 
 	// ============================ CENTRE =============================
@@ -1109,13 +1119,13 @@ func Svillage(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	invBoutton.SetBorder(true)
 
@@ -1166,6 +1176,7 @@ func Sshopvillage(
 	monsterList map[string]map[string]interface{},
 	lootList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	who string,
 ) {
 	app := tview.NewApplication()
@@ -1194,13 +1205,13 @@ func Sshopvillage(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList)
+		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList)
 	})
 	invBoutton.SetBorder(true)
 
@@ -1220,11 +1231,12 @@ func Sshopvillage(
 	case "vendeur":
 		textTop.SetText("Hohoho, ici je vend bien de bonnes choses, tout cela est à toi, mais seulement SI tu possède assez de pièces d'or hihihi...")
 		imageBottom.SetImage(bg_imgs["merchant"])
+		ShowShop(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter)
 
 	case "forgeron":
 		textTop.SetText("Hpmf hpmf hpmf, armes cassées? objets à bricoler? Bienvenue dans les flammes et le fer, rien de mieux pour battre l'enfer pfmh pfmh pfmh...")
-		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, &shop, Gaucheflex)
 		imageBottom.SetImage(bg_imgs["forge"])
+		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter)
 	}
 
 	CentreTop := tview.NewFlex().
@@ -1260,21 +1272,43 @@ func ShowForge(
 	skillList map[string]map[string]interface{},
 	monsterList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	list **tview.List,
 	bottomGrid *tview.Grid,
+	midGrid *tview.Grid,
 ) {
 	(*list).Clear()
-	Craftable := InventoryTool.GetCraftableList(craftList, *inv, *player)
+	Craftable := []string{}
+	for k := range craftList {
+		Craftable = append(Craftable, k)
+	}
 	a := 'a'
 	for _, i := range Craftable {
 		name := itemlist[string(i)]["name"].(string)
+		if !InventoryTool.CanCraft(i, craftList, *inv, *player) {
+			name += " ❌"
+		}
 		(*list).AddItem(name, itemlist[string(i)]["description"].(string), a, func() {
 			InventoryTool.Craft(i, craftList, inv, player)
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, list, bottomGrid)
+			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 0)
 		})
 		a++
 	}
-
+	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
+		itemId := Craftable[index]
+		ingredient := []string{}
+		for k := range craftList[itemId] {
+			ingredient = append(ingredient, k)
+		}
+		recipe_text := ""
+		for _, k := range ingredient {
+			if k != "cvalue" {
+				recipe_text += "  - " + strconv.Itoa(craftList[itemId][k]) + " " + itemlist[k]["name"].(string) + "\n"
+			}
+		}
+		text := "\n  Coût:\n" + "  - " + strconv.Itoa(craftList[itemId]["cvalue"]) + "💰\n" + recipe_text
+		midGrid.AddItem(tview.NewTextView().SetText(text), 0, 0, 1, 4, 0, 0, true)
+	})
 }
 
 func UpdateBottomGrid(
@@ -1288,10 +1322,62 @@ func UpdateBottomGrid(
 	skillList map[string]map[string]interface{},
 	monsterList map[string]map[string]interface{},
 	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
 	list **tview.List,
 	bottomGrid *tview.Grid,
+	midGrid *tview.Grid,
+	shop_type int,
+
 ) {
 	bottomGrid.RemoveItem(*list)
-	ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, list, bottomGrid)
+	switch shop_type {
+	case 0:
+		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid)
+	case 1:
+		ShowShop(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid)
+	}
+
 	bottomGrid.AddItem(*list, 2, 0, 2, 4, 0, 0, true)
+}
+
+func ShowShop(
+	classes_icons map[string]image.Image,
+	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
+	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
+	monsterList map[string]map[string]interface{},
+	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
+	list **tview.List,
+	bottomGrid *tview.Grid,
+	midGrid *tview.Grid,
+) {
+	(*list).Clear()
+	a := 'a'
+	Items := []string{}
+	for i := range tradeList["merchant"]["sells"] {
+		Items = append(Items, i)
+		name := itemlist[i]["name"].(string)
+		if !InventoryTool.CanBuyItemFrom(*player, tradeList, "merchant", i) {
+			name += " ❌"
+		}
+		(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
+			InventoryTool.BuyItemFrom(player, inv, tradeList, "merchant", i)
+			if i == "CP_Heal" && tradeList["merchant"]["sells"]["CP_Heal"] == 0 {
+				tradeList["merchant"]["sells"]["CP_Heal"] = 3
+			}
+			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 1)
+		})
+		a++
+	}
+	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
+		itemId := Items[index]
+		text := "\n  Coût:\n" + "  - " + strconv.Itoa(tradeList["merchant"]["sells"][itemId]) + "💰\n"
+		midGrid.AddItem(tview.NewTextView().SetText(text), 0, 0, 1, 4, 0, 0, true)
+	})
+
 }

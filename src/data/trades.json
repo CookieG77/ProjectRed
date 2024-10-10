@@ -1,18 +1,18 @@
 {
     "merchant" : {
         "sells" : {
-            "CP_heal" : 0,
-            "CP_mana" : 3,
-            "CJ_poison" : 6,
-            "O_plume" : 2,
-            "O_boarLeather" : 4,
-            "O_wolfPelt" : 6,
-            "O_trollSkin" : 8
+            "CP_Heal" : 0,
+            "CP_Mana" : 3,
+            "CJ_Poison" : 6,
+            "O_Plume" : 2,
+            "O_BoarLeather" : 4,
+            "O_WolfPelt" : 6,
+            "O_TrollSkin" : 8
         },
         "buys" : {
-            "O_plume" : 1,
-            "O_boarLeather" : 3,
-            "EL_adventurer" : 4,
+            "O_Plume" : 1,
+            "O_BoarLeather" : 3,
+            "EL_Adventurer" : 4,
             "O_TrollSkin" : 7
         }
     }
