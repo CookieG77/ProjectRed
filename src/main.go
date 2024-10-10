@@ -58,13 +58,11 @@ func main() {
 		InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
 		InventoryTool.PlayerLearnSkill(&player, "opskill")
 		InventoryTool.PlayerLearnSkill(&player, "suicideskill")
+		InventoryTool.AddItemToInventory(&inv, "O_WolfPelt", 2)
+		InventoryTool.AddItemToInventory(&inv, "O_TrollSkin", 2)
+		InventoryTool.AddItemToInventory(&inv, "O_BoarLeather", 2)
+		InventoryTool.AddGoldToPlayer(&player, 1000)
 	}
-	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList))
-	InventoryTool.AddItemToInventory(&inv, "O_WolfPelt", 2)
-	InventoryTool.AddItemToInventory(&inv, "O_TrollSkin", 2)
-	InventoryTool.AddItemToInventory(&inv, "O_BoarLeather", 2)
-
-	InventoryTool.AddGoldToPlayer(&player, 100)
 	if player["max_hp"] != 0 {
 		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList)
 	}

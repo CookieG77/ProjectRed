@@ -202,11 +202,16 @@ func ShowInventory(
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(imageInventaire, 0, 0, 4, 4, 0, 0, true).
-		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true).
-		AddItem(consumableButton, 4, 2, 1, 1, 0, 0, true).
-		AddItem(equipementButton, 4, 1, 1, 1, 0, 0, true).
-		AddItem(othersButton, 4, 0, 1, 1, 0, 0, true)
+		AddItem(imageInventaire, 0, 0, 5, 4, 0, 0, true).
+		AddItem(tview.NewTextView().
+			SetText("[yellow]Vous jetez un œuil dans votre sac, que cherchez vous ?[white]").
+			SetTextAlign(tview.AlignCenter).
+			SetDynamicColors(true).
+			SetBorder(true), 5, 0, 1, 4, 0, 0, true).
+		AddItem(quitButton, 6, 3, 1, 1, 0, 0, true).
+		AddItem(consumableButton, 6, 2, 1, 1, 0, 0, true).
+		AddItem(equipementButton, 6, 1, 1, 1, 0, 0, true).
+		AddItem(othersButton, 6, 0, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true).
 		SetTitle(" < Inventaire > ")
 	//build
@@ -563,7 +568,7 @@ func ShowPlayerStats(
 	tmp2 := (*player)["max_mana"].(int) - classList[(*player)["class"].(string)]["max_mana"].(int)
 	recap += "\nBuffs d'équipement :"
 	if tmp1 == 0 && tmp2 == 0 {
-		recap += " Aucun " + strconv.Itoa((*player)["max_hp"].(int)) + " " + strconv.Itoa((*player)["max_mana"].(int))
+		recap += " Aucun"
 	}
 	if tmp1 > 0 {
 		recap += "\n\u0009- +" + strconv.Itoa(tmp1) + " [red]♥[white]"
