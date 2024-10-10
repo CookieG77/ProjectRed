@@ -107,6 +107,7 @@ func SmenuRender(
 		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	statsButton.SetBorder(true)
+
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
@@ -186,14 +187,22 @@ func ShowInventory(
 			app.Stop()
 			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
+
+	// image inventaire
+
+	imageInventaire := tview.NewImage()
+	imageInventaire.SetBorder(true)
+	imageInventaire.SetImage(bg_imgs["inventory"])
+
 	// Box Centrale
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
-		AddItem(quitButton, 4, 4, 1, 1, 0, 0, true).
-		AddItem(consumableButton, 4, 3, 1, 1, 0, 0, true).
-		AddItem(equipementButton, 4, 2, 1, 1, 0, 0, true).
-		AddItem(othersButton, 4, 1, 1, 1, 0, 0, true)
+		AddItem(imageInventaire, 0, 0, 4, 4, 0, 0, true).
+		AddItem(quitButton, 4, 3, 1, 1, 0, 0, true).
+		AddItem(consumableButton, 4, 2, 1, 1, 0, 0, true).
+		AddItem(equipementButton, 4, 1, 1, 1, 0, 0, true).
+		AddItem(othersButton, 4, 0, 1, 1, 0, 0, true)
 	gridCenter.SetBorder(true)
 	//build
 	Centreflex := tview.NewFlex().
