@@ -2,6 +2,7 @@
     "punch" : {
         "name" : "Coup de poing",
         "description" : "Attaque de base au corp à corp. Inflige 8 points de dégâts.",
+        "use_text" : "Vous frappez l'ennemi de toutes vos forces d'un coup de poings. Vous infligez 8 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
         "atk_points" : 8,
@@ -10,6 +11,7 @@
     "fireball" : {
         "name" : "Boule de feu",
         "description" : "Conjure une boule de feu et l'envoie sur l'ennemi. Inflige 18 points de dégâts.",
+        "use_text" : "Vous faites appelle aux arcanes et lancez une boule de feu sur l'ennemi. Vous infligez 18 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
         "atk_points" : 18,
@@ -18,14 +20,16 @@
     "firetrait" : {
         "name" : "Trait de feu",
         "description" : "Lance un trait de feu sur l'ennemi. Inflige 9 points de dégâts.",
+        "use_text" : "Vous invoquez un trait de feu qui part à toute vitesse sur l'ennemi. Vous infligez 9 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
-        "atk_points" : 9,
+        "atk_points" : 12,
         "mana_cost" : 10
     },
     "minorheal" : {
         "name" : "Soin mineur",
         "description" : "Soigne le joueur de 10 points de vie.",
+        "use_text" : "Vous invoquez une vague de lumière qui vous soigne. Vous regagnez 10 points de vie.",
         "type" : "heal",
         "target_player" : true,
         "atk_points" : 10,

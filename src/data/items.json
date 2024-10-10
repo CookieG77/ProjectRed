@@ -2,12 +2,14 @@
     "CP_Heal" : {
         "name" : "Potion de soin",
         "description" : "Restaure 50 points de vie.",
+        "use_text" : "Vous buvez une potion de soin. Vous regagnez 50 points de vie.",
         "type" : "heal",
         "value" : 50
     },
     "CP_Mana" : {
         "name" : "Potion de mana",
         "description" : "Restaure 40 points de mana.",
+        "use_text" : "Vous buvez une potion de mana. Vous regagnez 40 points de mana.",
         "type" : "manaheal",
         "value" : 40
     },
@@ -20,6 +22,7 @@
     "CJ_Poison" : {
         "name" : "Potion de jet de poison",
         "description" : "Inflige 10 points de dégâts par seconde pendant 3 secondes.",
+        "use_text" : "Vous lancez une potion de poison sur l'ennemi. Vous ennemi perd 10 points de vie durant les 3 prochaines secondes.",
         "type" : "dps",
         "value" : 10,
         "duration" : 3
