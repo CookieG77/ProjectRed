@@ -59,7 +59,7 @@ func SmenuRender(
 
 	buttonV := tview.NewButton("go to village").SetSelectedFunc(func() {
 		app.Stop()
-		Svillage(classes_icons, bg_imgs, player, itemlist, inv)
+		Svillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	buttonV.SetBorder(true) //.SetRect(0, 0, 22, 3)
 	// ++++++ flex windows ++++++
@@ -934,9 +934,13 @@ func CreateLeftPart(
 func Svillage(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
+	monsterList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
 	// ============================partit droite=====================================
@@ -948,12 +952,12 @@ func Svillage(
 	// linkTop := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
 	// linkBottom := Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
 
-	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, inv, bg_imgs, bg_imgs,
+	Gaucheflex, buttonTOP, buttonBottom := CreateLeftPart(classes_icons, bg_imgs, player, itemlist, *inv, bg_imgs, bg_imgs,
 		"top", "bottom", "Rendre visite a votre tres cher :", app)
 
 	buttonTOP.SetSelectedFunc(func() {
 		app.Stop()
-		Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "forgeron")
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, "forgeron")
 		// if err4 := app.SetRoot(linkTop, true).EnableMouse(true).Run(); err4 != nil {
 		// 	panic(err4)
 		// }
@@ -962,7 +966,7 @@ func Svillage(
 
 	buttonBottom.SetSelectedFunc(func() {
 		app.Stop()
-		Sshopvillage(classes_icons, bg_imgs, player, itemlist, inv, "vendeur")
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, "vendeur")
 		// if err4 := app.SetRoot(linkBottom, true).EnableMouse(true).Run(); err4 != nil {
 		// 	panic(err4)
 		// }
@@ -974,13 +978,13 @@ func Svillage(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	invBoutton.SetBorder(true)
 
@@ -1017,9 +1021,13 @@ func Svillage(
 func Sshopvillage(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
-	inv map[string]int,
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
+	monsterList map[string]map[string]interface{},
 	who string,
 ) {
 	app := tview.NewApplication()
@@ -1054,13 +1062,13 @@ func Sshopvillage(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
-			SmenuRender(classes_icons, bg_imgs, player, itemlist, inv)
+			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
-		ShowInventory(classes_icons, bg_imgs, player, itemlist, inv)
+		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	invBoutton.SetBorder(true)
 
