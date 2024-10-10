@@ -43,6 +43,9 @@ func main() {
 	InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
 	InventoryTool.EquipPlayerWith(&player, "EC_Adventurer", &inv, itemlist)
 	InventoryTool.EquipPlayerWith(&player, "EA_Mage", &inv, itemlist)
+	InventoryTool.AddItemToInventory(&inv, "CP_Heal", 2)
+	InventoryTool.AddItemToInventory(&inv, "CP_Mana", 1)
+	InventoryTool.AddItemToInventory(&inv, "CJ_Poison", 5)
 	print(Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList))
 
 }

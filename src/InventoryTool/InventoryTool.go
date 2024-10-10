@@ -264,8 +264,8 @@ func HurtPlayer(player *map[string]interface{}, quantity int) bool {
 // Permet de remplir le mana du joueur 'player' de 'quantity' mana.
 func HealPlayerMana(player *map[string]interface{}, quantity int) {
 	tmp := (*player)["mana"].(int) + quantity
-	if tmp > (*player)["mana_hp"].(int) {
-		(*player)["mana"] = (*player)["mana_hp"]
+	if tmp > (*player)["max_mana"].(int) {
+		(*player)["mana"] = (*player)["max_mana"]
 	} else {
 		(*player)["mana"] = tmp
 	}

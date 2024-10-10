@@ -1,6 +1,7 @@
 {
     "punch" : {
         "name" : "Coup de poing",
+        "description" : "Attaque de base au corp à corp. Inflige 8 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
         "atk_points" : 8,
@@ -8,6 +9,7 @@
     },
     "fireball" : {
         "name" : "Boule de feu",
+        "description" : "Conjure une boule de feu et l'envoie sur l'ennemi. Inflige 18 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
         "atk_points" : 18,
@@ -15,6 +17,7 @@
     },
     "firetrait" : {
         "name" : "Trait de feu",
+        "description" : "Lance un trait de feu sur l'ennemi. Inflige 9 points de dégâts.",
         "type" : "dmg",
         "target_player" : false,
         "atk_points" : 9,
@@ -22,6 +25,7 @@
     },
     "minorheal" : {
         "name" : "Soin mineur",
+        "description" : "Soigne le joueur de 10 points de vie.",
         "type" : "heal",
         "target_player" : true,
         "atk_points" : 10,

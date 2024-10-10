@@ -3,8 +3,10 @@ package Smenu
 import (
 	"image"
 	"strconv"
+	"time"
 
 	combattool "PPR/CombatTool"
+	"PPR/InventoryTool"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -26,9 +28,10 @@ func SmenuRender(
 	redColor := tcell.NewRGBColor(255, 0, 0)
 
 	app := tview.NewApplication()
+	running := true
 
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 
 	// =============================== Partie gauche ====================================
 
@@ -51,6 +54,7 @@ func SmenuRender(
 	buttonF := tview.NewButton("go to forest").SetSelectedFunc(func() {
 		sceneValue = 2
 		app.Stop()
+		running = false
 		Monster := combattool.GenRandMonster(monsterList)
 		ForestBattleWindow(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, &Monster, 0)
 	})
@@ -59,6 +63,7 @@ func SmenuRender(
 	buttonV := tview.NewButton("go to village").SetSelectedFunc(func() {
 		sceneValue = 1
 		app.Stop()
+		running = false
 	})
 	buttonV.SetBorder(true) //.SetRect(0, 0, 22, 3)
 
@@ -97,15 +102,18 @@ func SmenuRender(
 	quitButton := tview.NewButton("Quitter").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 		})
 	quitButton.SetBorder(true)
 	invBoutton := tview.NewButton("Inventaire").SetSelectedFunc(func() {
 		app.Stop()
+		running = false
 		ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	invBoutton.SetBorder(true)
 	statsButton := tview.NewButton("Info Joueur").SetSelectedFunc(func() {
 		app.Stop()
+		running = false
 		ShowPlayerStats(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	})
 	statsButton.SetBorder(true)
@@ -162,12 +170,14 @@ func ShowInventory(
 	monsterList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
+	running := true
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
@@ -175,17 +185,20 @@ func ShowInventory(
 	consumableButton := tview.NewButton("Consommable").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowConsumable(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 
 	equipementButton := tview.NewButton("Equipement").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowEquipement(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	othersButton := tview.NewButton("Autre").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowOthers(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	// Box Centrale
@@ -225,17 +238,20 @@ func ShowConsumable(
 	monsterList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
+	running := true
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
 	app.Stop()
+	running = false
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -271,17 +287,20 @@ func ShowEquipement(
 	monsterList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
+	running := true
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
 	app.Stop()
+	running = false
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -317,17 +336,20 @@ func ShowOthers(
 	monsterList map[string]map[string]interface{},
 ) int {
 	app := tview.NewApplication()
+	running := true
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 	// Boutons
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			ShowInventory(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 	quitButton.SetBackgroundColor(tcell.ColorRed)
 	// TextView for inv items
 	app.Stop()
+	running = false
 
 	// Box Centrale
 	gridCenter := tview.NewGrid().
@@ -353,6 +375,8 @@ func CreateRightPart(
 	classes_icons map[string]image.Image,
 	player *map[string]interface{},
 	itemlist map[string]map[string]interface{},
+	running *bool,
+	app *tview.Application,
 ) *tview.Flex {
 	// Affichage de l'image
 	image := tview.NewImage()
@@ -411,22 +435,32 @@ func CreateRightPart(
 	gridDownRight := tview.NewGrid().
 		SetRows(3, 0, 0, 0, 0, 3, 0, 3, 0).
 		SetColumns(0, 0)
-	gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
-	gridDownRight.SetBorder(true)
-	gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nPoints de vie : "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
-	gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
-	gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
+
+	update := func(refreshInterval time.Duration) {
+		for *running {
+			time.Sleep(refreshInterval)
+			app.QueueUpdateDraw(func() {
+				gridDownRight.Clear()
+				gridDownRight.SetTitle("<[ " + (*player)["name"].(string) + " ]>")
+				gridDownRight.SetBorder(true)
+				gridDownRight.AddItem(newPrimitive("Equipement :"), 0, 0, 1, 2, 0, 0, false)
+				gridDownRight.AddItem(newPrimitive("\nPoints de vie : "+strconv.Itoa((*player)["hp"].(int))+" / "+strconv.Itoa((*player)["max_hp"].(int))+"[red] ♥"), 5, 0, 1, 2, 0, 0, false)
+				gridDownRight.AddItem(newBarPrimitive((*player)["hp"].(int), (*player)["max_hp"].(int), "[green]", "[red]"), 6, 0, 1, 2, 0, 0, false)
+				gridDownRight.AddItem(newPrimitive("\nMana : "+strconv.Itoa((*player)["mana"].(int))+" / "+strconv.Itoa((*player)["max_mana"].(int))+"[blue] ✦"), 7, 0, 1, 2, 0, 0, false)
+				gridDownRight.AddItem(newBarPrimitive((*player)["mana"].(int), (*player)["max_mana"].(int), "[blue]", "[gray]"), 8, 0, 1, 2, 0, 0, false)
+				gridDownRight.AddItem(casque, 1, 0, 1, 1, 0, 0, false)
+				gridDownRight.AddItem(plastron, 2, 0, 1, 1, 0, 0, false)
+				gridDownRight.AddItem(jambières, 3, 0, 1, 1, 0, 0, false)
+				gridDownRight.AddItem(bottes, 4, 0, 1, 1, 0, 0, false)
+			})
+		}
+	}
 
 	Droiteflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(image, 0, 1, false).
 		AddItem(gridDownRight, 0, 1, false)
+	go update(time.Second / 24)
 	return Droiteflex
 }
 
@@ -442,9 +476,9 @@ func ShowPlayerStats(
 	monsterList map[string]map[string]interface{},
 ) {
 	app := tview.NewApplication()
-
+	running := true
 	// Partie droite
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
 
 	// Partie gauche
 	recap := "Nom : " + (*player)["name"].(string)
@@ -491,6 +525,7 @@ func ShowPlayerStats(
 	quitButton := tview.NewButton("Retour").
 		SetSelectedFunc(func() {
 			app.Stop()
+			running = false
 			SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 		})
 
@@ -528,19 +563,41 @@ func ForestBattleWindow(
 	monster *map[string]interface{},
 	turn int,
 ) {
+	buttonActivated := 0
 	app := tview.NewApplication()
+	running := true
+
+	// Fonction d'arrêt différé
+	differedStop := func(s int) {
+		time.Sleep(time.Duration(s) * time.Second)
+		running = false
+		app.Stop()
+		running = false
+	}
+
 	// ============================Partie droite=====================================
-	Droiteflex := CreateRightPart(classes_icons, player, itemlist)
+	Droiteflex := CreateRightPart(classes_icons, player, itemlist, &running, app)
+
 	// Boutons
 	AttackButton := tview.NewButton("Attaquer")
-	SkillsButton := tview.NewButton("Skills")
 	BackpackButton := tview.NewButton("Sac à dos")
 	FleeButton := tview.NewButton("Prendre la fuite")
+
+	// Monstre Elements + chatbox
 	ChatBox := tview.NewTextView()
 	MonsterHPBar := tview.NewTextView()
+	MonsterHPBar.SetDynamicColors(true).SetTextAlign(tview.AlignCenter)
 	MonsterIcon := tview.NewImage()
 
-	ChatBox.SetBorder(true).SetTitle("<[ Votre tour ]>")
+	// fenêtre Backpack et Attaque
+	BackpackMenu := tview.NewList()
+	BackpackMenu.SetBorder(true).SetTitle("<[ Sac à dos ]>")
+	EmptyBackpack := tview.NewTextView().SetText("\n\n\n\n\nSac à dos vide...")
+	EmptyBackpack.SetTextAlign(tview.AlignCenter).SetBorder(true).SetTitle("<[ Sac à dos ]>")
+	AttackMenu := tview.NewList()
+	AttackMenu.SetBorder(true).SetTitle("<[ Vos skills ]>")
+
+	ChatBox.SetBorder(true).SetTitle("<[ Tour n°" + strconv.Itoa(turn) + ": À vous de jouer ]>")
 	MonsterHPBar.SetTextAlign(tview.AlignCenter).SetTitle("<[ " + (*monster)["name"].(string) + " ]>").SetBorder(true)
 	MonsterIcon.SetImage(monster_icons[(*monster)["id"].(string)])
 	MonsterIcon.SetBorder(true)
@@ -550,10 +607,125 @@ func ForestBattleWindow(
 		AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false).
 		AddItem(ChatBox, 8, 0, 2, 6, 0, 0, false).
 		AddItem(AttackButton, 10, 1, 1, 2, 0, 0, true).
-		AddItem(SkillsButton, 10, 3, 1, 2, 0, 0, true).
-		AddItem(BackpackButton, 11, 1, 1, 2, 0, 0, true).
-		AddItem(FleeButton, 11, 3, 1, 2, 0, 0, true)
+		AddItem(BackpackButton, 10, 3, 1, 2, 0, 0, true).
+		AddItem(FleeButton, 11, 2, 1, 2, 0, 0, true)
 	gridCenter.SetBorder(true)
+
+	//Fonction du tour du monstre
+	monsterTurn := func() {
+		buttonActivated = 5
+		combattool.MonsterAttack(player, monster, monsterList, turn)
+	}
+
+	//Fonction refresh bar de vie de l'ennemi
+	actuMonsterHPBar := func() {
+		bar := "Vie restante : " + strconv.Itoa((*monster)["hp"].(int)) + " / " + strconv.Itoa((*monster)["max_hp"].(int)) + " [red]♥[white]"
+		bar += "\n╔───────────────────────── / ▲ " + string(byte(92)) + " ─────────────────────────╗\n[white][red]"
+		tmp := int((float64((*monster)["hp"].(int)) / float64((*monster)["max_hp"].(int))) * float64(55))
+		for i := 0; i < tmp; i++ {
+			bar += "▮"
+		}
+		bar += "[black]"
+		for i := tmp; i < 55; i++ {
+			bar += "▯"
+		}
+		MonsterHPBar.Clear()
+		MonsterHPBar.SetText(bar + "[white]\n╚───────────────────────── " + string(byte(92)) + " ▼ / ─────────────────────────╝")
+	}
+
+	// Donner aux boutons leur fonction
+
+	// Bouton d'attaque
+	AttackButton.SetSelectedFunc(func() {
+		if buttonActivated == 0 || buttonActivated == 2 || buttonActivated == 3 {
+			buttonActivated = 1
+			AttackMenu.Clear()
+			switch buttonActivated {
+			case 0:
+				gridCenter.RemoveItem(MonsterIcon)
+			case 2:
+				gridCenter.RemoveItem(BackpackMenu)
+			case 3:
+				gridCenter.RemoveItem(EmptyBackpack)
+			}
+			for i, k := range (*player)["skills"].([]string) {
+				AttackMenu.AddItem(skillList[k]["name"].(string), skillList[k]["description"].(string), rune('a'+i), func() {
+					if combattool.CanPlayerUseSkill(*player, k, skillList) {
+						combattool.UseSkill(player, monster, k, skillList)
+						actuMonsterHPBar()
+						gridCenter.RemoveItem(AttackMenu)
+						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
+						monsterTurn()
+					} else {
+						ChatBox.Clear()
+						ChatBox.SetText("Vous n'avez pas assez de mana pour lancer : " + skillList[k]["name"].(string))
+					}
+
+				})
+			}
+			gridCenter.AddItem(AttackMenu, 2, 0, 6, 6, 0, 0, true)
+			app.SetFocus(AttackButton)
+		}
+	})
+
+	// Bouton Sac à dos
+	BackpackButton.SetSelectedFunc(func() {
+		if buttonActivated >= 0 && buttonActivated <= 1 {
+			switch buttonActivated {
+			case 0:
+				gridCenter.RemoveItem(MonsterIcon)
+			case 1:
+				gridCenter.RemoveItem(AttackMenu)
+			}
+			buttonActivated = 2
+			ks, vs := InventoryTool.GetInventoryConsumables(*inv)
+			if len(ks) == 0 {
+				buttonActivated = 3
+				gridCenter.AddItem(EmptyBackpack, 2, 0, 6, 6, 0, 0, false)
+			} else {
+				BackpackMenu.Clear()
+				gridCenter.AddItem(BackpackMenu, 2, 0, 6, 6, 0, 0, true)
+				for i, k := range ks {
+					BackpackMenu.AddItem(itemlist[k]["name"].(string)+" : "+strconv.Itoa(vs[i]), itemlist[k]["description"].(string), rune('a'+i), func() {
+						combattool.UseConsumable(player, monster, k, itemlist)
+						actuMonsterHPBar()
+						gridCenter.RemoveItem(BackpackMenu)
+						gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
+						monsterTurn()
+					})
+				}
+				app.SetFocus(BackpackMenu)
+			}
+		}
+	})
+
+	// Bouton de fuite
+	FleeButton.SetSelectedFunc(func() {
+		if buttonActivated >= 0 && buttonActivated <= 3 {
+			switch buttonActivated {
+			case 1:
+				{
+					gridCenter.RemoveItem(AttackMenu)
+					gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
+				}
+			case 2:
+				{
+					gridCenter.RemoveItem(BackpackMenu)
+					gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
+				}
+			case 3:
+				{
+					gridCenter.RemoveItem(EmptyBackpack)
+					gridCenter.AddItem(MonsterIcon, 2, 0, 6, 6, 0, 0, false)
+
+				}
+			}
+			buttonActivated = 4
+			ChatBox.SetText("Vous prenez la fuite...")
+			go differedStop(3)
+		}
+	})
+
 	//build
 	Centreflex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
@@ -562,8 +734,14 @@ func ForestBattleWindow(
 		SetDirection(tview.FlexColumn).
 		AddItem(Centreflex, 0, 13, true).
 		AddItem(Droiteflex, 0, 7, false)
+
+	actuMonsterHPBar()
 	if err4 := app.SetRoot(Machted, true).EnableMouse(true).Run(); err4 != nil {
 		panic(err4)
+	}
+	switch buttonActivated {
+	case 4:
+		SmenuRender(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList)
 	}
 }
 

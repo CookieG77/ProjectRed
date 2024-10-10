@@ -36,7 +36,7 @@ func UseSkill(
 	switch skillList[skill]["type"].(string) {
 	case "dmg":
 		{
-			if skillList[skill]["monster_player"].(bool) {
+			if skillList[skill]["target_player"].(bool) {
 				InventoryTool.HurtPlayer(player, skillList[skill]["atk_points"].(int))
 				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
 			} else {
@@ -46,7 +46,7 @@ func UseSkill(
 		}
 	case "heal":
 		{
-			if skillList[skill]["monster_player"].(bool) {
+			if skillList[skill]["target_player"].(bool) {
 				InventoryTool.HealPlayer(player, skillList[skill]["atk_points"].(int))
 				InventoryTool.UsePlayerMana(player, skillList[skill]["mana_cost"].(int))
 			} else {
@@ -75,7 +75,7 @@ func UseConsumable(
 				HealMonster(monster, itemData["value"].(int))
 			}
 		}
-	case "healmana":
+	case "manaheal":
 		{
 			if monsterPlayer {
 				InventoryTool.HealPlayerMana(player, itemData["value"].(int))
@@ -98,21 +98,8 @@ func MonsterAttack(
 	player *map[string]interface{},
 	monster *map[string]interface{},
 	monsterList map[string]map[string]interface{},
+	turn int,
 ) {
-	switch (*player)["name"].(string) {
-	case "CP_Heal":
-		{
-
-		}
-	case "CP_Mana":
-		{
-
-		}
-	case "CJ_Poison":
-		{
-
-		}
-	}
 }
 
 func IsMonsterDead(monster map[string]interface{}) bool {
