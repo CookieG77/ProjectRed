@@ -7,13 +7,16 @@
             "O_Plume" : 2,
             "O_BoarLeather" : 4,
             "O_WolfPelt" : 6,
-            "O_TrollSkin" : 8
+            "O_TrollSkin" : 8,
+            "EW_Sword": 15,
+            "EW_MageStaff":15
         },
         "buys" : {
             "O_Plume" : 1,
             "O_BoarLeather" : 3,
-            "EL_Adventurer" : 4,
+            "O_WolfPelt" : 4,
             "O_TrollSkin" : 7
+
         }
     }
 }

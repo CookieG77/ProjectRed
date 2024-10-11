@@ -1360,11 +1360,13 @@ func ShowForge(
 		name := itemlist[string(i)]["name"].(string)
 		if !InventoryTool.CanCraft(i, craftList, *inv, *player) {
 			name += " ❌"
+			(*list).AddItem(name, itemlist[string(i)]["description"].(string), a, nil)
+		} else {
+			(*list).AddItem(name, itemlist[string(i)]["description"].(string), a, func() {
+				InventoryTool.Craft(i, craftList, inv, player)
+				UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 0, bottomRightPart)
+			})
 		}
-		(*list).AddItem(name, itemlist[string(i)]["description"].(string), a, func() {
-			InventoryTool.Craft(i, craftList, inv, player)
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 0, bottomRightPart)
-		})
 		a++
 	}
 	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
@@ -1442,14 +1444,16 @@ func ShowShopBuy(
 		name := itemlist[i]["name"].(string)
 		if !InventoryTool.CanBuyItemFrom(*player, tradeList, "merchant", i) {
 			name += " ❌"
+			(*list).AddItem(name, itemlist[i]["description"].(string), a, nil)
+		} else {
+			(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
+				InventoryTool.BuyItemFrom(player, inv, tradeList, "merchant", i)
+				if i == "CP_Heal" && tradeList["merchant"]["sells"]["CP_Heal"] == 0 {
+					tradeList["merchant"]["sells"]["CP_Heal"] = 3
+				}
+				UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 1, bottomRightPart)
+			})
 		}
-		(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
-			InventoryTool.BuyItemFrom(player, inv, tradeList, "merchant", i)
-			if i == "CP_Heal" && tradeList["merchant"]["sells"]["CP_Heal"] == 0 {
-				tradeList["merchant"]["sells"]["CP_Heal"] = 3
-			}
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 1, bottomRightPart)
-		})
 		a++
 	}
 	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
@@ -1491,11 +1495,13 @@ func ShowShopSell(
 		name := itemlist[i]["name"].(string)
 		if !InventoryTool.CanSellItemTo(*inv, tradeList, "merchant", i) {
 			name += " ❌"
+			(*list).AddItem(name, itemlist[i]["description"].(string), a, nil)
+		} else {
+			(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
+				InventoryTool.SellItemTo(player, inv, tradeList, "merchant", i)
+				UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 2, bottomRightPart)
+			})
 		}
-		(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
-			InventoryTool.SellItemTo(player, inv, tradeList, "merchant", i)
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 2, bottomRightPart)
-		})
 		a++
 	}
 	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {

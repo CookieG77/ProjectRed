@@ -610,7 +610,7 @@ func PlayLoopMusic(adresse string) {
 	volume := &effects.Volume{
 		Streamer: loop,
 		Base:     2,
-		Volume:   -2,
+		Volume:   -5,
 		Silent:   false,
 	}
 	speaker.Play(beep.Seq(volume, beep.Callback(func() {
