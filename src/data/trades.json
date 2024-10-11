@@ -3,6 +3,7 @@
         "sells" : {
             "CP_Heal" : 0,
             "CP_Mana" : 3,
+            "CP_Fireballbook" : 7,
             "CJ_Poison" : 6,
             "O_Plume" : 2,
             "O_BoarLeather" : 4,
