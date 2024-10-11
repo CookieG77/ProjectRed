@@ -14,6 +14,7 @@ import (
 	"github.com/gopxl/beep"
 	"github.com/gopxl/beep/mp3"
 	"github.com/gopxl/beep/speaker"
+	"github.com/gopxl/beep/v2/effects"
 )
 
 type Inventory = map[string]int
@@ -513,6 +514,9 @@ func LoadClassIcons(imglst *map[string]image.Image, filepath string) bool {
 	return false
 }
 
+// Charge les images commencant par 'bg_' placé dans le dossier 'filepath',
+// puis les range dans 'imglst'.Si une erreur apparai durant le chargement des images,
+// la fonction s'arrète et renvoie 'true', sinon renvoie 'false'.
 func LoadBG(imglst *map[string]image.Image, filepath string) bool {
 	files, err := os.ReadDir(filepath)
 	if err != nil {
@@ -531,6 +535,9 @@ func LoadBG(imglst *map[string]image.Image, filepath string) bool {
 	return false
 }
 
+// Charge les images commencant par 'micon_' placé dans le dossier 'filepath',
+// puis les range dans 'imglst'.Si une erreur apparai durant le chargement des images,
+// la fonction s'arrète et renvoie 'true', sinon renvoie 'false'.
 func LoadMonsterIcons(imglst *map[string]image.Image, filepath string) bool {
 	files, err := os.ReadDir(filepath)
 	if err != nil {
@@ -544,25 +551,6 @@ func LoadMonsterIcons(imglst *map[string]image.Image, filepath string) bool {
 			}
 			name := fname.Name()[6 : len(fname.Name())-4]
 			(*imglst)[name] = tmp
-		}
-	}
-	return false
-}
-
-func LoadGameSounds(imglst *map[string]map[string]string, filepath string) bool {
-	files, err := os.ReadDir(filepath)
-	if err != nil {
-		return true
-	}
-	(*imglst) = map[string]map[string]string{
-		"sounds": {},
-		"muscis": {},
-	}
-	for _, fname := range files {
-		if (fname.Name())[:5] == "sound" {
-			(*imglst)["sounds"][fname.Name()[6:len(fname.Name())-4]] = filepath + "/" + fname.Name()
-		} else if (fname.Name())[:5] == "music" {
-			(*imglst)["musics"][fname.Name()[6:len(fname.Name())-4]] = filepath + "/" + fname.Name()
 		}
 	}
 	return false
@@ -596,6 +584,36 @@ func PlaySound(adresse string) {
 
 	done := make(chan bool)
 	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
+}
+
+// Joue la music donner en boucle sans jamais s'arreter.
+func PlayLoopMusic(adresse string) {
+	f, err := os.Open(adresse)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+
+	done := make(chan bool)
+	loop := beep.Loop(-1, streamer)
+	volume := &effects.Volume{
+		Streamer: loop,
+		Base:     2,
+		Volume:   -2,
+		Silent:   false,
+	}
+	speaker.Play(beep.Seq(volume, beep.Callback(func() {
 		done <- true
 	})))
 

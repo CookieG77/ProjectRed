@@ -65,8 +65,18 @@
         "description" : "Objet de fabrication.",
         "type" : "crafting"
     },
+    "O_CorruptedManaStone" : {
+        "name" : "Pierre de mana corrompu",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting"
+    },
     "O_Steel" : {
         "name" : "Barre d'acier",
+        "description" : "Objet de fabrication.",
+        "type" : "crafting"
+    },
+    "O_EntWood" : {
+        "name" : "Bois d'ent",
         "description" : "Objet de fabrication.",
         "type" : "crafting"
     },

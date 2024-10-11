@@ -123,6 +123,7 @@ func MonsterAttack(
 				InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
 				res += (*monster)["atk_msg"].(string)
 			}
+			break
 		}
 	case "heal":
 		{
@@ -132,6 +133,7 @@ func MonsterAttack(
 				HealMonster(monster, (*monster)["special"].(int))
 				res += (*monster)["spe_msg"].(string)
 			}
+			break
 		}
 	case "steal_and_run":
 		{
@@ -142,6 +144,7 @@ func MonsterAttack(
 			}
 			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
 			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			break
 		}
 	case "dpt":
 		{
@@ -151,8 +154,29 @@ func MonsterAttack(
 				res += (*monster)["spe_msg"].(string)
 			}
 			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			break
 		}
-	case "reduce_dmg":
+	case "drain":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			if (*monster)["tour"].(int) < rand.IntN(100) {
+				InventoryTool.HurtPlayer(player, (*monster)["special"].(int))
+				HealMonster(monster, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
+			break
+		}
+	case "dmg":
+		{
+			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
+			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))
+			if turn != 0 && turn%(*monster)["tour"].(int) == 0 {
+				InventoryTool.HurtPlayer(player, (*monster)["special"].(int))
+				res += (*monster)["spe_msg"].(string)
+			}
+		}
+	default:
 		{
 			res += (*monster)["atk_msg"].(string) + " Vous subbissez " + strconv.Itoa((*monster)["atk_points"].(int)) + " dégats."
 			InventoryTool.HurtPlayer(player, (*monster)["atk_points"].(int))

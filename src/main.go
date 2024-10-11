@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-
 	//Importation et chargement des données et ressources
 	class_icons := make(map[string]image.Image)
 	InventoryTool.LoadClassIcons(&class_icons, "ressource")
@@ -20,9 +19,6 @@ func main() {
 
 	monster_icons := make(map[string]image.Image)
 	InventoryTool.LoadMonsterIcons(&monster_icons, "ressource")
-
-	// soundList := make(map[string]map[string]string)
-	// InventoryTool.LoadGameSounds(&soundList, "ressource")
 
 	itemlist := make(map[string]map[string]interface{})
 	InventoryTool.GetItemList(&itemlist, "data/items.json")
@@ -50,11 +46,18 @@ func main() {
 	inv := InventoryTool.InitInventory()
 
 	//Execution du programme
+	go InventoryTool.PlayLoopMusic("ressource/music_background.mp3")
 	Scene.CreatePlayerWindow(classList, class_icons, &player, inv)
 	if slices.Contains(getArgs(), "-op") {
 		InventoryTool.AddItemToInventory(&inv, "CP_Fireballbook", 1)
 		InventoryTool.AddItemToInventory(&inv, "EC_Adventurer", 1)
+		InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
+		InventoryTool.AddItemToInventory(&inv, "EL_Adventurer", 1)
+		InventoryTool.AddItemToInventory(&inv, "EB_Adventurer", 1)
+		InventoryTool.AddItemToInventory(&inv, "EC_Mage", 1)
 		InventoryTool.AddItemToInventory(&inv, "EA_Mage", 1)
+		InventoryTool.AddItemToInventory(&inv, "EL_Mage", 1)
+		InventoryTool.AddItemToInventory(&inv, "EB_Mage", 1)
 		InventoryTool.AddItemToInventory(&inv, "EA_Adventurer", 1)
 		InventoryTool.AddItemToInventory(&inv, "EW_AdvancedMageStaff", 1)
 		InventoryTool.AddItemToInventory(&inv, "EW_VampireDagger", 1)

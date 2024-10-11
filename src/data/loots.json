@@ -31,5 +31,26 @@
         "has_special": true,
         "loot_special" : ["O_BoarLeather"],
         "chance" : [60]
+    },
+    "ent" : {
+        "loot_min": 5,
+        "loot_max": 15,
+        "has_special": true,
+        "loot_special" : ["O_EntWood", "O_ManaStone"],
+        "chance" : [50, 25]
+    },
+    "golem" : {
+        "loot_min": 20,
+        "loot_max": 25,
+        "has_special": true,
+        "loot_special" : ["O_Steel", "O_ManaStone", "O_CorruptedManaStone"],
+        "chance" : [100, 50, 25]
+    },
+    "firedragon" : {
+        "loot_min": 50,
+        "loot_max": 100,
+        "has_special": true,
+        "loot_special" : ["O_Steel", "O_Steel", "O_Steel", "O_ManaStone", "O_CorruptedManaStone"],
+        "chance" : [100, 75, 50, 80, 50]
     }
 }

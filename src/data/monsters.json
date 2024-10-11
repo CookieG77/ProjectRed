@@ -62,5 +62,43 @@
         "spe" : "dpt",
         "special" : 2,
         "tour" : 50
+    },
+    "ent" : {
+        "name" : "Ent",
+        "description" : "Un arbre géant qui se déplace et qui protège les forets, corrompu par les années, il s'en prend aux villages alentour.",
+        "encounter_msg" : "Un des arbres se met à bouger, c'est un ent !",
+        "atk_msg" : "L'ent vous frappe avec une de ses branches.",
+        "spe_msg" : "\nL'ent invoque des racines pour vous drainé de 7 points de vie.",
+        "max_hp" : 80,
+        "atk_points" : 8,
+        "special_com" : "peut drainer 7 points de vie par tour",
+        "spe" : "drain",
+        "special" : 7,
+        "tour" : 30
+    },
+    "golem" : {
+        "name" : "Golem de pierre",
+        "description" : "Une créature de pierre animée par la magie, elle est lente mais très résistante.",
+        "encounter_msg" : "Un golem de pierre se dresse devant vous !",
+        "atk_msg" : "Le golem vous frappe avec son poing de pierre.",
+        "spe_msg" : "",
+        "max_hp" : 100,
+        "atk_points" : 10,
+        "special_com" : "none",
+        "spe" : "none",
+        "special" : 0
+    },
+    "firedragon" : {
+        "name" : "Dragon de feu",
+        "description" : "Un dragon de feu, l'une des créatures légendaires qui craches des flammes.",
+        "encounter_msg" : "Un dragon de feu se pose devant vous et crache des flammes !",
+        "atk_msg" : "Le dragon vous plante ses griffes.",
+        "spe_msg" : "\nLe dragon se met à voler et vous crache des flammes, vous perdez 25 points de vie.",
+        "max_hp" : 150,
+        "atk_points" : 15,
+        "special_com" : "vous inflige 25 points de dégats tout les 3 tours",
+        "spe" : "dmg",
+        "special" : 25,
+        "tour" : 3
     }
 }

@@ -1154,7 +1154,7 @@ func Svillage(
 	buttonBottom.SetSelectedFunc(func() {
 		InventoryTool.PlaySound("ressource/sound_button.mp3")
 		app.Stop()
-		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur")
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur_buy")
 	})
 
 	// ============================ CENTRE =============================
@@ -1262,6 +1262,18 @@ func Sshopvillage(
 	})
 	invBoutton.SetBorder(true)
 
+	sellBoutton := tview.NewButton("Vendre").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
+		app.Stop()
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur_sell")
+	})
+
+	buyBoutton := tview.NewButton("Acheter").SetSelectedFunc(func() {
+		InventoryTool.PlaySound("ressource/sound_button.mp3")
+		app.Stop()
+		Sshopvillage(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, "vendeur_buy")
+	})
+
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
 		SetColumns(0, 0, 0, 0).
@@ -1275,15 +1287,28 @@ func Sshopvillage(
 	textTop.SetTextAlign(tview.AlignCenter)
 
 	switch who { // who is selling + IMAGE GAUCHE BOTTOM
-	case "vendeur":
-		textTop.SetText("Hohoho, ici je vend bien de bonnes choses, tout cela est à toi, mais seulement SI tu possède assez de pièces d'or hihihi...")
-		imageBottom.SetImage(bg_imgs["merchant"])
-		ShowShop(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter)
+	case "vendeur_buy":
+		{
+			textTop.SetText("Hohoho, ici je vend bien de bonnes choses, tout cela est à toi, mais seulement SI tu possède assez de pièces d'or hihihi...")
+			imageBottom.SetImage(bg_imgs["merchant"])
+			ShowShopBuy(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter, Droiteflex)
+			gridCenter.AddItem(sellBoutton, 4, 0, 1, 2, 0, 0, true)
+		}
+
+	case "vendeur_sell":
+		{
+			textTop.SetText("Si tu as des objets de valeurs, je veut bien y jeter un coup d'oeuil, sinon vat-en !")
+			imageBottom.SetImage(bg_imgs["merchant"])
+			ShowShopSell(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter, Droiteflex)
+			gridCenter.AddItem(buyBoutton, 4, 0, 1, 2, 0, 0, true)
+		}
 
 	case "forgeron":
-		textTop.SetText("Hpmf hpmf hpmf, armes cassées? objets à bricoler? Bienvenue dans les flammes et le fer, rien de mieux pour battre l'enfer pfmh pfmh pfmh...")
-		imageBottom.SetImage(bg_imgs["forge"])
-		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter)
+		{
+			textTop.SetText("Hpmf hpmf hpmf, armes cassées? objets à bricoler? Bienvenue dans les flammes et le fer, rien de mieux pour battre l'enfer pfmh pfmh pfmh...")
+			imageBottom.SetImage(bg_imgs["forge"])
+			ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, &shop, Gaucheflex, gridCenter, Droiteflex)
+		}
 	}
 
 	CentreTop := tview.NewFlex().
@@ -1323,6 +1348,7 @@ func ShowForge(
 	list **tview.List,
 	bottomGrid *tview.Grid,
 	midGrid *tview.Grid,
+	bottomRightPart *tview.Flex,
 ) {
 	(*list).Clear()
 	Craftable := []string{}
@@ -1337,7 +1363,7 @@ func ShowForge(
 		}
 		(*list).AddItem(name, itemlist[string(i)]["description"].(string), a, func() {
 			InventoryTool.Craft(i, craftList, inv, player)
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 0)
+			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 0, bottomRightPart)
 		})
 		a++
 	}
@@ -1374,20 +1400,24 @@ func UpdateBottomGrid(
 	bottomGrid *tview.Grid,
 	midGrid *tview.Grid,
 	shop_type int,
+	bottomRightPart *tview.Flex,
 
 ) {
 	bottomGrid.RemoveItem(*list)
+	updateRightBottomPart(bottomRightPart, *player, itemlist)
 	switch shop_type {
 	case 0:
-		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid)
+		ShowForge(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, bottomRightPart)
 	case 1:
-		ShowShop(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid)
+		ShowShopBuy(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, bottomRightPart)
+	case 2:
+		ShowShopSell(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, bottomRightPart)
 	}
 
 	bottomGrid.AddItem(*list, 2, 0, 2, 4, 0, 0, true)
 }
 
-func ShowShop(
+func ShowShopBuy(
 	classes_icons map[string]image.Image,
 	bg_imgs map[string]image.Image,
 	monster_icons map[string]image.Image,
@@ -1402,6 +1432,7 @@ func ShowShop(
 	list **tview.List,
 	bottomGrid *tview.Grid,
 	midGrid *tview.Grid,
+	bottomRightPart *tview.Flex,
 ) {
 	(*list).Clear()
 	a := 'a'
@@ -1417,14 +1448,65 @@ func ShowShop(
 			if i == "CP_Heal" && tradeList["merchant"]["sells"]["CP_Heal"] == 0 {
 				tradeList["merchant"]["sells"]["CP_Heal"] = 3
 			}
-			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 1)
+			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 1, bottomRightPart)
 		})
 		a++
 	}
 	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
 		itemId := Items[index]
-		text := "\n  Coût:\n" + "  - " + strconv.Itoa(tradeList["merchant"]["sells"][itemId]) + "💰\n"
-		midGrid.AddItem(tview.NewTextView().SetText(text), 0, 0, 1, 4, 0, 0, true)
+		text := "\n  Coût :\n" + "  - " + strconv.Itoa(tradeList["merchant"]["sells"][itemId]) + "💰\n"
+		val, ok := (*inv)[itemId]
+		if ok {
+			text += "\n\n Dans le sac : " + strconv.Itoa(val)
+		} else {
+			text += "\n\n Dans le sac : 0"
+		}
+		midGrid.AddItem(tview.NewTextView().SetText(text), 0, 0, 3, 4, 0, 0, true)
 	})
 
+}
+
+func ShowShopSell(
+	classes_icons map[string]image.Image,
+	bg_imgs map[string]image.Image,
+	monster_icons map[string]image.Image,
+	player *map[string]interface{},
+	itemlist map[string]map[string]interface{},
+	inv *map[string]int,
+	classList map[string]map[string]interface{},
+	skillList map[string]map[string]interface{},
+	monsterList map[string]map[string]interface{},
+	craftList map[string]map[string]int,
+	tradeList map[string]map[string]map[string]int,
+	list **tview.List,
+	bottomGrid *tview.Grid,
+	midGrid *tview.Grid,
+	bottomRightPart *tview.Flex,
+) {
+	(*list).Clear()
+	a := 'a'
+	Items := []string{}
+	for i := range tradeList["merchant"]["buys"] {
+		Items = append(Items, i)
+		name := itemlist[i]["name"].(string)
+		if !InventoryTool.CanSellItemTo(*inv, tradeList, "merchant", i) {
+			name += " ❌"
+		}
+		(*list).AddItem(name, itemlist[i]["description"].(string), a, func() {
+			InventoryTool.SellItemTo(player, inv, tradeList, "merchant", i)
+			UpdateBottomGrid(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, craftList, tradeList, list, bottomGrid, midGrid, 2, bottomRightPart)
+		})
+		a++
+	}
+	(*list).SetChangedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
+		itemId := Items[index]
+		text := "\n  Prix Rachat :\n" + "  - +" + strconv.Itoa(tradeList["merchant"]["buys"][itemId]) + "💰\n"
+		val, ok := (*inv)[itemId]
+		if ok {
+			text += "\n\n Dans le sac : " + strconv.Itoa(val)
+		} else {
+			text += "\n\n Dans le sac : 0"
+		}
+		midGrid.AddItem(tview.NewTextView().SetText(text), 0, 0, 3, 4, 0, 0, true)
+	})
 }

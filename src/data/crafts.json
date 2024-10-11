@@ -18,5 +18,33 @@
         "O_WolfPelt" : 1,
         "O_BoarLeather" : 1,
         "cvalue" : 5
+    },
+    "EW_Sword" : {
+        "O_Steel" : 1,
+        "O_EntWood" : 1,
+        "cvalue" : 15
+    },
+    "EW_AdvancedSword" : {
+        "O_Steel" : 2,
+        "O_EntWood" : 1,
+        "O_ManaStone" : 1,
+        "cvalue" : 30
+    },
+    "EW_MageStaff" : {
+        "O_EntWood" : 2,
+        "O_ManaStone" : 1,
+        "cvalue" : 15
+    },
+    "EW_AdvancedMageStaff" : {
+        "O_EntWood" : 2,
+        "O_ManaStone" : 2,
+        "O_CorruptedManaStone" : 1,
+        "cvalue" : 30
+    },
+    "EW_VampireDagger" : {
+        "O_Steel" : 1,
+        "O_EntWood" : 1,
+        "O_CorruptedManaStone" : 1,
+        "cvalue" : 20
     }
 }
