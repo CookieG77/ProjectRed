@@ -121,12 +121,12 @@ func SmenuRender(
 	})
 	statsButton.SetBorder(true)
 
-	testDonjon := tview.NewButton("Test Donjon").SetSelectedFunc(func() {
-		InventoryTool.PlaySound("ressource/sound_button.mp3")
-		app.Stop()
-		EnterDonjon(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, donjonLevels, "sky_tower")
-	})
-	statsButton.SetBorder(true)
+	// testDonjon := tview.NewButton("Test Donjon").SetSelectedFunc(func() {
+	// 	InventoryTool.PlaySound("ressource/sound_button.mp3")
+	// 	app.Stop()
+	// 	EnterDonjon(classes_icons, bg_imgs, monster_icons, player, itemlist, inv, classList, skillList, monsterList, lootList, craftList, tradeList, donjonLevels, "sky_tower")
+	// })
+	// statsButton.SetBorder(true)
 
 	gridCenter := tview.NewGrid().
 		SetRows(0, 0, 0, 0).
