@@ -1,56 +1,118 @@
 {
     "goblin" : {
-      "loot_min": 0,
-      "loot_max": 5,
-      "has_special": false
+        "gold" : {
+            "min" : [1],
+            "max" : [5],
+            "chance": [100]
+        }
     },
     "troll" : {
-      "loot_min": 0,
-      "loot_max": 2,
-      "has_special": true,
-      "loot_special" : ["O_TrollSkin"],
-      "chance" : [50]
+        "gold" : {
+            "min" : [5],
+            "max" : [10],
+            "chance": [100]
+        },
+        "O_TrollSkin" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [50]
+        }
     },
     "raven" : {
-        "loot_min": 0,
-        "loot_max": 3,
-        "has_special": true,
-        "loot_special" : ["O_Plume"],
-        "chance" : [25]
+        "gold" : {
+            "min" : [1],
+            "max" : [5],
+            "chance": [100]
+        },
+        "O_Plume" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [25]
+        }
     },
     "wolf" : {
-        "loot_min": 0,
-        "loot_max": 4,
-        "has_special": true,
-        "loot_special" : ["O_WolfPelt"],
-        "chance" : [75]
+        "gold" : {
+            "min" : [5],
+            "max" : [12],
+            "chance": [100]
+        },
+        "O_WolfPelt" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [75]
+        }
     },
     "boar" : {
-        "loot_min": 0,
-        "loot_max": 3,
-        "has_special": true,
-        "loot_special" : ["O_BoarLeather"],
-        "chance" : [60]
+        "gold" : {
+            "min" : [7],
+            "max" : [9],
+            "chance": [100]
+        },
+        "O_BoarLeather" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [60]
+        }
     },
     "ent" : {
-        "loot_min": 5,
-        "loot_max": 15,
-        "has_special": true,
-        "loot_special" : ["O_EntWood", "O_ManaStone"],
-        "chance" : [50, 25]
+        "gold" : {
+            "min" : [5],
+            "max" : [15],
+            "chance": [100]
+        },
+        "O_EntWood" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [50]
+        },
+        "O_ManaStone" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [25]
+        }
     },
     "golem" : {
-        "loot_min": 20,
-        "loot_max": 25,
-        "has_special": true,
-        "loot_special" : ["O_Steel", "O_ManaStone", "O_CorruptedManaStone"],
-        "chance" : [100, 50, 25]
+        "gold" : {
+            "min" : [20],
+            "max" : [25],
+            "chance": [100]
+        },
+        "O_Steel" : {
+            "min" : [1, 1],
+            "max" : [1, 1],
+            "chance": [100, 50]
+        },
+        "O_ManaStone" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [50]
+        },
+        "O_CorruptedManaStone" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [25]
+        }
     },
     "firedragon" : {
-        "loot_min": 50,
-        "loot_max": 100,
-        "has_special": true,
-        "loot_special" : ["O_Steel", "O_Steel", "O_Steel", "O_ManaStone", "O_CorruptedManaStone"],
-        "chance" : [100, 75, 50, 80, 50]
+        "gold" : {
+            "min" : [50],
+            "max" : [100],
+            "chance": [100]
+        },
+        "O_Steel" : {
+            "min" : [1, 1, 1],
+            "max" : [1, 1, 1],
+            "chance": [100, 75, 50]
+        },
+        "O_ManaStone" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [75]
+        },
+        "O_CorruptedManaStone" : {
+            "min" : [1],
+            "max" : [1],
+            "chance": [50]
+        }
     }
 }

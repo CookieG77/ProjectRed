@@ -259,3 +259,38 @@ func GenRandMonster(monsterList map[string]map[string]interface{}) map[string]in
 	}
 	return monster
 }
+
+func GetCombatLoot(
+	monsterid string,
+	inv *map[string]int,
+	player *map[string]interface{},
+	lootList map[string]map[string]map[string][]int,
+	itemList map[string]map[string]interface{},
+) string {
+	var res_msg string
+	monsterLootTable := lootList[monsterid]
+	I := 0
+	for k, v := range monsterLootTable {
+		add_value := 0
+		for i := range len(v["chance"]) {
+			val := rand.IntN(v["max"][i] - v["min"][i] + 2)
+			if rand.IntN(101) < v["chance"][i] {
+				add_value += val
+			}
+		}
+		if add_value > 0 {
+			if k == "gold" {
+				InventoryTool.AddGoldToPlayer(player, add_value)
+				res_msg += strconv.Itoa(add_value) + " or"
+			} else {
+				InventoryTool.AddItemToInventory(inv, k, add_value)
+				res_msg += strconv.Itoa(add_value) + " " + itemList[k]["name"].(string)
+			}
+			if I != len(monsterLootTable)-1 {
+				res_msg += ", "
+			}
+		}
+		I++
+	}
+	return res_msg
+}

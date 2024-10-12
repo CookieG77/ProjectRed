@@ -34,6 +34,26 @@ func GetCraftList(res *map[string]map[string]int, filepath string) bool {
 }
 
 // Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res',
+func GetLootList(res *map[string]map[string]map[string][]int, filepath string) bool {
+	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
+	file, err1 := os.ReadFile(filepath)
+	if err1 != nil || json.Unmarshal(file, res) != nil {
+		return true
+	}
+	return false
+}
+
+// Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res',
+func GetDonjonList(res *map[string]map[string]map[string]interface{}, filepath string) bool {
+	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
+	file, err1 := os.ReadFile(filepath)
+	if err1 != nil || json.Unmarshal(file, res) != nil {
+		return true
+	}
+	return false
+}
+
+// Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res',
 // et converti les nombres à virgules en nombres entier.
 func GetItemList(res *map[string]map[string]interface{}, filepath string) bool {
 	file, err1 := os.ReadFile(filepath)
@@ -73,12 +93,6 @@ func GetSkillList(res *map[string]map[string]interface{}, filepath string) bool 
 	return GetItemList(res, filepath)
 }
 
-// Juste un alias de GetItemList pour simplifier la compréhension du code au main,
-// car les fonctions marchent de la même manière
-func GetLootList(res *map[string]map[string]interface{}, filepath string) bool {
-	return GetItemList(res, filepath)
-}
-
 // Ouvre le fichier json 'filepath' et le converti en variable lisible par golang dans 'res'
 func GetTradesList(res *map[string]map[string]map[string]int, filepath string) bool {
 	//Retourne 0 si aucune erreur n'a été rencontré lors du dépactage du json. Sinon retourne 1
@@ -87,6 +101,31 @@ func GetTradesList(res *map[string]map[string]map[string]int, filepath string) b
 		return true
 	}
 	return false
+}
+
+// Fonction à but de test uniquement,
+// permet l'affichage de 'lootList' sous la forme d'un dictionnaire.
+func PrintLootList(lootList map[string]map[string]map[string][]int) {
+	fmt.Print("LootList : {\n")
+	for k, v := range lootList {
+		fmt.Printf("\u0009%s : {\n", k)
+		for kk, vv := range v {
+			fmt.Printf("\u0009\u0009%s : {\n", kk)
+			for kkk, vvv := range vv {
+				fmt.Printf("\u0009\u0009\u0009%s : [", kkk)
+				for i, vvvv := range vvv {
+					fmt.Printf("%d", vvvv)
+					if i != len(vvv)-1 {
+						fmt.Print(" ,")
+					}
+				}
+				fmt.Print("]\n")
+			}
+			fmt.Print("\u0009\u0009}\n")
+		}
+		fmt.Print("\u0009}\n")
+	}
+	fmt.Print("}\n")
 }
 
 // |========================================================|

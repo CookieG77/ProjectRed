@@ -1,0 +1,58 @@
+{
+    "sky_tower" : {
+        "entry": {
+            "name" : "Tour du ciel",
+            "description" : "Une tour mystérieuse qui s'élève dans le ciel. Elle est réputée pour être le repère de créatures maléfiques et de trésors inestimables.",
+            "min_level" : 1,
+            "leadingTo" : ["ST_r_1A", "ST_r_1B"],
+            "event" : {
+                "dialog" : "Vous arrivez au pied de la tour, une brume épaisse vous entoure. Vous entendez des bruits étranges venant de l'intérieur. Vous aperscevez deux entrées, laquelle choisissez-vous ?",
+                "choices" : {
+                    "ST_r_1A" : "L'escalier de droite.",
+                    "ST_r_1B" : "L'escalier de gauche."
+                }
+            }
+        },
+
+
+        "ST_r_1A" : {
+            "name" : "Salle n°1-A",
+            "min_level" : 1,
+            "enter_msg" : "Vous entrez dans la salle, une odeur de moisi vous prend à la gorge. Vous entendez des bruits de pas.\n Un goblin vous voit et vous attaque !",
+            "leadingTo" : ["ST_r_2A", "ST_r_2B"],
+            "event" : {
+                "type" : "fight",
+                "enemies" : "goblin",
+                "dialog" : "Maintenant que le goblin est mort, vous pouvez continuer votre chemin. Vous apercevez deux portes, laquelle choisissez-vous ?",
+                "choices" : {
+                    "ST_r_2A" : "La porte de droite recouverte de slime.",
+                    "ST_r_2B" : "La porte de gauche."
+                }
+            },
+            "treasure" : {
+                "gold" : 10,
+                "items" : ["CP_Heal", "CP_LightningTrait"]
+            }
+        },
+
+
+        "ST_r_1B" : {
+            "name": "Salle n°1-B",
+            "min_level" : 1,
+            "enter_msg" : "",
+            "leadingTo" : ["ST_r_2C"],
+            "event" : {
+                "type" : "fight",
+                "enemies" : "troll",
+                "dialog" : "Maintenant que le troll est mort, vous pouvez continuer votre chemin. Vous apercevez une porte, laquelle choisissez-vous ?",
+                "choices" : {
+                    "ST_r_2C" : "La porte de droite."
+                }
+            },
+            "treasure" : {
+                "gold" : 15,
+                "items" : ["CP_Heal"]
+            }
+        }
+    }
+}

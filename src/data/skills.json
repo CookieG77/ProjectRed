@@ -26,6 +26,15 @@
         "atk_points" : [12],
         "mana_cost" : 10
     },
+    "lighningtrait" : {
+        "name" : "Trait de foudre",
+        "description" : "Lance un trait de foudre sur l'ennemi. Inflige 9 points de dégâts.",
+        "use_text" : "Vous invoquez un trait de foudre qui part à toute vitesse sur l'ennemi.",
+        "type" : ["dmg"],
+        "target_player" : [false],
+        "atk_points" : [12],
+        "mana_cost" : 10
+    },
     "minorheal" : {
         "name" : "Soin mineur",
         "description" : "Soigne le joueur de 10 points de vie.",

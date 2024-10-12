@@ -35,11 +35,14 @@ func main() {
 	skillList := make(map[string]map[string]interface{})
 	InventoryTool.GetSkillList(&skillList, "data/skills.json")
 
-	lootList := make(map[string]map[string]interface{})
+	lootList := make(map[string]map[string]map[string][]int)
 	InventoryTool.GetLootList(&lootList, "data/loots.json")
 
 	craftList := make(map[string]map[string]int)
 	InventoryTool.GetCraftList(&craftList, "data/crafts.json")
+
+	donjonList := make(map[string]map[string]map[string]interface{})
+	InventoryTool.GetDonjonList(&donjonList, "data/donjons.json")
 
 	//Créations des données du joueur
 	player := InventoryTool.InitPlayer()
@@ -72,10 +75,9 @@ func main() {
 		InventoryTool.AddGoldToPlayer(&player, 1000)
 		InventoryTool.EquipPlayerWith(&player, "EW_AdvancedMageStaff", &inv, itemlist)
 		InventoryTool.EquipPlayerWith(&player, "EW_VampireDagger", &inv, itemlist)
-		InventoryTool.PrintPlayer(player)
 	}
 	if player["max_hp"].(int) > 0 {
-		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList, tradeList)
+		Smenu.SmenuRender(class_icons, bg, monster_icons, &player, itemlist, &inv, classList, skillList, monsterList, lootList, craftList, tradeList, donjonList)
 	}
 
 }
