@@ -9,7 +9,7 @@
         "starting_spell" : ["punch"],
         "stats_desc" : "[yellow]Humain:[white]\n- Points de vie: [red]100[white]\n- Points de Mana: [blue]60[white]\n"
     },
-    "elfe" : {
+    "elf" : {
         "class" : "Elfe",
         "max_hp" : 80,
         "max_mana" : 80,
