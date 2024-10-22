@@ -1,2 +1,1 @@
-go build main.go
-main.exe
+go build -o ProjectRed.exe main.go
